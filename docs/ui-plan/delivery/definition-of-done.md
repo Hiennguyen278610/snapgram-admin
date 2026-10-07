@@ -84,7 +84,6 @@ Dự án được phân rã thành **3 PHASE** lớn bao gồm tổng cộng **1
 - **Điều kiện nghiệm thu Phase 1 (Exit Criteria):**
   - [ ] Production build pass 100% không cảnh báo.
   - [ ] CI pipeline xanh toàn bộ trên GitHub Actions (Node 22).
-  - [ ] Luồng đăng nhập hoạt động hoàn chỉnh (nhận cookie httpOnly, chặn route `/admin/*` nếu chưa login).
   - [ ] Chưa cần có các component nghiệp vụ chuyên sâu.
 
 ### Phase 2 — Thành Phần Nghiệp Vụ (Business Components)
@@ -101,6 +100,7 @@ Dự án được phân rã thành **3 PHASE** lớn bao gồm tổng cộng **1
   - [ ] 100% component nghiệp vụ đạt tiêu chuẩn Component DoD và Hook/Service DoD.
   - [ ] Đạt độ bao phủ Unit & Integration test tối thiểu 70% lines và branches cho `src/features/**`.
   - [ ] 100% văn bản tĩnh được bản địa hóa đầy đủ cho 2 locale `en` và `vi`.
+  - [ ] Luồng đăng nhập hoạt động hoàn chỉnh (nhận cookie httpOnly, chặn route `/admin/*` nếu chưa login).
 
 ### Phase 3 — Hoàn Thiện Trang & Tối Ưu Hóa (Pages & Hardening)
 
