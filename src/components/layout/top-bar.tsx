@@ -35,7 +35,7 @@ export function TopBar() {
           variant="ghost"
           aria-label={t('searchPlaceholder')}
           onClick={() => setCommandOpen(true)}
-          className="w-full max-w-[390px] justify-start gap-2 rounded-full bg-muted px-3 text-muted-foreground"
+          className="w-full max-w-[390px] justify-start gap-2 rounded-full bg-muted px-3 text-muted-foreground hover:bg-accent transition-colors"
         >
           <Search className="size-4 shrink-0" aria-hidden />
           <span className="truncate">{t('searchPlaceholder')}</span>
