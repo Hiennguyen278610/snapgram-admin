@@ -26,6 +26,13 @@ Tài liệu này xác lập quy chuẩn kỹ thuật độc lập (self-containe
 - **Trang ứng dụng Next.js Route (`src/app/**`):** **KHÔNG ép unit test** — toàn bộ luồng trang được bao phủ qua E2E Playwright.
 - **Baseline toàn bộ dự án:** **TBD** (Sẽ chốt sau khi hoàn tất Sprint 1.6).
 
+> **Exclude khỏi coverage** (file phi-logic):
+> - `src/lib/fonts.ts` — next/font loader, chạy lúc build.
+> - `src/lib/api/types.ts` — type-only, compile ra module rỗng.
+> - `src/lib/utils.ts` — 1 dòng re-export `cn` từ third-party.
+>
+> **KHÔNG exclude**: `client.ts`, `error-parser.ts`, `error-mapper.ts` (logic thật).
+
 ---
 
 ## 4. Quy Ước Đặt Tên & Tổ Chức File Test (File Conventions)
@@ -88,6 +95,12 @@ Tài liệu này xác lập quy chuẩn kỹ thuật độc lập (self-containe
 ---
 
 ## 6. Chiến Lược Giả Lập Mạng Bằng MSW (MSW Strategy)
+
+> **LƯU Ý MSW v3:** API `onUnhandledRequest` đã bị **xoá** trong MSW v3
+> (kiến trúc đổi sang "frames"). Thay bằng `onUnhandledFrame: 'bypass' | 'warn' | 'error'`.
+> Trong `vitest.setup.ts`, dùng `server.listen({ onUnhandledFrame: 'error' })`
+> để catch request không được mock.
+
 - Chặn ở tầng giao thức HTTP (`http.get`, `http.post`), không mock module React hay Axios instance.
 - **Mô phỏng cả 2 loại Error Shape** theo [error-contract.md](error-contract.md):
   - Giả lập lỗi downstream microservices trả về đầy đủ `{ status, error, message, timestamp }`.
