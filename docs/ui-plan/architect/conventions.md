@@ -1,0 +1,238 @@
+# Codebase Conventions & Development Standards — Snapgram Admin Portal
+
+## 1. Context & Self-Contained Scope
+Tài liệu này xác lập quy chuẩn viết code, quy tắc đặt tên, quản lý file, và tiêu chuẩn kỹ thuật cho toàn bộ phân hệ **Snapgram Admin Portal**. Tài liệu hoạt động độc lập (self-contained) và gắn kết trực tiếp với các phân mục:
+- [overview.md](../overview.md): Nền tảng kiến trúc tổng quan và tech stack.
+- [absolute-rules.md](../absolute-rules.md): Các điều luật bất biến về emoji, gradient và cài đặt shadcn component.
+- [frontend-architecture.md](frontend-architecture.md): Tổ chức cấu trúc thư mục source code.
+- [auth-and-security-flow.md](auth-and-security-flow.md): Luồng bảo vệ đăng nhập và route guards.
+- [api-integration-map.md](api-integration-map.md): Chuẩn DTO và tích hợp REST API.
+- [design-system.md](../design/design-system.md) & [layouts-and-navigation.md](../design/layouts-and-navigation.md): Quy chuẩn UI tokens và layout.
+
+---
+
+## 2. Environment & Tooling Standards
+- **Runtime:** `Node.js >= 22.0.0` (quy định trong `package.json -> engines.node`).
+- **Package Manager:** `pnpm v10+` bắt buộc (quy định trong `package.json -> packageManager: "pnpm@10.x"`). Nghiêm cấm dùng `npm` hay `yarn`.
+- **Framework:** Next.js 15 App Router với TypeScript phiên bản strict mode (`"strict": true` trong `tsconfig.json`).
+- **Thư viện UI:** shadcn/ui. Khi cần component mới, luôn chạy:
+  ```bash
+  pnpm dlx shadcn@latest add <component-name>
+  ```
+- **Bootstrap:** Mọi bước setup dùng CLI chính quy. Chi tiết tại [../delivery/bootstrap-commands.md](../delivery/bootstrap-commands.md). Cấm viết tay config — xem Rule 4 trong absolute-rules.md.
+
+---
+
+## 3. Cấu Trúc Thư Mục & Đặt Tên (File & Directory Conventions)
+
+### 3.1. Quy ước đặt tên
+- **Thư mục routes (`src/app/`):** `kebab-case` (ví dụ: `(dashboard)/user-management/`, `system-health/`).
+- **Components (`src/components/`):** `PascalCase` cho tên file và tên component (ví dụ: `UserTable.tsx`, `BanUserModal.tsx`, `StatCard.tsx`).
+- **UI Primitives (`src/components/ui/`):** `kebab-case` theo chuẩn xuất ra từ shadcn (ví dụ: `button.tsx`, `dialog.tsx`, `dropdown-menu.tsx`).
+- **Hooks (`src/hooks/`):** `camelCase` với tiền tố `use` (ví dụ: `useAdminAuth.ts`, `useDebounce.ts`).
+- **Services & Utils (`src/services/`, `src/lib/`):** `kebab-case` hoặc `camelCase` (ví dụ: `api-client.ts`, `users.service.ts`, `formatters.ts`).
+- **Types & Interfaces (`src/types/`):** `kebab-case.types.ts` hoặc `index.ts` (ví dụ: `auth.types.ts`, `user.types.ts`).
+
+### 3.2. Cấu trúc Server Components vs Client Components
+- Mặc định toàn bộ file trong Next.js 15 App Router là **React Server Components (RSC)** để tối ưu SEO, bundle size và SSR.
+- Chỉ gắn directive `'use client';` ở đầu file khi component có:
+  - Sử dụng React Hooks (`useState`, `useEffect`, `useCallback`,...).
+  - Sử dụng TanStack Query hooks (`useQuery`, `useMutation`).
+  - Lắng nghe event của người dùng (`onClick`, `onChange`, `onSubmit`).
+  - Tương tác với browser API (`window`, `document`, `localStorage`).
+
+---
+
+## 4. UI & Styling Conventions
+
+### 4.1. Không dùng Emoji trong Static Text
+- **Tuyệt đối cấm** emoji trong tiêu đề, nhãn (label), placeholder, button text, notification message, và static text của component (tham chiếu [absolute-rules.md](../absolute-rules.md)).
+- Biểu tượng trực quan **100% sử dụng Lucide React** (`lucide-react`), kích thước chuẩn theo Tailwind v4 dùng shorthand `size-*`: `size-4` (inline trong text/button), `size-5` (navigation/actions), `size-6` (icon lớn / empty-state). **CẤM** viết dài `w-4 h-4` — luôn dùng `size-4`.
+- **Typography:** Playfair Display (display ≥24px) + Roboto (body/UI) + Roboto Mono (code/ID). Load qua next/font, subsets latin+vietnamese.
+
+### 4.2. Giới hạn Gradient
+- Không áp dụng background gradient cho Card, Table, Modal, Sheet, Sidebar hay Panel. Toàn bộ là flat surface.
+- Chỉ có đúng 2 trường hợp ngoại lệ duy nhất được cấp phép dùng gradient:
+  1. Nút hành động cấp cao nhất (Primary Action Button): `bg-gradient-to-r from-[#ff6a00] to-[#ee0979]` + `shadow-[0_8px_20px_-3px_rgba(247,119,55,0.45)]`.
+  2. Viền đánh dấu trạng thái hoạt động nổi bật (Active Ring): `linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)`.
+- Không tạo thêm bất kỳ variant gradient nào khác.
+
+### 4.3. Theme Mode (Light / Dark / System)
+- Bắt buộc dùng thư viện **`next-themes`** với 3 mode `light` / `dark` / `system` (mặc định `system`). CẤM tự implement cơ chế đổi theme bằng tay.
+- Mọi màu sắc dùng CSS variable / semantic token (`bg-background`, `bg-card`, `text-foreground`, `border-border`,...). **CẤM** hardcode màu (`bg-white`, `text-black`, `bg-gray-*`, `bg-zinc-*`).
+- Toggle dùng icon Lucide (`Sun`/`Moon`/`Monitor`), **CẤM** emoji; nút trigger bắt buộc có `aria-label`.
+- Chi tiết đặc tả tại [../design/theme-mode.md](../design/theme-mode.md).
+
+---
+
+## 5. State Management & Data Fetching Conventions
+
+### 5.1. Server State: TanStack Query (React Query v5)
+- Không lưu dữ liệu từ API vào Zustand hay Redux store. Toàn bộ dữ liệu server do TanStack Query quản lý.
+- **Quy tắc Query Key:** Luôn dùng mảng phân cấp rõ ràng:
+  ```typescript
+  export const userKeys = {
+    all: ['admin', 'users'] as const,
+    lists: () => [...userKeys.all, 'list'] as const,
+    list: (filters: UserFilterParams) => [...userKeys.lists(), filters] as const,
+    details: () => [...userKeys.all, 'detail'] as const,
+    detail: (id: string) => [...userKeys.details(), id] as const,
+  };
+  ```
+- **Mutation:** Luôn invalidate đúng query key tương ứng sau khi mutate thành công (ví dụ: sau khi ban user thì invalidate `userKeys.lists()`).
+
+### 5.2. Client State: Zustand
+- Chỉ dùng Zustand cho global UI state thuần túy phía client:
+  - Trạng thái đóng/mở Sidebar (`isSidebarCollapsed`).
+  - Search command palette modal (`isCommandOpen`).
+  - Thông tin user admin đang đăng nhập trong session bộ nhớ tạm (`currentAdmin`).
+---
+
+## 6. Cache Invalidation Matrix
+Bảng đối chiếu quy định chính xác các Query Keys cần tự động vô hiệu hóa (`queryClient.invalidateQueries`) ngay sau khi Mutation thực hiện thành công:
+
+| Thao Tác Đột Biến (Mutation) | Endpoint API Gọi Đến | Query Keys Bắt Buộc Invalidate | Phạm Vi Ảnh Hưởng Giao Diện |
+|---|---|---|---|
+| **Ban User** | `POST /api/auth/admin/users/{id}/ban` | `userKeys.lists()`, `userKeys.detail(id)`, `authKeys.stats()` | Bảng User cập nhật trạng thái Banned; Dashboard stats giảm active users, tăng banned users. |
+| **Unban User** | `POST /api/auth/admin/users/{id}/unban` | `userKeys.lists()`, `userKeys.detail(id)`, `authKeys.stats()` | Bảng User cập nhật Active; Dashboard stats cập nhật số liệu. |
+| **Gán/Gỡ Role User** | `POST/DELETE /api/auth/admin/users/{id}/roles` | `userKeys.detail(id)`, `userKeys.lists()` | Cập nhật role badges của user trong Drawer và Table. |
+| **Tạo/Sửa Role RBAC** | `POST/PUT /api/auth/admin/roles` | `rbacKeys.roles()`, `rbacKeys.role(id)` | Bảng quản lý vai trò và phân quyền cập nhật tức thì. |
+| **Cập nhật Quyền Role**| `PUT /api/auth/admin/roles/{id}/permissions` | `rbacKeys.role(id)`, `rbacKeys.roles()` | Drawer chi tiết vai trò tải lại ma trận permissions mới. |
+| **Xử lý Report (Resolve)** | `PATCH /api/admin/reports/{id}/resolve` | `reportKeys.lists()`, `reportKeys.detail(id)` | Hàng đợi kiểm duyệt loại bỏ hoặc chuyển report sang tab Resolved. |
+| **Bác bỏ Report (Dismiss)** | `PATCH /api/admin/reports/{id}/dismiss` | `reportKeys.lists()`, `reportKeys.detail(id)` | Hàng đợi kiểm duyệt chuyển report sang tab Dismissed. |
+| **Confirm Presigned Upload** | `POST /api/media/{id}/confirm` | `mediaKeys.lists()` | Thư viện media tải lại hiển thị file mới tải lên MinIO. |
+| **Xóa Media** | `DELETE /api/media/{id}` | `mediaKeys.lists()`, `mediaKeys.detail(id)` | Thư viện media loại bỏ thumbnail tệp đã xóa. |
+
+---
+
+## 7. Form Validation & Submission Rules
+- **Schema Validation Thống Nhất:** Mọi form trong hệ thống bắt buộc sử dụng **`react-hook-form`** kết hợp resolver **`@hookform/resolvers/zod`** và schema định nghĩa bằng **`zod`**.
+- **Chế độ kích hoạt (Validation Mode):**
+  - Mặc định `mode: "onBlur"` để kiểm tra khi người dùng rời khỏi ô nhập liệu, tránh hiển thị lỗi quá sớm khi đang gõ.
+  - Chuyển sang `reValidateMode: "onChange"` sau lần submit lỗi đầu tiên để phản hồi tức thì khi người dùng sửa đúng.
+- **Trạng thái Nút Submit (Submission State):**
+  - Khi form đang submit (`isSubmitting === true`): Bắt buộc vô hiệu hóa nút bấm (`disabled`), hiển thị spinner Lucide (`Loader2` kèm hiệu ứng xoay `animate-spin`).
+  - Text nút submit chuyển sang thì tiếp diễn (ví dụ: `common.status.saving`).
+- **Hiển thị lỗi trường (Inline Error Rendering):**
+  - Thông báo lỗi hiển thị ngay dưới ô nhập liệu tương ứng (`<p className="text-xs text-rose-600 mt-1">`), đi kèm viền đỏ (`border-rose-500 focus-visible:ring-rose-500`).
+  - CẤM dùng alert/toast popup chung chung để thay thế cho lỗi validation từng ô nhập liệu.
+
+---
+
+## 8. Modal, Dialog & Sheet Usage Guidelines
+Quy chuẩn phân định rõ ràng giữa các loại hộp thoại dựa trên ngữ cảnh tương tác người dùng:
+
+| Loại Hộp Thoại | Thành Phần UI (shadcn) | Trường Hợp Sử Dụng Cụ Thể | Ràng Buộc Tương Tác & Focus |
+|---|---|---|---|
+| **Standard Dialog** | `Dialog` | Form thao tác vừa phải: Tạo vai trò mới, Đổi mật khẩu, Preview ảnh/video. | Có nút Close `X`, cho phép đóng khi bấm phím `Esc` hoặc click backdrop nền. |
+| **Destructive Modal** | `AlertDialog` | Các hành động rủi ro cao hoặc không thể hoàn tác: **Ban User**, **Xóa Media**, **Thu hồi quyền**. | **BẮT BUỘC xác nhận 2 bước** (tiêu đề cảnh báo màu đỏ, nút Action dùng `bg-rose-600`). **KHÔNG đóng khi click backdrop** để tránh bấm nhầm. |
+| **Detail Drawer** | `Sheet` (Slide-over) | Xem chi tiết dữ liệu dày đặc: Drawer xem User Profile, Drawer soi nội dung tố cáo (Report Detail), Ma trận phân quyền Role. | Trượt từ cạnh phải màn hình (`side="right"`), độ rộng `w-full sm:max-w-xl`, hỗ trợ cuộn độc lập. |
+
+---
+
+## 9. Toast Notification Rules (Sonner)
+Quy tắc sử dụng hệ thống thông báo nổi toàn cục qua thư viện **`sonner`**:
+
+- **Vị trí cố định (Position):** `top-right` (Góc trên bên phải màn hình), tránh che khuất thanh điều hướng chính.
+- **Phân loại & Thời gian tự đóng (Duration):**
+  - **Success (`toast.success`):** Tự động đóng sau **3000ms** (3 giây). Dùng cho hành động thành công nhanh (ví dụ: "Đã mở khóa tài khoản").
+  - **Info (`toast.info`):** Tự động đóng sau **4000ms**. Dùng cho thông báo hệ thống hoặc tiến trình nền.
+  - **Error (`toast.error`):** Tự động đóng sau **6000ms** (hoặc giữ nguyên cho đến khi user bấm tắt nếu là lỗi nghiêm trọng). Đi kèm nút hành động con "Thử lại" (Retry action button) nếu có thể.
+- **Ràng buộc nội dung:**
+  - Tiêu đề ngắn gọn (≤ 40 ký tự), mô tả chi tiết tối đa 1-2 câu.
+  - 100% nội dung thông báo qua từ điển i18n (`t("...")`). **CẤM** hiển thị chuỗi lỗi tiếng Anh thô từ backend.
+  - **Chống Spam (Deduplication):** Sử dụng `id` cố định khi thông báo lỗi API lặp lại để tránh xếp chồng hàng chục toast giống nhau trên màn hình.
+
+---
+
+## 10. Security & Error Handling Conventions
+- **Credentials:** Tất cả request gọi tới Backend API qua Axios/Fetch wrapper phải bật `withCredentials: true` để truyền nhận `httpOnly` cookie (`admin_access_token`).
+- **Token Handling:** Không bao giờ lưu Access Token hoặc Refresh Token vào `localStorage` hay `sessionStorage`.
+- **Token Storage:** Admin token nằm trong cookie httpOnly do BE set. FE KHÔNG đọc token. KHÔNG lưu token vào localStorage/sessionStorage/bất kỳ storage nào. Mọi request dùng `withCredentials: true`.
+- **Refresh Token:** TBD — chưa xử lý ở sprint hiện tại. Access token hết hạn → 401 → redirect login. Xem chi tiết tại `auth-and-security-flow.md`.
+- **Error Interceptor:**
+  - Nhận mã `401 Unauthorized`: Xóa session cache, redirect ngay lập tức về `/admin/login`.
+  - Nhận mã `403 Forbidden`: Hiển thị thông báo hoặc redirect về trang cấm truy cập (tài khoản không có quyền `ROLE_ADMIN`).
+  - Nhận mã `429 Too Many Requests`: Hiển thị cảnh báo rate-limit / tạm khóa và đếm ngược thời gian chờ.
+
+---
+
+## 11. Media Upload & URL Conventions
+
+### 11.1. Phân Định Luồng Tải Lên (Presigned vs Direct Upload)
+- **Presigned Upload Flow (`POST /api/media/presigned` → `PUT {uploadUrl}` → `POST /api/media/{id}/confirm`):**
+  - **Áp dụng:** Bắt buộc cho tất cả tệp video hoặc tệp ảnh có dung lượng **> 5MB**.
+  - **Trải nghiệm người dùng (UX):**
+    - Bắt buộc hiển thị thanh tiến trình thực tế (`Progress` bar 0% - 100%) khi upload binary lên MinIO.
+    - Bắt buộc có nút **Hủy (Cancel)** bằng `AbortController` và nút **Thử lại (Retry)** khi mạng gián đoạn.
+  - **Client Pre-validation:** Bắt buộc kiểm tra định dạng MIME (`image/jpeg`, `image/png`, `image/webp`, `video/mp4`,...) và kích thước `sizeBytes` trước khi gọi API xin `uploadUrl`.
+  - **Xử lý URL Presigned hết hạn:** Nếu PUT lên MinIO trả mã `403 Forbidden` (URL hết hạn theo `expiresInSeconds`): client tự động gọi lại `/api/media/presigned` để lấy URL mới và PUT lại 1 lần duy nhất. Nếu vẫn fail → hiển thị thông báo lỗi cho user và dừng.
+- **Direct Upload Flow (`POST /api/media/upload` multipart/form-data):**
+  - **Áp dụng:** Dành riêng cho ảnh đại diện (avatar), icon hoặc ảnh nhỏ có dung lượng **< 5MB**.
+  - **Lý do không dùng Progress:** File dưới 5MB hoàn tất upload gần như tức thì, chỉ cần hiển thị spinner/loading indicator đơn giản trên nút bấm, không cần dựng thanh tiến trình phức tạp.
+
+### 11.2. Xử Lý Đường Dẫn Media (Media URL Handling)
+- **Tính Chất URL:** Trường `url` trả về từ Media Service (`MediaResponse`) là Presigned URL có thời hạn truy cập (hoặc link MinIO có chữ ký). **Tuyệt đối không lưu cache cứng vĩnh viễn** ở client hoặc `localStorage`.
+- **Next.js Image Optimization:** Toàn bộ component hiển thị ảnh qua `next/image` phải khai báo hostname của MinIO / S3 trong file cấu hình (Extension `.ts`/`.mjs`/`.js` chốt ở Sprint 1):
+  ```javascript
+  // next.config.mjs (Extension .ts/.mjs/.js chốt ở Sprint 1)
+  // TODO: verify MinIO API port từ backend config (Console thường 9001, API thường 9000)
+  const nextConfig = {
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'http',
+          hostname: 'localhost',
+          port: '9000',
+          pathname: '/**',
+        },
+      ],
+    },
+  };
+
+  export default nextConfig;
+  ```
+
+---
+
+## 12. i18n & Globalization Conventions
+- Bắt buộc quản lý toàn bộ chuỗi đa ngôn ngữ (EN/VI) bằng thư viện `next-intl` theo cấu trúc route `/[locale]/admin/...`.
+- Cấu trúc key đặt theo mẫu `<domain>.<section>.<element>` dạng `lowerCamelCase` (ví dụ: `auth.login.title`, `common.action.cancel`).
+- Tuyệt đối không hardcode chuỗi text trong component. Mọi thông báo lỗi từ API backend phải được ánh xạ qua `error.<CODE>`.
+- Định dạng số, ngày giờ và tiền tệ sử dụng helper tập trung tại `src/lib/i18n/format.ts`.
+- Chi tiết quy chuẩn xem tại [i18n.md](i18n.md).
+
+---
+
+## 13. Git, Commit & Repository Conventions
+- Quy chuẩn phân nhánh: `feat/`, `fix/`, `chore/`, `docs/`, `refactor/`.
+- Quy chuẩn thông điệp commit: Bắt buộc tuân thủ **Conventional Commits** (`<type>(<scope>): <subject>`), tự động kiểm tra bằng `husky` và `commitlint`.
+- Quy chuẩn Pull Request: Đảm bảo vượt qua toàn bộ các bước kiểm tra của CI pipeline (`lint`, `typecheck`, `test`, `build`) trước khi squash merge vào `main`.
+- Chi tiết quy chuẩn xem tại [git-and-ci.md](git-and-ci.md).
+
+---
+
+## 14. Danh Sách TBD (To Be Determined) Phân Hệ Media
+
+- **Multi-file Upload:** Hiện tại Media Service API (`POST /api/media/presigned`, `POST /api/media/upload`) chỉ xử lý đơn lẻ 1 file/request. Việc hỗ trợ upload hàng loạt (batch/parallel) nhiều file cùng lúc trên giao diện hay backend có endpoint batch riêng → **TBD** (chờ xác nhận từ backend).
+- **Video Preview trong `MediaPreviewDialog`:** Cấu hình phát video (có tự động chạy `autoplay`, có tiếng hay tắt tiếng `muted`, hiển thị thanh điều khiển `controls` native hay custom player) → **TBD** (chốt theo yêu cầu UX ở Sprint 1).
+- **Phân Quyền Quản Trị Media Cấp Toàn Cục:** Endpoint `GET /api/media/me` hiện chỉ lấy media của user đang đăng nhập (dựa trên `X-User-Id`). Chưa có endpoint Admin `GET /api/admin/media` để duyệt/quản lý toàn bộ kho media của hệ thống → **TBD** (cần backend cung cấp nếu mở rộng phân hệ).
+
+---
+
+## 15. Search, Filter & Debounce Conventions
+
+- **Debounce bắt buộc:** Mọi ô tìm kiếm kiểu "gõ tới đâu gọi API tới đó" PHẢI debounce **300ms** (dùng hook dùng chung `useDebounce` đặt tại `src/hooks/useDebounce.ts`).
+- **Độ dài tối thiểu:** Chỉ gọi API khi từ khóa có **≥ 2 ký tự**. Dưới ngưỡng → không gọi request, hiển thị gợi ý nhập thêm.
+- **Hủy request cũ (AbortController):** Mỗi lần từ khóa thay đổi, request trước đó PHẢI bị hủy (dùng `AbortController` truyền qua `signal`, hoặc để TanStack Query tự hủy theo query key) để tránh race condition.
+- **Tích hợp TanStack Query:** Đưa từ khóa **đã debounce** vào query key để cache theo từng từ khóa:
+  ```typescript
+  const debounced = useDebounce(keyword, 300);
+  const { data, isFetching } = useQuery({
+    queryKey: userKeys.list({ q: debounced }),
+    queryFn: ({ signal }) => searchUsers(debounced, signal),
+    enabled: debounced.length >= 2,
+  });
+  ```
+- **Feedback trạng thái:** Trong lúc chờ kết quả, hiển thị spinner Lucide (`Loader2` + `animate-spin`) ở cuối ô input — **KHÔNG** chặn toàn trang.
+- **Empty state:** Khi không có kết quả, hiển thị thông báo qua i18n (`t("common.search.noResults")`), không hardcode chuỗi.
