@@ -57,6 +57,7 @@ Bất kỳ code hay đề xuất thiết kế nào vi phạm các quy tắc này
 - **Theme toggle:** Bắt buộc dùng thư viện **`next-themes`**, hỗ trợ 3 mode **Light / Dark / System** (mặc định `system`). **CẤM** tự implement cơ chế đổi theme bằng tay.
 - **Toggle UI:** Dùng icon **Lucide** (`Sun`, `Moon`, `Monitor`). **CẤM** dùng emoji (tiếp nối Rule 1).
 - **Chi tiết đặc tả:** [design/theme-mode.md](design/theme-mode.md).
+- **Ngoại lệ:** Scrim overlay của Dialog/AlertDialog/Sheet (component shadcn CLI sinh) được phép dùng `bg-black/10`. Lý do: scrim phải tối cố định để modal nổi bật trên mọi theme; đổi sang `bg-foreground/10` sẽ theo theme và phá intent. Chỉ apply cho scrim overlay, KHÔNG apply cho bất kỳ background nào khác.
 
 ---
 
