@@ -69,29 +69,37 @@ console.log("Pinned Node >=22.0.0 and pnpm@10.x in package.json");
 
 ---
 
-### 3.2. Sprint 1.2 — Tailwind CSS + shadcn/ui + Theme & Icons
+### 3.2. Sprint 1.2 — Tailwind CSS + shadcn/ui + Theme & Icons (shadcn CLI v4)
 
 Khởi tạo hệ thống giao diện shadcn/ui và cài đặt toàn bộ component nguyên thủy cần thiết:
 
 ```bash
 # Bước 1: Khởi tạo cấu hình shadcn/ui
-pnpm dlx shadcn@latest init
+pnpm dlx shadcn@latest init --preset nova --base radix --css-variables
 
 # BẢNG TRẢ LỜI CÁC CÂU HỎI INTERACTIVE CLI:
-# - Which style would you like to use? → New York
-# - Which color would you like to use as base color? → Zinc
+# - Which preset would you like to use? → nova
+# - Which base library would you like to use? → radix
 # - Do you want to use CSS variables for colors? → yes
 
 # Bước 2: Kéo toàn bộ components nguyên thủy cần dùng cho toàn dự án
+# (shadcn v4 đã bỏ component `form` — xem ghi chú bên dưới)
 pnpm dlx shadcn@latest add \
-  button card input label form \
+  button card input label field separator \
   dialog alert-dialog sheet dropdown-menu \
   table badge tabs progress scroll-area \
-  sonner avatar command pagination
+  sonner avatar command pagination \
+  textarea input-group
 
-# Bước 3: Cài đặt thư viện quản lý Theme (Light / Dark / System)
-pnpm add next-themes
+# Bước 3: Override Font (bắt buộc — CLI v4 auto-push font Geist, không khớp design system)
+#   - Tạo src/lib/fonts.ts: next/font cho Playfair Display + Roboto + Roboto Mono,
+#     subsets ['latin', 'vietnamese'].
+#   - Sửa src/app/layout.tsx: xoá import font Geist, dùng fonts từ src/lib/fonts.ts.
 ```
+
+> **GHI CHÚ (shadcn CLI v4):**
+> - Component `form` (wrapper react-hook-form của shadcn) KHÔNG còn tồn tại trong registry v4. Thay bằng `field` + `label` + `separator` cho form layout, `input-group` + `textarea` cho nhóm input; tích hợp `react-hook-form` qua `Controller`.
+> - Thư viện `next-themes` được lệnh `add` tự động cài (dependency của `sonner`) → KHÔNG chạy `pnpm add next-themes` riêng.
 
 #### Verification Checklist (Sprint 1.2):
 
@@ -209,7 +217,7 @@ echo "pnpm dlx commitlint --edit \$1" > .husky/commit-msg
 - [ ] Chạy `cat package.json | grep packageManager` hiển thị chuẩn `"packageManager": "pnpm@10.x"`.
 - [ ] Chạy `cat package.json | grep engines` hiển thị đúng `"node": ">=22.0.0"`.
 - [ ] Chạy lệnh `pnpm build` biên dịch thành công (0 errors, 0 warnings).
-- [ ] Kiểm tra `ls src/components/ui/` hiển thị đầy đủ 17 components nguyên thủy đã kéo về.
+- [ ] Kiểm tra `ls src/components/ui/` hiển thị đầy đủ 21 files (không còn `form.tsx`)
 
 ---
 

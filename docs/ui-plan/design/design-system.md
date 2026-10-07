@@ -31,6 +31,11 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
 
 ## 3. Color Palette & Semantic Tokens
 
+> **LƯU Ý (Tailwind v4 + shadcn v4):** shadcn v4 xuất token dạng `oklch()`
+> thay vì hex. Design system này dùng hex làm nguồn sự thật (SSOT).
+> Khi override token trong globals.css, giữ dạng hex — Tailwind v4
+> cho phép mix oklch + hex.
+
 ### 3.1. Cặp Gradient Độc Quyền (Không sinh biến thể)
 
 | Tên Token                          | Cú pháp CSS / Tailwind                                                                                | Mô tả                   | Phạm vi sử dụng duy nhất trong Admin                                                                                                                                     |

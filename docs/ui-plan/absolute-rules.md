@@ -48,6 +48,7 @@ Bất kỳ code hay đề xuất thiết kế nào vi phạm các quy tắc này
 - Nếu CLI không có lệnh tương ứng → DỪNG, hỏi user. KHÔNG tự bịa.
 - Sau mỗi lệnh CLI → verify file/output sinh ra đúng.
 - Nếu thấy AI đề xuất "tôi sẽ viết file package.json cho bạn" → reject ngay, yêu cầu dùng CLI.
+- **Ngoại lệ:** Được sửa `src/app/layout.tsx` để override font (xoá Geist, dùng next/font). Được sửa `src/app/globals.css` để override token (oklch shadcn → hex brand). Lý do: CLI v4 auto-push không khớp design system.
 
 ### Rule 5: Theme Mode — Cấm Hardcode Màu, Bắt Buộc Dùng Semantic Token
 

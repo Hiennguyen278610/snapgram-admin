@@ -15,6 +15,10 @@ Tài liệu này là đặc tả danh mục quy chuẩn độc lập (self-conta
 >    - `FeedActiveRing` / `LiveRing`: Viền highlight `.insta-ring` (`linear-gradient(45deg, #f09433, #dc2743, #bc1888)`).
 > 4. **Mọi component mở rộng từ shadcn/ui** phải cài đặt qua lệnh CLI chính quy: `pnpm dlx shadcn@latest add <component>`.
 > 5. **Quy chuẩn Loading & Skeleton** (áp dụng cho mọi bảng/danh sách/card): dùng component `Skeleton` của shadcn với hiệu ứng `animate-pulse`; mặc định render **5 hàng skeleton** cho table/list khi tải dữ liệu. **CẤM** dùng spinner chặn toàn trang khi chỉ tải một vùng dữ liệu; **CẤM** gây layout shift (skeleton phải khớp kích thước nội dung thật).
+>
+> 6. **Form stack:** shadcn v4 bỏ component `form` (wrapper RHF). Thay bằng
+>    `field` + `label` + `separator` cho form layout; `input-group` + `textarea`
+>    cho input group; tích hợp react-hook-form qua Controller.
 
 ---
 
