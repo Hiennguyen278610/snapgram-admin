@@ -3,7 +3,7 @@
 ## 1. Context & Self-Contained Scope
 Tài liệu này là đặc tả danh mục các biến môi trường tối thiểu cần thiết để vận hành **Snapgram Admin Portal**. Tài liệu gắn kết trực tiếp với [env-and-config.md](env-and-config.md).
 
-> ⚠️ **LƯU Ý:** Đây là tài liệu markdown mô tả đặc tả. TUYỆT ĐỐI KHÔNG tạo tệp `.env.example` hoặc `.env` thật ra ngoài thư mục `docs/ui-plan/`.
+> **LƯU Ý:** Tài liệu này mô tả danh mục env vars. Từ Sprint 1.4, dự án đã tách sang FE repo riêng — file `.env.example` thật được tạo tại repo root và commit vào git làm template. File `.env.local` (giá trị dev thật) KHÔNG commit, đã bị `.gitignore` loại.
 
 ---
 

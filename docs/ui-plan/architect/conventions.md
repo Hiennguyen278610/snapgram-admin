@@ -236,3 +236,10 @@ Quy tắc sử dụng hệ thống thông báo nổi toàn cục qua thư viện
   ```
 - **Feedback trạng thái:** Trong lúc chờ kết quả, hiển thị spinner Lucide (`Loader2` + `animate-spin`) ở cuối ô input — **KHÔNG** chặn toàn trang.
 - **Empty state:** Khi không có kết quả, hiển thị thông báo qua i18n (`t("common.search.noResults")`), không hardcode chuỗi.
+
+---
+
+## 16. Tech Debt Deferrals
+
+- **`error.http.<status>` fallback** (error-handling.md §5): chưa implement ở Sprint 1.4 (messages chưa có nhóm `error.http.*`). Sẽ bổ sung ở Sprint 3.3 (Polish) hoặc khi cần.
+- **401 redirect tự động** (sprint-plan.md 1.4 ghi "redirect login"): defer sang Sprint 2.1, khi route `/admin/login` tồn tại. Sprint 1.4 chỉ throw `ApiError`, không tự redirect.

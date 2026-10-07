@@ -193,7 +193,7 @@ Do backend chưa có mã lỗi `code`, Frontend sử dụng bộ quy tắc ánh 
 |---|---|---|
 | `kind === 'validation'` | `error.validation.invalidFields` | Hiển thị inline dưới từng ô nhập liệu tương ứng trong form. |
 | `kind === 'auth'` | `error.auth.invalidCredentials` | Hiển thị alert cảnh báo màu đỏ ngay trên form đăng nhập. |
-| `kind === 'locked'` | `error.auth.accountLocked` | Vô hiệu hóa form đăng nhập, hiển thị bộ đếm ngược `CountdownTimer`. |
+| `kind === 'locked'` | `error.locked.accountLocked` | Vô hiệu hóa form đăng nhập, hiển thị bộ đếm ngược `CountdownTimer`. |
 | `kind === 'forbidden'` | `error.forbidden.accessDenied` | Hiển thị Toast thông báo hoặc chuyển hướng tới trang cấm truy cập. |
 | `kind === 'notFound'` | `error.notFound.resource` | Hiển thị trạng thái rỗng (`EmptyState`) hoặc trang 404. |
 | `kind === 'conflict'` | `error.conflict.duplicateData` | Hiển thị Toast cảnh báo trùng lặp thông tin. |
