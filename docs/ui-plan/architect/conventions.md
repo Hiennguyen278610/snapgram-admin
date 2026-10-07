@@ -243,3 +243,11 @@ Quy tắc sử dụng hệ thống thông báo nổi toàn cục qua thư viện
 
 - **`error.http.<status>` fallback** (error-handling.md §5): chưa implement ở Sprint 1.4 (messages chưa có nhóm `error.http.*`). Sẽ bổ sung ở Sprint 3.3 (Polish) hoặc khi cần.
 - **401 redirect tự động** (sprint-plan.md 1.4 ghi "redirect login"): defer sang Sprint 2.1, khi route `/admin/login` tồn tại. Sprint 1.4 chỉ throw `ApiError`, không tự redirect.
+- **`error-parser.ts` branch coverage 89.36%** (spec `testing.md` §3 yêu cầu 100% branch cho helper parse lỗi): hiện thiếu ~0.6% do nhánh message-fallback và parse `Retry-After` lỗi. Sẽ bổ sung case ở Sprint 2.x khi viết test cho hooks/services cùng context.
+- **`client.ts` func coverage 50%**: nhánh success `(response) => response` của interceptor chưa được exercise. Bổ sung 1 success-path test ở Sprint 2.x.
+
+---
+
+## 17. Test Environment Notes
+
+- **MSW v3 + jsdom + axios:** MSW v3 không intercept được XHR adapter của axios khi chạy trong `jsdom` (interceptor chain không bắt được request từ jsdom). Với test liên quan tới `apiClient` (axios), bắt buộc dùng directive `// @vitest-environment node` ở đầu file test — axios sẽ dùng http adapter và MSW intercept bình thường. Test component (React) vẫn chạy jsdom mặc định.
