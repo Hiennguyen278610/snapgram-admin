@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { playfair, roboto, robotoMono } from '@/lib/fonts';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { QueryProvider } from '@/components/providers/query-provider';
 import '../globals.css';
 
 export async function generateMetadata({
@@ -52,7 +53,7 @@ export default async function LocaleLayout({
             disableTransitionOnChange
             storageKey="theme"
           >
-            {children}
+            <QueryProvider>{children}</QueryProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
