@@ -1,0 +1,49 @@
+{
+  "common": {
+    "app": { "title": "Quản trị Snapgram", "description": "Cổng quản trị Snapgram" },
+    "action": {
+      "cancel": "Hủy",
+      "save": "Lưu",
+      "confirm": "Xác nhận",
+      "close": "Đóng",
+      "retry": "Thử lại"
+    },
+    "status": { "loading": "Đang tải...", "saving": "Đang lưu..." },
+    "a11y": { "skipToContent": "Chuyển đến nội dung chính" },
+    "search": { "noResults": "Không tìm thấy kết quả" },
+    "locale": { "label": "Ngôn ngữ" }
+  },
+  "theme": {
+    "toggle": "Đổi giao diện",
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Theo hệ thống"
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập Cổng quản trị",
+      "submit": "Đăng nhập",
+      "field": { "email": "Email", "password": "Mật khẩu" },
+      "error": {
+        "invalidCredentials": "Email hoặc mật khẩu không chính xác",
+        "locked423": "Tài khoản tạm thời bị khóa. Vui lòng thử lại sau 15 phút."
+      }
+    }
+  },
+  "error": {
+    "unknown": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.",
+    "validation": { "invalidFields": "Vui lòng kiểm tra các trường được đánh dấu." },
+    "auth": {
+      "invalidCredentials": "Email hoặc mật khẩu đã cung cấp không chính xác."
+    },
+    "locked": { "accountLocked": "Tài khoản của bạn đã tạm thời bị khóa." },
+    "forbidden": { "accessDenied": "Bạn không có quyền thực hiện thao tác này." },
+    "notFound": { "resource": "Không tìm thấy tài nguyên được yêu cầu." },
+    "conflict": {
+      "duplicateData": "Đã tồn tại bản ghi với thông tin này."
+    },
+    "rateLimit": { "exceeded": "Đã vượt quá giới hạn yêu cầu. Vui lòng chờ." },
+    "server": { "internalError": "Lỗi máy chủ nội bộ." },
+    "network": { "disconnected": "Lỗi kết nối mạng." }
+  }
+}

@@ -115,7 +115,30 @@ pnpm dlx shadcn@latest add \
 Cài đặt thư viện bản địa hóa hỗ trợ Server Components:
 
 ```bash
+# Bước 1: Cài đặt thư viện
 pnpm add next-intl
+```
+
+#### Bước 2: Wrap plugin vào next.config.ts
+
+Sửa `next.config.ts` (ngoại lệ Rule 4):
+
+```ts
+import type { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin();
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default withNextIntl(nextConfig);
+```
+
+Verify:
+
+```bash
+grep -n "createNextIntlPlugin" next.config.ts
 ```
 
 #### Verification Checklist (Sprint 1.3):

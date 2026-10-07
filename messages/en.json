@@ -1,0 +1,49 @@
+{
+  "common": {
+    "app": { "title": "Snapgram Admin", "description": "Admin Portal for Snapgram" },
+    "action": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "confirm": "Confirm",
+      "close": "Close",
+      "retry": "Retry"
+    },
+    "status": { "loading": "Loading...", "saving": "Saving..." },
+    "a11y": { "skipToContent": "Skip to content" },
+    "search": { "noResults": "No results found" },
+    "locale": { "label": "Locale" }
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "auth": {
+    "login": {
+      "title": "Admin Portal Login",
+      "submit": "Sign In",
+      "field": { "email": "Email", "password": "Password" },
+      "error": {
+        "invalidCredentials": "Email or password is incorrect",
+        "locked423": "Account temporarily locked. Try again in 15 minutes."
+      }
+    }
+  },
+  "error": {
+    "unknown": "An unexpected error occurred. Please try again later.",
+    "validation": { "invalidFields": "Please check the highlighted fields." },
+    "auth": {
+      "invalidCredentials": "The email or password provided is incorrect."
+    },
+    "locked": { "accountLocked": "Your account has been temporarily locked." },
+    "forbidden": { "accessDenied": "You do not have permission." },
+    "notFound": { "resource": "The requested resource could not be found." },
+    "conflict": {
+      "duplicateData": "A record with this information already exists."
+    },
+    "rateLimit": { "exceeded": "Rate limit exceeded. Please wait." },
+    "server": { "internalError": "Internal server error." },
+    "network": { "disconnected": "Network connection error." }
+  }
+}
