@@ -45,7 +45,7 @@ Bất kỳ code hay đề xuất thiết kế nào vi phạm các quy tắc này
 ### Rule 4: CLI-First Bootstrap — Cấm Tự Viết Config
 
 - Mọi bước khởi tạo dự án (init repo, setup framework, cài shadcn, thêm dependency) BẮT BUỘC dùng CLI chính quy theo [delivery/bootstrap-commands.md](delivery/bootstrap-commands.md).
-- CẤM AI tự viết tay các file: package.json, tsconfig.json, next.config._, tailwind.config._, postcss.config._, pnpm-lock.yaml, .eslintrc_, .prettierrc*.
+- CẤM AI tự viết tay các file: package.json, tsconfig.json, next.config.*, tailwind.config.*, postcss.config.*, pnpm-lock.yaml, .eslintrc*, .prettierrc*.
 - Nếu CLI không có lệnh tương ứng → DỪNG, hỏi user. KHÔNG tự bịa.
 - Sau mỗi lệnh CLI → verify file/output sinh ra đúng.
 - Nếu thấy AI đề xuất "tôi sẽ viết file package.json cho bạn" → reject ngay, yêu cầu dùng CLI.
