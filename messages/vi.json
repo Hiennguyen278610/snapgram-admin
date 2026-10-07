@@ -24,6 +24,14 @@
       "title": "Đăng nhập Cổng quản trị",
       "submit": "Đăng nhập",
       "field": { "email": "Email", "password": "Mật khẩu" },
+      "emailPlaceholder": "admin@snapgram.dev",
+      "passwordPlaceholder": "••••••••",
+      "showPassword": "Hiện mật khẩu",
+      "hidePassword": "Ẩn mật khẩu",
+      "lockoutCountdown": "Thử lại sau {time}",
+      "twoFactorTitle": "Xác thực hai yếu tố",
+      "twoFactorDescription": "Nhập mã 6 chữ số từ ứng dụng xác thực của bạn",
+      "twoFactorCode": "Mã xác thực",
       "error": {
         "invalidCredentials": "Email hoặc mật khẩu không chính xác",
         "locked423": "Tài khoản tạm thời bị khóa. Vui lòng thử lại sau 15 phút."

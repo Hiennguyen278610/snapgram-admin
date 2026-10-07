@@ -245,6 +245,8 @@ Quy tắc sử dụng hệ thống thông báo nổi toàn cục qua thư viện
 - **401 redirect tự động** (sprint-plan.md 1.4 ghi "redirect login"): defer sang Sprint 2.1, khi route `/admin/login` tồn tại. Sprint 1.4 chỉ throw `ApiError`, không tự redirect.
 - **`error-parser.ts` branch coverage 89.36%** (spec `testing.md` §3 yêu cầu 100% branch cho helper parse lỗi): hiện thiếu ~0.6% do nhánh message-fallback và parse `Retry-After` lỗi. Sẽ bổ sung case ở Sprint 2.x khi viết test cho hooks/services cùng context.
 - **`client.ts` func coverage 50%**: nhánh success `(response) => response` của interceptor chưa được exercise. Bổ sung 1 success-path test ở Sprint 2.x.
+- **Zod field-error messages chưa i18n** (Sprint 2.1): `loginSchema`/`twoFactorSchema` dùng message mặc định tiếng Anh của zod; form hiển thị nguyên văn. Sprint 2.2 sẽ custom message theo i18n key.
+- **Type lỏng cho `mutation.error`**: react-query type `Error` chung chung, chưa generic `useMutation<Data, ApiError, Variables>`. Fix ở Sprint 2.2 khi viết hook users/reports.
 
 ---
 

@@ -1,4 +1,4 @@
 import type { RequestHandler } from 'msw';
+import { authHandlers } from './auth.handlers';
 
-// Empty aggregation — Sprint 2.x sẽ thêm auth/users/reports/media handlers
-export const handlers: RequestHandler[] = [];
+export const handlers: RequestHandler[] = [...authHandlers];

@@ -24,6 +24,14 @@
       "title": "Admin Portal Login",
       "submit": "Sign In",
       "field": { "email": "Email", "password": "Password" },
+      "emailPlaceholder": "admin@snapgram.dev",
+      "passwordPlaceholder": "••••••••",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "lockoutCountdown": "Try again in {time}",
+      "twoFactorTitle": "Two-factor authentication",
+      "twoFactorDescription": "Enter the 6-digit code from your authenticator app",
+      "twoFactorCode": "Verification code",
       "error": {
         "invalidCredentials": "Email or password is incorrect",
         "locked423": "Account temporarily locked. Try again in 15 minutes."
