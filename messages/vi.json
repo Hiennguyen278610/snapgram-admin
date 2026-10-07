@@ -45,5 +45,20 @@
     "rateLimit": { "exceeded": "Đã vượt quá giới hạn yêu cầu. Vui lòng chờ." },
     "server": { "internalError": "Lỗi máy chủ nội bộ." },
     "network": { "disconnected": "Lỗi kết nối mạng." }
+  },
+  "nav": {
+    "dashboard": "Tổng quan",
+    "users": "Người dùng",
+    "rbac": "Vai trò & Quyền",
+    "reports": "Báo cáo vi phạm",
+    "systemHealth": "Sức khỏe hệ thống",
+    "kafka": "Kafka UI",
+    "minio": "MinIO S3",
+    "openExternal": "Mở tab mới",
+    "toggleSidebar": "Ẩn/hiện thanh điều hướng",
+    "searchPlaceholder": "Tìm người dùng, bài viết hoặc ticket"
+  },
+  "dashboard": {
+    "placeholder": "Nội dung Dashboard đang được xây dựng"
   }
 }

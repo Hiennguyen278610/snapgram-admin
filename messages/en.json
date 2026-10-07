@@ -45,5 +45,20 @@
     "rateLimit": { "exceeded": "Rate limit exceeded. Please wait." },
     "server": { "internalError": "Internal server error." },
     "network": { "disconnected": "Network connection error." }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "rbac": "Roles & Permissions",
+    "reports": "Reports",
+    "systemHealth": "System Health",
+    "kafka": "Kafka UI",
+    "minio": "MinIO S3",
+    "openExternal": "Open in new tab",
+    "toggleSidebar": "Toggle sidebar",
+    "searchPlaceholder": "Search users, posts or tickets"
+  },
+  "dashboard": {
+    "placeholder": "Dashboard content coming soon"
   }
 }

@@ -1,4 +1,4 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
 
 export default async function HomePage({
   params,
@@ -6,13 +6,5 @@ export default async function HomePage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  setRequestLocale(locale);
-  const t = await getTranslations('common');
-
-  return (
-    <main className="p-8">
-      <h1 className="font-display text-4xl">{t('app.title')}</h1>
-      <p className="text-muted-foreground mt-2">{t('locale.label')}: {locale}</p>
-    </main>
-  );
+  redirect({ href: '/admin/dashboard', locale });
 }
