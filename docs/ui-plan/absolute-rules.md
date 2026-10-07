@@ -1,6 +1,7 @@
 # Absolute UI & Code Rules (Bắt buộc tuân thủ)
 
 Tài liệu này chứa các quy tắc bất di bất dịch trong quá trình thiết kế giao diện (UI) và triển khai Frontend cho phân hệ Snapgram Admin Portal. Tài liệu hoạt động độc lập (self-contained) và gắn kết trực tiếp với:
+
 - [overview.md](overview.md): Mục tiêu và cấu trúc phân hệ.
 - [design/design-system.md](design/design-system.md): Bảng màu, typography và tokens giao diện.
 - [architect/conventions.md](architect/conventions.md): Quy ước đặt tên và tiêu chuẩn viết mã.
@@ -44,12 +45,12 @@ Bất kỳ code hay đề xuất thiết kế nào vi phạm các quy tắc này
 ### Rule 4: CLI-First Bootstrap — Cấm Tự Viết Config
 
 - Mọi bước khởi tạo dự án (init repo, setup framework, cài shadcn, thêm dependency) BẮT BUỘC dùng CLI chính quy theo [delivery/bootstrap-commands.md](delivery/bootstrap-commands.md).
-- CẤM AI tự viết tay các file: package.json, tsconfig.json, next.config.*, tailwind.config.*, postcss.config.*, pnpm-lock.yaml, .eslintrc*, .prettierrc*.
+- CẤM AI tự viết tay các file: package.json, tsconfig.json, next.config._, tailwind.config._, postcss.config._, pnpm-lock.yaml, .eslintrc_, .prettierrc*.
 - Nếu CLI không có lệnh tương ứng → DỪNG, hỏi user. KHÔNG tự bịa.
 - Sau mỗi lệnh CLI → verify file/output sinh ra đúng.
 - Nếu thấy AI đề xuất "tôi sẽ viết file package.json cho bạn" → reject ngay, yêu cầu dùng CLI.
 - **Ngoại lệ:** Được sửa `src/app/layout.tsx` để override font (xoá Geist, dùng next/font). Được sửa `src/app/globals.css` để override token (oklch shadcn → hex brand). Lý do: CLI v4 auto-push không khớp design system.
-- **Ngoại lệ:** Được sửa `next.config.ts` (chỉ để wrap plugin) và tạo `.prettierrc.json` (chỉ chứa config format: semi/singleQuote/trailingComma/tabWidth/printWidth; KHÔNG đổi rule lint). Lý do: CLI không có lệnh generate các file này cho Next.js standalone; và prettier là formatter chuẩn industry được dùng trong lint-staged.
+- **Ngoại lệ:** Được sửa `next.config.ts` (chỉ để wrap plugin) và tạo `.prettierrc.json` (config format) và `.prettierignore` (danh sách file/folder prettier bỏ qua — node_modules, .next, coverage, pnpm-lock.yaml, ...). Lý do: CLI không có lệnh generate các file này cho Next.js standalone; và prettier là formatter chuẩn industry được dùng trong lint-staged.
 
 ### Rule 5: Theme Mode — Cấm Hardcode Màu, Bắt Buộc Dùng Semantic Token
 
@@ -72,16 +73,16 @@ Tất cả 4 skill dưới đây đều được thẩm định trực tiếp tr
 
 ### 2.1. 3 Skill Thiết kế Giao diện (Đồng nhất triết lý thiết kế - Không xung đột)
 
-| Skill Name                                | Nguồn (Repository)          |                              Security Audits                              | Mô tả & Lý do lựa chọn                                                                                                                                                                                      | Lệnh cài đặt                                               |
-| :---------------------------------------- | :--------------------------- | :-----------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------- |
-| **`frontend-design`**             | `anthropics/skills`        | **Gen Agent Trust: PASS****Socket: PASS****Snyk: PASS** | Hướng dẫn thiết kế giao diện có chủ đích, trực quan, thẩm mỹ cao; tối ưu typography, phân cấp thông tin rõ ràng, tránh giao diện generic nhàm chán. Không dùng gradient bừa bãi.     | `npx skills add https://github.com/anthropics/skills`        |
-| **`web-design-guidelines`**       | `vercel-labs/agent-skills` | **Gen Agent Trust: PASS****Socket: PASS****Snyk: PASS** | Bộ quy chuẩn UI/UX của Vercel Web Interface Guidelines. Kiểm duyệt độ tương phản, accessibility (a11y), responsive, padding/margin micro-spacing và trạng thái tương tác bàn phím.             | `npx skills add https://github.com/vercel-labs/agent-skills` |
+| Skill Name                        | Nguồn (Repository)         |                     Security Audits                     | Mô tả & Lý do lựa chọn                                                                                                                                                              | Lệnh cài đặt                                                 |
+| :-------------------------------- | :------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------- |
+| **`frontend-design`**             | `anthropics/skills`        | **Gen Agent Trust: PASS****Socket: PASS****Snyk: PASS** | Hướng dẫn thiết kế giao diện có chủ đích, trực quan, thẩm mỹ cao; tối ưu typography, phân cấp thông tin rõ ràng, tránh giao diện generic nhàm chán. Không dùng gradient bừa bãi.    | `npx skills add https://github.com/anthropics/skills`        |
+| **`web-design-guidelines`**       | `vercel-labs/agent-skills` | **Gen Agent Trust: PASS****Socket: PASS****Snyk: PASS** | Bộ quy chuẩn UI/UX của Vercel Web Interface Guidelines. Kiểm duyệt độ tương phản, accessibility (a11y), responsive, padding/margin micro-spacing và trạng thái tương tác bàn phím.  | `npx skills add https://github.com/vercel-labs/agent-skills` |
 | **`vercel-composition-patterns`** | `vercel-labs/agent-skills` | **Gen Agent Trust: PASS****Socket: PASS****Snyk: PASS** | Mẫu cấu trúc component React linh hoạt, mở rộng cao (Compound Components, Slot-based composition). Hoàn toàn tương thích và cùng triết lý với**shadcn/ui** và **Radix Primitives**. | `npx skills add https://github.com/vercel-labs/agent-skills` |
 
 ### 2.2. 1 Skill TanStack Query (Quản lý State & Server Cache chuẩn xác)
 
-| Skill Name                   | Nguồn (Repository)                 |                              Security Audits                              | Mô tả & Lý do lựa chọn                                                                                                                                                                                           | Lệnh cài đặt                                                      |
-| :--------------------------- | :---------------------------------- | :-----------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| Skill Name           | Nguồn (Repository)                |                     Security Audits                     | Mô tả & Lý do lựa chọn                                                                                                                                                                                | Lệnh cài đặt                                                        |
+| :------------------- | :-------------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------ |
 | **`tanstack-query`** | `tanstack-skills/tanstack-skills` | **Gen Agent Trust: PASS****Socket: PASS****Snyk: PASS** | Skill chính thức từ tổ chức TanStack. Quản lý bất đồng bộ state, query keys factory, stale-while-revalidate, optimistic updates, pagination caching và xử lý auto-retry/mutation lifecycle chuẩn mực. | `npx skills add https://github.com/tanstack-skills/tanstack-skills` |
 
 ---
