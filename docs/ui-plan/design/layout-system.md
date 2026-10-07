@@ -11,19 +11,25 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
 ## 2. Hệ Thống Khung Nhìn Tổng Thể (Shell Viewport Architecture)
 
 ### 2.1. Viewport Outer Canvas
-- **Background:** `bg-[#e6ebf5]` (Dark: `bg-[#09090b]`).
+- **Background:** `bg-background`.
 - **Padding ngoài:** `p-2 sm:p-5 lg:p-8`.
 - **Display:** `min-h-screen flex items-center justify-center`.
 - **Mục tiêu:** Tạo trải nghiệm SaaS desktop đóng gói trong một ứng dụng trung tâm gọn gàng, cách ly hoàn toàn khỏi màn hình người dùng thông thường.
 
+> **Lưu ý:** Token semantic tự đổi màu theo theme (xem `theme-mode.md`).
+> Giá trị màu cụ thể nằm ở `design-system.md` §3.2.
+
 ### 2.2. Master App Container (Main Frame)
 - **Kích thước tối đa:** `w-full max-w-[1440px] min-h-[920px]`.
-- **Background:** `bg-white` (Dark: `bg-[#18181b]`).
+- **Background:** `bg-card`.
 - **Bo góc chuẩn:** `rounded-[32px] sm:rounded-[40px]`.
-- **Viền ngoài:** `border border-white/60` (Dark: `border-zinc-800`).
+- **Viền ngoài:** `border border-border`.
 - **Đổ bóng mềm:** `shadow-[0_20px_45px_-15px_rgba(26,42,70,0.12)]`.
 - **Padding trong:** `p-5 sm:p-7 lg:p-9`.
 - **Bố cục Flex:** `flex flex-col lg:flex-row gap-6 lg:gap-8 overflow-hidden`.
+
+> **Lưu ý:** Token semantic tự đổi màu theo theme (xem `theme-mode.md`).
+> Giá trị màu cụ thể nằm ở `design-system.md` §3.2.
 
 ---
 
@@ -31,12 +37,15 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
 
 ### 3.1. Left Zone — Sidebar Cố Định (Fixed Navigation Panel)
 - **Độ rộng:** `w-full lg:w-[260px] xl:w-[280px] flex-shrink-0`.
-- **Đường phân cách:** `border-b lg:border-b-0 lg:border-r border-gray-100/80 pr-0 lg:pr-7 pb-6 lg:pb-0` (Dark: `border-zinc-800`).
+- **Đường phân cách:** `border-b lg:border-b-0 lg:border-r border-border pr-0 lg:pr-7 pb-6 lg:pb-0`.
 - **Cấu trúc trục dọc (Vertical Axis):**
   1. **Top Brand Header:** Logo Snapgram Wordmark (font `Grand Hotel`, kích thước `text-3xl`).
   2. **Admin Profile Center Widget:** Avatar tròn viền ring, Tên, Username, Role badge, bảng dải 3 thông số cá nhân (`Audits`, `Actions`, `Pending`).
   3. **Nav Items Menu:** Dải nút điều hướng dọc (`Dashboard`, `User Management`, `Moderation`, `RBAC Roles`, `System Health`).
-  4. **Bottom Footer Action:** Nút `Logout` đặt sát đáy có viền ngăn cách `border-t border-gray-100 pt-4`.
+  4. **Bottom Footer Action:** Nút `Logout` đặt sát đáy có viền ngăn cách `border-t border-border pt-4`.
+
+> **Lưu ý:** Token semantic tự đổi màu theo theme (xem `theme-mode.md`).
+> Giá trị màu cụ thể nằm ở `design-system.md` §3.2.
 
 ### 3.2. Right Zone — Main Working Canvas (Main Content Panel)
 - **Độ rộng:** `flex-1 flex flex-col min-w-0`.
@@ -49,6 +58,9 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
   3. **Tầng 3 — Dynamic Working Grid (Content Area):**
      - Dashboard mode: 3-Column Responsive Grid (`grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5`).
      - Data Table mode: Bảng dữ liệu toàn màn hình phẳng kèm bộ lọc và pagination.
+
+> **Lưu ý:** Token semantic tự đổi màu theo theme (xem `theme-mode.md`).
+> Giá trị màu cụ thể nằm ở `design-system.md` §3.2.
 
 ---
 
