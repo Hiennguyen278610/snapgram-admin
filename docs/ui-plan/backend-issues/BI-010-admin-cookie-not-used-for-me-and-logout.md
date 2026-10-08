@@ -1,0 +1,100 @@
+# BI-010: Gateway Chọn Cookie Theo Path → Admin Portal Không Gọi Được `/api/auth/me` và `/api/auth/logout`
+
+- **Priority:** `P1` (Important)
+- **Status:** `Open`
+- **Module ảnh hưởng:** `api-gateway` (`JwtAuthenticationFilter`)
+- **Ngày phát hiện:** 2026-10-08
+- **Phát hiện tại:** kiểm tra tích hợp trước Sprint 2.6
+
+---
+
+## 1. Mô Tả Vấn Đề
+
+Hai endpoint xác thực mà Admin Portal cần dùng — `GET /api/auth/me` và `POST /api/auth/logout` — **không thể gọi được bằng cookie `admin_access_token`**, tức là bằng đúng cơ chế xác thực mà Portal đang dùng. Cả hai đều trả:
+
+```http
+HTTP/1.1 401 Unauthorized
+{"error": "Missing or invalid Authorization header"}
+```
+
+Nguyên nhân: `JwtAuthenticationFilter` (Gateway) **chọn tên cookie theo tiền tố đường dẫn** (`JwtAuthenticationFilter.java#L85-L92`):
+
+```java
+if (path.startsWith("/api/auth/admin") || path.startsWith("/api/admin")) {
+    cookie = exchange.getRequest().getCookies().getFirst("admin_access_token");
+    if (cookie == null) cookie = exchange.getRequest().getCookies().getFirst("access_token");
+} else {
+    cookie = exchange.getRequest().getCookies().getFirst("access_token");   // ← chỉ access_token
+}
+```
+
+`/api/auth/me` và `/api/auth/logout` **không** nằm trong nhánh admin ⇒ Gateway chỉ tìm `access_token`. Nhưng luồng đăng nhập admin (`POST /api/auth/admin/login`) **chỉ** set `admin_access_token` + `refresh_token`, **không bao giờ** set `access_token` (`CookieUtils.createAdminAccessTokenCookie`).
+
+⇒ Không có cách nào để Portal gọi 2 endpoint này: FE **không đọc được** cookie httpOnly để tự dựng header `Authorization` (đúng theo thiết kế bảo mật).
+
+**Điểm mâu thuẫn đáng chú ý:** bản thân controller `logout` **đã** hỗ trợ `admin_access_token` (`AuthController.java#L156-L157` fallback sang `ADMIN_ACCESS_TOKEN_COOKIE`) — nhưng request bị Gateway chặn **trước khi** tới controller. Vậy đây thuần là bug của Gateway, không phải của auth-service.
+
+---
+
+## 2. Bằng Chứng (cùng MỘT token admin hợp lệ, 2026-10-08)
+
+### `GET /api/auth/me`
+
+| Cách gửi credential | Kết quả |
+| :------------------ | :-----: |
+| `Cookie: admin_access_token=…` **(cách FE đang dùng)** | **401** ❌ |
+| `Cookie: access_token=…` | 200 ✅ |
+| `Authorization: Bearer …` | 200 ✅ |
+| Trực tiếp `:8081` + `Bearer` | 200 ✅ |
+
+⇒ Endpoint và token đều tốt; lỗi nằm ở nhánh chọn cookie của Gateway.
+
+### `POST /api/auth/logout`
+
+| Cách gửi credential | Kết quả | Set-Cookie |
+| :------------------ | :-----: | :--------- |
+| `Cookie: admin_access_token=…` | **401** ❌ | **không có** (không clear gì) |
+| `Authorization: Bearer …` | **204** | ✅ clear cả 3 cookie (xem dưới) |
+
+Khi request qua được Gateway, việc clear cookie hoạt động **chính xác**:
+
+```http
+Set-Cookie: access_token=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly
+Set-Cookie: admin_access_token=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly
+Set-Cookie: refresh_token=; Path=/api/auth; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly
+```
+
+---
+
+## 3. Ảnh Hưởng Tới Phía Frontend (Impact)
+
+- **Không thể đăng xuất đúng cách.** Nút Logout nếu gọi `POST /api/auth/logout` bằng cookie sẽ nhận 401 và **cookie `admin_access_token` vẫn còn nguyên** → phiên không bị huỷ ở phía trình duyệt. FE buộc phải tự xoá cookie bằng JavaScript — nhưng cookie là **httpOnly** nên **không xoá được**. Hệ quả: người dùng bấm Logout mà vẫn còn đăng nhập cho tới khi token hết hạn (30 phút), hoặc phải xoá cookie thủ công trong DevTools.
+- **Không lấy được thông tin admin hiện tại.** `component-inventory.md` §2.1 có component `AdminProfileCard` hiển thị admin hiện tại từ `GET /api/auth/me` → **không triển khai được**.
+- **Chặn "role-filtered sidebar"** (đã hoãn sang Sprint 3.3): muốn ẩn/hiện menu theo vai trò thì FE cần biết `role`. Hiện token là httpOnly nên `GET /api/auth/me` là nguồn duy nhất — và nó đang bị chặn.
+- `auth-and-security-flow.md` (sơ đồ tuần tự đăng nhập admin) mô tả bước `UI->>GW: GET /api/auth/me` như đang hoạt động → **không đúng với thực tế**.
+
+---
+
+## 4. Đề Xuất Giải Pháp Cho Backend (Recommendation)
+
+1. **Bỏ việc chọn cookie theo path** — đây là gốc rễ. Nên thử lần lượt cho **mọi** path được bảo vệ, ví dụ:
+   ```java
+   cookie = exchange.getRequest().getCookies().getFirst("access_token");
+   if (cookie == null) cookie = exchange.getRequest().getCookies().getFirst("admin_access_token");
+   ```
+   (hoặc thử `admin_access_token` trước cho các path `/api/auth/admin/**`, rồi fallback cho phần còn lại). Không có rủi ro bảo mật: cả hai token đều được auth-service xác thực qua `/api/auth/verify`.
+2. **Hoặc** cho `POST /api/auth/admin/login` set **cả** `admin_access_token` **và** `access_token` (cùng giá trị) — nhưng cách này làm rò ngữ nghĩa "admin tách luồng", không khuyến nghị.
+3. Bổ sung test tích hợp Gateway: gọi `/api/auth/me` và `/api/auth/logout` bằng `admin_access_token` → kỳ vọng 200/204 (hiện 401).
+4. (Kèm) Sửa tài liệu cho khớp thực tế: `/api/auth/me` trả `UserMeResponse` với **`role` số ít**, không có `roles`; `logout` trả **204**, không phải 200; Swagger khai báo `avatarUrl` nhưng admin không có avatar nên field bị lược bỏ khỏi JSON.
+
+---
+
+## 5. Giải Pháp Thích Ứng Của Frontend Hiện Tại (FE Workaround)
+
+**Chưa có workaround khả thi.** FE không thể tự xoá cookie httpOnly và không thể tự dựng header `Authorization`. Trạng thái hiện tại:
+
+1. **Không** triển khai nút Logout / `AdminProfileCard` cho tới khi BI-010 được sửa (tránh tạo control không hoạt động).
+2. Route guard hiện tại của `src/middleware.ts` chỉ kiểm tra **sự tồn tại** của cookie, nên luồng đăng nhập/đăng xuất vẫn "trông" đúng dù logout không thực sự huỷ phiên — cần lưu ý khi kiểm thử.
+3. Ghi nhận vào [conventions.md §17](../architect/conventions.md).
+
+> ⚠️ Tài liệu tạm nằm trong backend repo. Sẽ move sang FE repo khi tách.
