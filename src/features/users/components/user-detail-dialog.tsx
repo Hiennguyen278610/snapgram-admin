@@ -59,7 +59,7 @@ export function UserDetailDialog({ userId, open, onOpenChange, actions }: Props)
         showCloseButton={false}
         className="max-h-[90vh] overflow-y-auto p-0 sm:max-w-2xl"
       >
-        <DialogHeader className="border-b border-border">
+        <DialogHeader className="p-6 pb-0 border-b border-border">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <DialogTitle>{t('detail.title')}</DialogTitle>
