@@ -33,7 +33,7 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
 | Endpoint | Method | Microservice | UI Component tương ứng | Request / Payload | DTO / Response |
 |---|---|---|---|---|---|
 | `/api/auth/admin/users` | `GET` | Auth (`:8081`) | Bảng danh sách user (`UserTable`) | Query params: `page`, `size` | `Page<AdminUserResponse>` |
-| `/api/auth/admin/users/{userId}` | `GET` | Auth (`:8081`) | Drawer chi tiết user (`UserDetailDrawer`) | Path variable `userId` | `AdminUserResponse` |
+| `/api/auth/admin/users/{userId}` | `GET` | Auth (`:8081`) | Dialog chi tiết user (`UserDetailDialog`) | Path variable `userId` | `AdminUserResponse` |
 | `/api/auth/admin/users/{userId}/ban` | `POST` | Auth (`:8081`) | Modal khóa tài khoản (`BanUserDialog`) | `{ reason: string }` | `AdminUserResponse` (`banned: true`) |
 | `/api/auth/admin/users/{userId}/unban` | `POST` | Auth (`:8081`) | Modal mở khóa (`UnbanConfirmDialog`) | N/A | `AdminUserResponse` (`banned: false`) |
 | `/api/auth/admin/users/{userId}/roles` | `POST` | Auth (`:8081`) | Dropdown cấp quyền (`RoleAssignMenu`) | `{ role: "ADMIN" \| "MODERATOR" }` | `AdminUserResponse` |
@@ -46,7 +46,7 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
 | Endpoint | Method | Microservice | UI Component tương ứng | Request / Payload | DTO / Response |
 |---|---|---|---|---|---|
 | `/api/admin/reports` | `GET` | Content (`:8084`) | Bảng kiểm duyệt (`ModerationQueueTable`) | `status`, `targetType`, `page`, `size` | `Page<ReportResponse>` |
-| `/api/admin/reports/{id}` | `GET` | Content (`:8084`) | Modal soi nội dung vi phạm (`ReportDetailModal`) | Path variable `id` | `ReportResponse` |
+| `/api/admin/reports/{id}` | `GET` | Content (`:8084`) | Sheet chi tiết report (`ReportDetailSheet`) | Path variable `id` | `ReportResponse` |
 | `/api/admin/reports/{id}/resolve` | `PATCH` | Content (`:8084`) | Nút Duyệt vi phạm (`ResolveReportButton`) | N/A | `ReportResponse` (`status: RESOLVED`) |
 | `/api/admin/reports/{id}/dismiss` | `PATCH` | Content (`:8084`) | Nút Bác bỏ report (`DismissReportButton`) | N/A | `ReportResponse` (`status: DISMISSED`) |
 
