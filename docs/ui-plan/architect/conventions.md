@@ -261,6 +261,35 @@ Quy tắc sử dụng hệ thống thông báo nổi toàn cục qua thư viện
 
 ---
 
-## 17. Test Environment Notes
+## 17. Blocked by Backend (Đang chờ BE)
+
+Các issue BE chưa fix. FE KHÔNG hack workaround — giữ code đúng spec.
+
+### BI-005 — `q` query param bị bỏ qua
+- **Impact**: Search user không filter ở real backend (trả full list).
+- **FE status**: Code đúng (gửi `q` param). Test pass với MSW.
+- **Tạm thời**: Không test search trên real backend.
+- **Sau fix**: E2E test search filter bằng real backend.
+
+### BI-006 — Session hết hạn → 503 thay 401
+- **Impact**: Auto-redirect login không kích hoạt. User thấy "Internal server error" + Retry.
+- **FE status**: Interceptor 401 → redirect đã sẵn (Sprint 2.1).
+- **Tạm thời**: Chấp nhận UX kém khi session expired.
+- **Sau fix**: Interceptor tự động chạy.
+
+### BI-007 — Permission description là tiếng Việt cứng
+- **Impact**: User locale=en thấy mô tả permission bằng tiếng Việt.
+- **FE status**: Hiển thị nguyên `permission.description` từ API.
+- **Tạm thời**: Chấp nhận — backend là single source cho permission name/desc.
+- **Sau fix**: BE trả `descriptionEn` HOẶC FE dùng catalog i18n riêng (17 key hardcode — cần update khi BE thêm permission).
+
+### Nguyên tắc chung
+- FE không tự ý đổi API contract để workaround.
+- Track trong `backend-issues/BI-*.md`.
+- Khi BE báo fix → verify bằng curl real backend + bật lại E2E tương ứng.
+
+---
+
+## 18. Test Environment Notes
 
 - **MSW v3 + jsdom + axios:** MSW v3 không intercept được XHR adapter của axios khi chạy trong `jsdom` (interceptor chain không bắt được request từ jsdom). Với test liên quan tới `apiClient` (axios), bắt buộc dùng directive `// @vitest-environment node` ở đầu file test — axios sẽ dùng http adapter và MSW intercept bình thường. Test component (React) vẫn chạy jsdom mặc định.
