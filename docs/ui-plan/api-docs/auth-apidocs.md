@@ -14,11 +14,13 @@
 ## 2FA flow:
 
 1. `POST /api/auth/login` → nếu user bật 2FA, trả về `requiresTwoFa: true` kèm `tempToken` (hết hạn trong 5 phút)
-2. `POST /api/auth/2fa/login` với `tempToken` + `totpCode` (hoặc `backupCode`) → trả về `accessToken` + `refreshToken`
+2. `POST /api/auth/login/2fa` với `tempToken` + `totpCode` (hoặc `backupCode`) → trả về `accessToken` + `refreshToken`
 3. Cài đặt 2FA:
-   - `POST /api/auth/2fa/setup` → trả về secret + QR code URL
-   - `POST /api/auth/2fa/enable` với `totpCode` để xác nhận → trả về danh sách backup codes
-   - `POST /api/auth/2fa/disable` với `totpCode` (hoặc `backupCode`) để tắt
+   - `POST /api/users/me/2fa/setup` → trả về secret + QR code URL
+   - `POST /api/users/me/2fa/enable` với `totpCode` để xác nhận → trả về danh sách backup codes
+   - `DELETE /api/users/me/2fa/disable` với `totpCode` (hoặc `backupCode`) để tắt
+
+> ✅ **Đã đối chiếu Swagger sống** (`http://localhost:8081/v3/api-docs`, 2026-10-08): các đường dẫn `/api/auth/2fa/login`, `/api/auth/2fa/setup`, `/api/auth/2fa/enable`, `/api/auth/2fa/disable` **KHÔNG tồn tại**. Đường dẫn đúng là `/api/auth/login/2fa` và `/api/users/me/2fa/*` như trên (khớp với bảng endpoint bên dưới, dòng `loginWith2Fa`).
 
 ## Endpoints
 

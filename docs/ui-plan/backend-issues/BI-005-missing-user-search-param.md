@@ -32,6 +32,14 @@ Vì vậy không thể tái sử dụng `searchUsers` để thay thế cho danh 
 
 ## 3. Bằng Chứng Tài Liệu API (Evidence)
 
+> ✅ **Đã xác minh trên Swagger sống** (`http://localhost:8081/v3/api-docs`, 2026-10-08). Trích xuất trực tiếp từ `components.schemas` + `paths`:
+>
+> ```
+> GET /api/auth/admin/users | params: page:query, size:query
+> ```
+>
+> Backend thật cũng xác nhận `AdminUserResponse` có đúng 15 trường (khớp schema FE) và **không có** tham số lọc nào khác. Vấn đề này không phải lỗi của tài liệu markdown mà là giới hạn thực tế của API.
+
 - Danh sách tham số của `getUsers` trong [`api-docs/auth-apidocs.md`](../api-docs/auth-apidocs.md) (mục `admin-controller`):
 
   | Tên    | Vị trí  | Kiểu               | Bắt buộc | Mặc định |
