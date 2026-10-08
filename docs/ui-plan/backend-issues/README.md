@@ -20,6 +20,8 @@ Tài liệu này theo dõi các vấn đề và điểm bất cập từ phía B
 | **`BI-005`** | Thiếu tham số tìm kiếm từ khoá (`q`) trên `GET /api/auth/admin/users` | **P1** | **Open** | 2026-10-08 | [BI-005-missing-user-search-param.md](BI-005-missing-user-search-param.md) |
 | **`BI-006`** | Gateway trả sai `503` thay vì `401` khi token không hợp lệ (token hợp lệ vẫn chạy đúng) | **P1** | **Open** | 2026-10-08 | [BI-006-gateway-admin-auth-503.md](BI-006-gateway-admin-auth-503.md) |
 | **`BI-007`** | `description` của permission là tiếng Việt cố định, API không hỗ trợ bản địa hoá | **P2** | **Open** | 2026-10-08 | [BI-007-permission-description-not-localized.md](BI-007-permission-description-not-localized.md) |
+| **`BI-008`** | Missing status guards / wrong error code cho report resolve/dismiss | **P2** | **Open** | 2026-10-08 | [BI-008-report-status-guards.md](BI-008-report-status-guards.md) |
+| **`BI-009`** | `targetType` filter bị bỏ qua khi không kèm `status` + enum sai trả `500` | **P1** | **Open** | 2026-10-08 | [BI-009-report-targettype-filter-ignored.md](BI-009-report-targettype-filter-ignored.md) |
 
 ---
 *Quy ước trạng thái:* `Open` (Mới tạo) | `In Progress` (Đang sửa) | `Fixed` (Đã sửa xong) | `Wontfix` (Từ chối sửa).

@@ -67,7 +67,7 @@ Tài liệu này là đặc tả danh mục quy chuẩn độc lập (self-conta
 
 | Tên Component | Cài Đặt (shadcn) | Ràng Buộc Styling (Từ design-system.md) | Chức Năng & Ánh Xạ API | Các Trạng Thái Giao Diện (States Coverage) |
 |---|---|---|---|---|
-| **`ReportQueueTable`** | `table`, `tabs` | Tab lọc (Pending, Resolved, Dismissed). Bảng dữ liệu phẳng tối giản. | Quản lý danh sách tố cáo từ `GET /api/admin/reports`. | Loading, Tab Filter Change, Empty Queue, Populated |
+| **`ReportQueueTable`** | `table`, `tabs` | Tab lọc (Pending, Reviewed, Resolved, Dismissed). Bảng dữ liệu phẳng tối giản. | Quản lý danh sách tố cáo từ `GET /api/admin/reports` (query `status`, `targetType`, `page`, `size`; ⚠️ `targetType` bị backend bỏ qua khi không kèm `status` — xem [BI-009](../backend-issues/BI-009-report-targettype-filter-ignored.md)). | Loading, Tab Filter Change, Empty Queue, Populated |
 | **`ReportDetailDrawer`** | `sheet` | Hiển thị đối tượng bị tố cáo (`targetType`: POST, COMMENT, USER) và lý do vi phạm. | Xem chi tiết nội dung bị báo cáo. | Closed, Open, Target Loading, Target Deleted Fallback |
 | **`MediaPreviewDialog`** | `dialog` | Khung xem ảnh/video trực tiếp từ MinIO qua Presigned URL. | Xem tệp tin đa phương tiện từ `GET /api/media/{id}`. | Closed, Buffering/Loading, Playing, Expired URL Error |
 | **`ContentPurgeModal`** | `alert-dialog` | Hộp thoại xóa cưỡng bức nội dung vi phạm. | Gọi `DELETE /api/admin/reports/{id}` hoặc cập nhật trạng thái tố cáo. | Closed, Open, Deleting, Error |

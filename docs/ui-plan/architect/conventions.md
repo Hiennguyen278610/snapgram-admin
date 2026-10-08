@@ -283,6 +283,18 @@ Các issue BE chưa fix. FE KHÔNG hack workaround — giữ code đúng spec.
 - **Tạm thời**: Chấp nhận — backend là single source cho permission name/desc.
 - **Sau fix**: BE trả `descriptionEn` HOẶC FE dùng catalog i18n riêng (17 key hardcode — cần update khi BE thêm permission).
 
+### BI-008 — Report resolve/dismiss thiếu status guard
+- **Impact**: Resolve report đã `DISMISSED` → 500 (đáng lẽ 409). Dismiss report đã `RESOLVED` → 200, âm thầm đổi trạng thái.
+- **FE status**: Nút Resolve/Dismiss bị **disable** khi status không phù hợp (chỉ `PENDING`/`REVIEWED` cho phép hành động).
+- **Tạm thời**: UI chặn ở tầng hiển thị; backend vẫn có thể bị gọi sai qua API trực tiếp.
+- **Sau fix**: Bỏ disable phía FE (hoặc giữ như lớp phòng vệ) + map 409 thành thông báo conflict đúng nghĩa.
+
+### BI-009 — `targetType` filter bị bỏ qua khi không kèm `status`
+- **Impact**: Ở tab "All", chọn Target type không lọc gì (trả full list). Ở tab trạng thái cụ thể thì lọc đúng. Enum sai (`user`, `BOGUS`) → 500 thay vì 400.
+- **FE status**: Code đúng (gửi `targetType` chữ HOA). MSW mock lọc đúng.
+- **Tạm thời**: Không test filter targetType trên tab "All" với real backend.
+- **Sau fix**: E2E/browser verify filter trên cả tab "All" và tab trạng thái.
+
 ### Nguyên tắc chung
 - FE không tự ý đổi API contract để workaround.
 - Track trong `backend-issues/BI-*.md`.
