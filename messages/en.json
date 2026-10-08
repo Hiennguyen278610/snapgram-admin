@@ -67,6 +67,30 @@
     "searchPlaceholder": "Search users, posts or tickets"
   },
   "dashboard": {
-    "placeholder": "Dashboard content coming soon"
+    "title": "Dashboard",
+    "stats": {
+      "totalUsers": "Total Users",
+      "activeUsers": "Active Users",
+      "bannedUsers": "Banned Users",
+      "newUsersToday": "New Users Today",
+      "newUsersThisWeek": "New Users This Week",
+      "emailVerifiedUsers": "Email Verified",
+      "twoFaEnabledUsers": "2FA Enabled"
+    },
+    "recentUsers": {
+      "title": "Recent Users",
+      "empty": "No recent users"
+    },
+    "quickStats": {
+      "title": "Quick Stats"
+    },
+    "empty": {
+      "title": "No data yet",
+      "description": "Dashboard data will appear here when there's activity."
+    },
+    "error": {
+      "title": "Failed to load dashboard",
+      "retry": "Retry"
+    }
   }
 }

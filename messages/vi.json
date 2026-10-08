@@ -67,6 +67,30 @@
     "searchPlaceholder": "Tìm người dùng, bài viết hoặc ticket"
   },
   "dashboard": {
-    "placeholder": "Nội dung Dashboard đang được xây dựng"
+    "title": "Tổng quan",
+    "stats": {
+      "totalUsers": "Tổng người dùng",
+      "activeUsers": "Người dùng đang hoạt động",
+      "bannedUsers": "Người dùng bị khóa",
+      "newUsersToday": "Người dùng mới hôm nay",
+      "newUsersThisWeek": "Người dùng mới tuần này",
+      "emailVerifiedUsers": "Đã xác thực email",
+      "twoFaEnabledUsers": "Đã bật 2FA"
+    },
+    "recentUsers": {
+      "title": "Người dùng gần đây",
+      "empty": "Chưa có người dùng gần đây"
+    },
+    "quickStats": {
+      "title": "Thống kê nhanh"
+    },
+    "empty": {
+      "title": "Chưa có dữ liệu",
+      "description": "Dữ liệu dashboard sẽ hiển thị khi có hoạt động."
+    },
+    "error": {
+      "title": "Không tải được dashboard",
+      "retry": "Thử lại"
+    }
   }
 }
