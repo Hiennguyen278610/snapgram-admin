@@ -324,5 +324,71 @@
       "resolveFailed": "Could not resolve the report",
       "dismissFailed": "Could not dismiss the report"
     }
+  },
+  "media": {
+    "title": "Media Library",
+    "description": "Upload and manage the images and videos you have stored on Snapgram",
+    "upload": {
+      "presignedTitle": "Upload a large file or video",
+      "presignedDescription": "Files of 5MB or more, and every video, are streamed straight to storage with progress tracking.",
+      "directTitle": "Upload a small image",
+      "directDescription": "Images under 5MB are sent in one step. Use this for avatars and icons.",
+      "selectFile": "Choose a file",
+      "dropHint": "Drag a file here or choose one",
+      "replace": "Choose another file",
+      "requesting": "Preparing upload",
+      "uploading": "Uploading",
+      "confirming": "Finishing up",
+      "progressLabel": "Uploading {percent}%",
+      "cancel": "Cancel upload",
+      "retry": "Retry upload",
+      "directSubmit": "Upload image",
+      "directUploading": "Uploading image"
+    },
+    "grid": {
+      "title": "Your files",
+      "itemLabel": "Preview {mimeType}",
+      "deleteLabel": "Delete {mimeType}",
+      "videoBadge": "Video"
+    },
+    "preview": {
+      "title": "Media preview",
+      "close": "Close preview",
+      "loading": "Loading preview",
+      "expiredTitle": "This link has expired",
+      "expiredDescription": "Signed media links are temporary. Reload the preview to request a fresh one.",
+      "unsupported": "This file type cannot be previewed here.",
+      "reload": "Reload preview"
+    },
+    "deleteDialog": {
+      "title": "Delete this file?",
+      "description": "The file is removed from storage permanently. This cannot be undone.",
+      "confirm": "Delete file"
+    },
+    "empty": {
+      "title": "No media yet",
+      "description": "Upload an image or a video to start building your library."
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "pageLabel": "Page {page} of {total}"
+    },
+    "error": {
+      "loadFailed": "Failed to load media",
+      "uploadFailed": "Upload failed. Try again.",
+      "expiredUrl": "The upload link expired. Try again.",
+      "deleteFailed": "Could not delete the file"
+    },
+    "validation": {
+      "mimeNotAllowed": "That file type is not supported. Use JPEG, PNG, WebP, GIF, AVIF, MP4, WebM or MOV.",
+      "fileEmpty": "The selected file is empty.",
+      "fileTooLarge": "Images of 5MB or more must use the large-file uploader.",
+      "presignedRequired": "Videos always use the large-file uploader."
+    },
+    "toast": {
+      "uploadSuccess": "File uploaded",
+      "deleteSuccess": "File deleted"
+    }
   }
 }

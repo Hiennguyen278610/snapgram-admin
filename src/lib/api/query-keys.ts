@@ -51,5 +51,15 @@ export const reportKeys = {
   detail: (id: string) => [...reportKeys.details(), id] as const,
 };
 
-// Placeholder for the upcoming sprint — add it here when needed.
-// export const mediaKeys = ...   // Sprint 2.6
+export interface MediaFilters {
+  page?: number;
+  size?: number;
+}
+
+export const mediaKeys = {
+  all: ['admin', 'media'] as const,
+  lists: () => [...mediaKeys.all, 'list'] as const,
+  list: (filters: MediaFilters) => [...mediaKeys.lists(), filters] as const,
+  details: () => [...mediaKeys.all, 'detail'] as const,
+  detail: (id: string) => [...mediaKeys.details(), id] as const,
+};

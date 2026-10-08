@@ -324,5 +324,71 @@
       "resolveFailed": "Không thể duyệt báo cáo",
       "dismissFailed": "Không thể bác bỏ báo cáo"
     }
+  },
+  "media": {
+    "title": "Thư viện Media",
+    "description": "Tải lên và quản lý hình ảnh, video đã lưu trên Snapgram",
+    "upload": {
+      "presignedTitle": "Tải tệp lớn hoặc video",
+      "presignedDescription": "Tệp từ 5MB trở lên và mọi video được truyền thẳng lên kho lưu trữ kèm tiến trình.",
+      "directTitle": "Tải ảnh nhỏ",
+      "directDescription": "Ảnh dưới 5MB được gửi trong một bước. Dùng cho ảnh đại diện và icon.",
+      "selectFile": "Chọn tệp",
+      "dropHint": "Kéo tệp vào đây hoặc chọn tệp",
+      "replace": "Chọn tệp khác",
+      "requesting": "Đang chuẩn bị tải lên",
+      "uploading": "Đang tải lên",
+      "confirming": "Đang hoàn tất",
+      "progressLabel": "Đang tải lên {percent}%",
+      "cancel": "Hủy tải lên",
+      "retry": "Thử tải lại",
+      "directSubmit": "Tải ảnh lên",
+      "directUploading": "Đang tải ảnh lên"
+    },
+    "grid": {
+      "title": "Tệp của bạn",
+      "itemLabel": "Xem trước {mimeType}",
+      "deleteLabel": "Xóa {mimeType}",
+      "videoBadge": "Video"
+    },
+    "preview": {
+      "title": "Xem trước media",
+      "close": "Đóng xem trước",
+      "loading": "Đang tải bản xem trước",
+      "expiredTitle": "Liên kết đã hết hạn",
+      "expiredDescription": "Liên kết media có chữ ký chỉ tồn tại tạm thời. Tải lại để nhận liên kết mới.",
+      "unsupported": "Không thể xem trước loại tệp này tại đây.",
+      "reload": "Tải lại xem trước"
+    },
+    "deleteDialog": {
+      "title": "Xóa tệp này?",
+      "description": "Tệp sẽ bị xóa vĩnh viễn khỏi kho lưu trữ. Không thể hoàn tác.",
+      "confirm": "Xóa tệp"
+    },
+    "empty": {
+      "title": "Chưa có media",
+      "description": "Tải lên một ảnh hoặc video để bắt đầu thư viện của bạn."
+    },
+    "pagination": {
+      "previous": "Trước",
+      "next": "Tiếp",
+      "pageLabel": "Trang {page} / {total}"
+    },
+    "error": {
+      "loadFailed": "Không tải được media",
+      "uploadFailed": "Tải lên thất bại. Vui lòng thử lại.",
+      "expiredUrl": "Liên kết tải lên đã hết hạn. Vui lòng thử lại.",
+      "deleteFailed": "Không thể xóa tệp"
+    },
+    "validation": {
+      "mimeNotAllowed": "Định dạng tệp không được hỗ trợ. Dùng JPEG, PNG, WebP, GIF, AVIF, MP4, WebM hoặc MOV.",
+      "fileEmpty": "Tệp đã chọn trống.",
+      "fileTooLarge": "Ảnh từ 5MB trở lên phải dùng trình tải tệp lớn.",
+      "presignedRequired": "Video luôn dùng trình tải tệp lớn."
+    },
+    "toast": {
+      "uploadSuccess": "Đã tải tệp lên",
+      "deleteSuccess": "Đã xóa tệp"
+    }
   }
 }
