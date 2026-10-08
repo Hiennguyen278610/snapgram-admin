@@ -93,5 +93,86 @@
       "title": "Failed to load dashboard",
       "retry": "Retry"
     }
+  },
+  "users": {
+    "title": "Users",
+    "description": "Manage Snapgram accounts, roles and access",
+    "table": {
+      "column": {
+        "user": "User",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "empty": "No users to show"
+    },
+    "status": {
+      "active": "Active",
+      "banned": "Banned",
+      "pending": "Pending",
+      "locked": "Locked"
+    },
+    "role": {
+      "admin": "Admin",
+      "moderator": "Moderator",
+      "user": "User"
+    },
+    "action": {
+      "viewDetails": "View details",
+      "ban": "Ban user",
+      "unban": "Unban user",
+      "assignRole": "Assign role",
+      "removeRole": "Remove role",
+      "reason": "Ban reason",
+      "reasonPlaceholder": "Explain why this account is being banned",
+      "banConfirm": "Ban {username}?",
+      "unbanConfirm": "Unban {username}?",
+      "banDescription": "This immediately blocks the account from signing in. You can unban it later.",
+      "unbanDescription": "This restores the account's access to Snapgram.",
+      "rolesFor": "Roles for @{username}",
+      "currentRoles": "Current roles",
+      "noRoles": "This account has no roles",
+      "noRolesAvailable": "No roles available"
+    },
+    "filters": {
+      "search": "Search users",
+      "minChars": "Type at least 2 characters to search",
+      "clear": "Clear search"
+    },
+    "empty": {
+      "title": "No users found",
+      "description": "Try a different search term or check back later."
+    },
+    "detail": {
+      "title": "User details",
+      "joined": "Joined",
+      "lastSeen": "Last seen",
+      "bannedAt": "Banned on",
+      "banReason": "Ban reason",
+      "close": "Close details",
+      "loading": "Loading user details",
+      "notFound": "This user could not be found."
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "pageLabel": "Page {page} of {total}"
+    },
+    "toast": {
+      "banSuccess": "Account banned",
+      "unbanSuccess": "Account unbanned",
+      "roleAssigned": "Role assigned",
+      "roleRemoved": "Role removed"
+    },
+    "error": {
+      "loadFailed": "Failed to load users",
+      "invalidResponse": "Invalid response shape"
+    },
+    "form": {
+      "reasonRequired": "Enter a reason for the ban",
+      "reasonTooLong": "The reason must be 255 characters or fewer"
+    }
   }
 }

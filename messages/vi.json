@@ -93,5 +93,86 @@
       "title": "Không tải được dashboard",
       "retry": "Thử lại"
     }
+  },
+  "users": {
+    "title": "Người dùng",
+    "description": "Quản lý tài khoản, vai trò và quyền truy cập Snapgram",
+    "table": {
+      "column": {
+        "user": "Người dùng",
+        "email": "Email",
+        "role": "Vai trò",
+        "status": "Trạng thái",
+        "created": "Ngày tạo",
+        "actions": "Thao tác"
+      },
+      "empty": "Không có người dùng để hiển thị"
+    },
+    "status": {
+      "active": "Đang hoạt động",
+      "banned": "Đã khoá",
+      "pending": "Chờ xác thực",
+      "locked": "Tạm khoá"
+    },
+    "role": {
+      "admin": "Quản trị viên",
+      "moderator": "Kiểm duyệt viên",
+      "user": "Người dùng"
+    },
+    "action": {
+      "viewDetails": "Xem chi tiết",
+      "ban": "Khoá người dùng",
+      "unban": "Mở khoá người dùng",
+      "assignRole": "Gán vai trò",
+      "removeRole": "Gỡ vai trò",
+      "reason": "Lý do khoá",
+      "reasonPlaceholder": "Nêu lý do khoá tài khoản này",
+      "banConfirm": "Khoá {username}?",
+      "unbanConfirm": "Mở khoá {username}?",
+      "banDescription": "Tài khoản sẽ bị chặn đăng nhập ngay lập tức. Bạn có thể mở khoá lại sau.",
+      "unbanDescription": "Tài khoản sẽ được khôi phục quyền truy cập Snapgram.",
+      "rolesFor": "Vai trò của @{username}",
+      "currentRoles": "Vai trò hiện tại",
+      "noRoles": "Tài khoản này chưa có vai trò nào",
+      "noRolesAvailable": "Không còn vai trò để gán"
+    },
+    "filters": {
+      "search": "Tìm người dùng",
+      "minChars": "Nhập ít nhất 2 ký tự để tìm kiếm",
+      "clear": "Xoá tìm kiếm"
+    },
+    "empty": {
+      "title": "Không tìm thấy người dùng",
+      "description": "Hãy thử từ khoá khác hoặc quay lại sau."
+    },
+    "detail": {
+      "title": "Chi tiết người dùng",
+      "joined": "Tham gia",
+      "lastSeen": "Truy cập gần nhất",
+      "bannedAt": "Khoá ngày",
+      "banReason": "Lý do khoá",
+      "close": "Đóng chi tiết",
+      "loading": "Đang tải chi tiết người dùng",
+      "notFound": "Không tìm thấy người dùng này."
+    },
+    "pagination": {
+      "previous": "Trước",
+      "next": "Sau",
+      "pageLabel": "Trang {page} / {total}"
+    },
+    "toast": {
+      "banSuccess": "Đã khoá tài khoản",
+      "unbanSuccess": "Đã mở khoá tài khoản",
+      "roleAssigned": "Đã gán vai trò",
+      "roleRemoved": "Đã gỡ vai trò"
+    },
+    "error": {
+      "loadFailed": "Không tải được danh sách người dùng",
+      "invalidResponse": "Dữ liệu phản hồi không hợp lệ"
+    },
+    "form": {
+      "reasonRequired": "Vui lòng nhập lý do khoá",
+      "reasonTooLong": "Lý do không được vượt quá 255 ký tự"
+    }
   }
 }

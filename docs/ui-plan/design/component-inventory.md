@@ -47,11 +47,14 @@ Tài liệu này là đặc tả danh mục quy chuẩn độc lập (self-conta
 
 | Tên Component | Cài Đặt (shadcn) | Ràng Buộc Styling (Từ design-system.md) | Chức Năng & Ánh Xạ API | Các Trạng Thái Giao Diện (States Coverage) |
 |---|---|---|---|---|
-| **`UserDataTable`** | `table`, `pagination` | Bảng phẳng `border border-border`. Header xám nhẹ `bg-muted`. | Danh sách tài khoản từ `GET /api/auth/admin/users`. | Loading Skeleton (5 hàng), Empty Data, Populated, Error State |
-| **`UserStatusBadge`** | `badge` | Nền phẳng không gradient: Active (`bg-emerald-50 text-emerald-700`), Banned (`bg-rose-50 text-rose-700`), Pending (`bg-amber-50 text-amber-700`). | Hiển thị trạng thái tài khoản. | Active, Banned, Pending Verification, Locked |
-| **`UserActionMenu`** | `dropdown-menu` | Menu popover bo góc `rounded-xl shadow-lg border border-border`. | Thao tác Lock, Unlock, Assign Role. | Closed, Open, Item Focus, Item Disabled |
-| **`DestructiveConfirmModal`** | `dialog`, `alert-dialog` | Modal xác nhận kép, nút Confirm dùng `bg-rose-600 hover:bg-rose-700 text-white` (Solid phẳng, KHÔNG gradient). | Gọi `POST /api/auth/admin/users/{id}/lock` hoặc `unlock`. | Closed, Open, Submitting (Loading), Field Error |
-| **`RoleAssignSheet`** | `sheet` | Drawer trượt từ cạnh phải, nền phẳng `bg-card`. | Gọi `PUT /api/auth/admin/users/{id}/roles`. | Closed, Open, Fetching Roles, Saving, Error |
+| **`UserDataTable`** | `table`, `pagination` | Bảng phẳng `border border-border`. Header xám nhẹ `bg-muted`. | Danh sách tài khoản từ `GET /api/auth/admin/users` (query `page`, `size`; tham số lọc `q` đang chờ backend — xem [BI-005](../backend-issues/BI-005-missing-user-search-param.md)). | Loading Skeleton (5 hàng), Empty Data, Populated, Error State |
+| **`UserTableFilters`** | `input` | Ô tìm kiếm debounce 300ms ([conventions §15](../architect/conventions.md)). Spinner `Loader2` ở cuối ô khi đang fetch, KHÔNG chặn toàn trang. | Lọc theo `q` (chỉ gọi khi ≥ 2 ký tự) trên `GET /api/auth/admin/users`. | Idle, Typing (dưới ngưỡng), Fetching, No Results |
+| **`UserStatusBadge`** | `badge` | Nền phẳng không gradient: Active (`bg-emerald-50 text-emerald-700`), Banned (`bg-rose-50 text-rose-700`), Pending (`bg-amber-50 text-amber-700`), Locked (token trung tính `bg-muted text-muted-foreground`). | Hiển thị trạng thái tài khoản. | Active, Banned, Pending Verification, Locked |
+| **`UserActionMenu`** | `dropdown-menu` | Menu popover bo góc `rounded-xl shadow-lg border border-border`. Item bị vô hiệu hoá theo trạng thái (`banned` thì disable Ban và ngược lại). | Thao tác Ban, Unban, Assign Role, Remove Role. | Closed, Open, Item Focus, Item Disabled |
+| **`BanUserDialog`** | `alert-dialog`, `textarea`, `field` | Modal xác nhận, nút Confirm dùng `bg-rose-600 hover:bg-rose-700 text-white` (Solid phẳng, KHÔNG gradient). Lý do bắt buộc (min 1, max 255). | Gọi `POST /api/auth/admin/users/{id}/ban` với `{ reason }`. | Closed, Open, Submitting (Loading), Field Error |
+| **`UnbanConfirmDialog`** | `alert-dialog` | Modal xác nhận đơn giản, không có trường nhập. | Gọi `POST /api/auth/admin/users/{id}/unban`. | Closed, Open, Submitting (Loading), Error |
+| **`RoleAssignMenu`** | `dropdown-menu` | Menu popover bo góc `rounded-xl shadow-lg border border-border`. Danh sách role tĩnh `ADMIN`/`MODERATOR` (danh sách role động thuộc Sprint 2.4). | Gọi `POST /api/auth/admin/users/{id}/roles` và `DELETE /api/auth/admin/users/{id}/roles/{role}`. | Closed, Open, Saving, Error |
+| **`UserDetailDrawer`** | `sheet` | Drawer trượt từ cạnh phải, nền phẳng `bg-card`. | Gọi `GET /api/auth/admin/users/{id}`. | Closed, Open, Fetching, Error, Banned Info |
 
 ### 2.4. Nhóm Kiểm Duyệt Nội Dung & Quản Lý Media (Content Moderation & Media Management)
 

@@ -17,7 +17,7 @@ Toàn bộ ứng dụng sử dụng cấu trúc route Next.js 15 lồng slug ng�
 | `/[locale]/admin/login` | `AdminLoginForm` | `AuthLayout` (Standalone) | **Public** | Mọi người dùng | `POST /api/auth/admin/login` | `src/app/[locale]/(auth)/admin/login/page.tsx` |
 | `/[locale]/admin/dashboard` | `DashboardPage` | `DashboardLayout` (Shell) | **Protected** | `ADMIN`, `MODERATOR` | `GET /api/auth/admin/dashboard/stats` | `src/app/[locale]/(dashboard)/admin/dashboard/page.tsx` |
 | `/[locale]/admin/users` | `UserListPage` | `DashboardLayout` (Shell) | **Protected** | `ADMIN` | `GET /api/auth/admin/users` | `src/app/[locale]/(dashboard)/admin/users/page.tsx` |
-| `/[locale]/admin/users/[id]` | `UserDetailPage` | `DashboardLayout` (Shell) | **Protected** | `ADMIN` | `GET /api/auth/admin/users/{id}` | `src/app/[locale]/(dashboard)/admin/users/[id]/page.tsx` |
+| `/[locale]/admin/users/[id]` | `UserDetailPage` | — | **Protected** | `ADMIN` | `GET /api/auth/admin/users/{id}` | **Chưa triển khai** — Sprint 2.3 chọn phương án `UserDetailDrawer` (Sheet) mở ngay trong trang danh sách thay vì route riêng. Route này chỉ tạo nếu sau này cần deep-link tới chi tiết user. |
 | `/[locale]/admin/moderation/reports` | `ReportQueuePage` | `DashboardLayout` (Shell) | **Protected** | `ADMIN`, `MODERATOR` | `GET /api/admin/reports` | `src/app/[locale]/(dashboard)/admin/moderation/reports/page.tsx` |
 | `/[locale]/admin/moderation/reports/[id]` | `ReportDetailPage` | `DashboardLayout` (Shell) | **Protected** | `ADMIN`, `MODERATOR` | `GET /api/admin/reports/{id}` | `src/app/[locale]/(dashboard)/admin/moderation/reports/[id]/page.tsx` |
 | `/[locale]/admin/rbac` | `RBACManagerPage` | `DashboardLayout` (Shell) | **Protected** | `ADMIN` | `GET /api/auth/admin/roles`, `GET /permissions` | `src/app/[locale]/(dashboard)/admin/rbac/page.tsx` |
@@ -82,5 +82,6 @@ Toàn bộ ứng dụng sử dụng cấu trúc route Next.js 15 lồng slug ng�
   - Ví dụ: `/[locale]/admin/moderation/reports?page=1&size=20&status=PENDING&targetType=POST`.
   - Giúp Quản trị viên có thể copy link chia sẻ ca trực hoặc F5 tải lại trang mà không bị mất bộ lọc.
 - **Trạng thái Drawer/Modal chi tiết:** Việc lưu ID mở drawer trên URL (ví dụ `?drawerId=123`) là **TBD** (Sẽ chốt tại Sprint 2.2).
+- **Trạng thái triển khai (2026-10-08):** Sprint 2.3 (`/admin/users`) triển khai theo brief với `useState` cục bộ — **chưa** đồng bộ vào URL. Đã ghi nhận tại [conventions.md §16](conventions.md) và sẽ chuẩn hoá ở Sprint 3.3. Các trang 2.5 (reports), 2.6 (media) khi làm cần tuân thủ mục này ngay từ đầu.
 
 > ⚠️ Tài liệu tạm nằm trong backend repo. Sẽ move sang FE repo khi tách.
