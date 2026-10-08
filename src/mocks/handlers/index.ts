@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'msw';
 import { authHandlers } from './auth.handlers';
 import { dashboardHandlers } from './dashboard.handlers';
+import { healthHandlers } from './health.handlers';
 import { mediaHandlers } from './media.handlers';
 import { rbacHandlers } from './rbac.handlers';
 import { reportsHandlers } from './reports.handlers';
@@ -13,4 +14,5 @@ export const handlers: RequestHandler[] = [
   ...rbacHandlers,
   ...reportsHandlers,
   ...mediaHandlers,
+  ...healthHandlers,
 ];

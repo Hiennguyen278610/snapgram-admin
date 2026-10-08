@@ -391,5 +391,38 @@
       "uploadSuccess": "Đã tải tệp lên",
       "deleteSuccess": "Đã xóa tệp"
     }
+  },
+  "health": {
+    "title": "Sức khỏe hệ thống",
+    "description": "Theo dõi trạng thái dịch vụ và hạ tầng",
+    "lastChecked": "Kiểm tra lần cuối: {time}",
+    "refresh": "Làm mới",
+    "services": {
+      "gateway": "Cổng API",
+      "auth": "Dịch vụ xác thực",
+      "content": "Dịch vụ nội dung",
+      "media": "Dịch vụ media"
+    },
+    "status": {
+      "up": "Trực tuyến",
+      "down": "Ngoại tuyến",
+      "unknown": "Không rõ"
+    },
+    "pill": {
+      "online": "Cổng API: Trực tuyến",
+      "offline": "Cổng API: Ngoại tuyến",
+      "checking": "Cổng API: Đang kiểm tra..."
+    },
+    "external": {
+      "title": "Công cụ ngoài",
+      "description": "Truy cập nhanh các bảng điều khiển hạ tầng",
+      "kafka": "Kafka UI",
+      "minio": "MinIO Console",
+      "mailpit": "Mailpit"
+    },
+    "error": {
+      "title": "Không tải được trạng thái hệ thống",
+      "retry": "Thử lại"
+    }
   }
 }

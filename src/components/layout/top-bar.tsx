@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { useUIStore } from '@/stores/ui-store';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
+import { ServiceStatusPill } from '@/features/health/components/service-status-pill';
 
 export function TopBar() {
   const t = useTranslations('nav');
@@ -40,6 +41,8 @@ export function TopBar() {
           <Search className="size-4 shrink-0" aria-hidden />
           <span className="truncate">{t('searchPlaceholder')}</span>
         </Button>
+
+        <ServiceStatusPill />
 
         <ThemeToggle />
       </div>

@@ -63,3 +63,14 @@ export const mediaKeys = {
   details: () => [...mediaKeys.all, 'detail'] as const,
   detail: (id: string) => [...mediaKeys.details(), id] as const,
 };
+
+/**
+ * System health keys (Sprint 3.1). Unlike the admin domains these are not
+ * prefixed with `admin` — the actuator proxy is public and belongs to no
+ * domain. `services()` is the invalidation scope for every service check.
+ */
+export const healthKeys = {
+  all: ['health'] as const,
+  services: () => [...healthKeys.all, 'service'] as const,
+  service: (id: string) => [...healthKeys.services(), id] as const,
+};

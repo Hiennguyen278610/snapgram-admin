@@ -391,5 +391,38 @@
       "uploadSuccess": "File uploaded",
       "deleteSuccess": "File deleted"
     }
+  },
+  "health": {
+    "title": "System Health",
+    "description": "Monitor service status and infrastructure",
+    "lastChecked": "Last checked: {time}",
+    "refresh": "Refresh",
+    "services": {
+      "gateway": "API Gateway",
+      "auth": "Auth Service",
+      "content": "Content Service",
+      "media": "Media Service"
+    },
+    "status": {
+      "up": "Online",
+      "down": "Offline",
+      "unknown": "Unknown"
+    },
+    "pill": {
+      "online": "Gateway: Online",
+      "offline": "Gateway: Offline",
+      "checking": "Gateway: Checking..."
+    },
+    "external": {
+      "title": "External Tools",
+      "description": "Quick access to infrastructure dashboards",
+      "kafka": "Kafka UI",
+      "minio": "MinIO Console",
+      "mailpit": "Mailpit"
+    },
+    "error": {
+      "title": "Failed to load health status",
+      "retry": "Retry"
+    }
   }
 }
