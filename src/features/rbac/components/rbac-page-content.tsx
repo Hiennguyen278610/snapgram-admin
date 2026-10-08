@@ -11,7 +11,7 @@ import { CreateRoleDialog } from './create-role-dialog';
 import { DeleteRoleDialog } from './delete-role-dialog';
 import { EditRoleDialog } from './edit-role-dialog';
 import { RoleDataTable } from './role-data-table';
-import { RoleDetailSheet } from './role-detail-sheet';
+import { RoleDetailDialog } from './role-detail-dialog';
 
 export function RbacPageContent() {
   const t = useTranslations('rbac');
@@ -64,7 +64,7 @@ export function RbacPageContent() {
       </div>
 
       {selectedRoleId ? (
-        <RoleDetailSheet
+        <RoleDetailDialog
           roleId={selectedRoleId}
           open
           onOpenChange={(open) => {

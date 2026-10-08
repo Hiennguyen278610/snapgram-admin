@@ -17,7 +17,7 @@ import { RoleAssignMenu } from './role-assign-menu';
 import { UnbanConfirmDialog } from './unban-confirm-dialog';
 import { UserActionMenu, type UserAction } from './user-action-menu';
 import { UserDataTable } from './user-data-table';
-import { UserDetailDrawer } from './user-detail-drawer';
+import { UserDetailDialog } from './user-detail-dialog';
 import { UserTableFilters } from './user-table-filters';
 import { UsersEmpty } from './users-empty';
 import { UsersError } from './users-error';
@@ -173,7 +173,7 @@ export function UsersPageContent() {
         ) : null}
       </div>
 
-      <UserDetailDrawer
+      <UserDetailDialog
         userId={selectedUserId}
         open={Boolean(selectedUserId)}
         onOpenChange={(open) => {

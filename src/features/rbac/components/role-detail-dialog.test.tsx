@@ -7,7 +7,7 @@ import { usePermissionsList } from '../hooks/use-permissions-list';
 import { useRoleDetail } from '../hooks/use-role-detail';
 import { useSetRolePermissions } from '../hooks/use-set-role-permissions';
 import type { RoleDetail } from '../schemas/role.schema';
-import { RoleDetailSheet } from './role-detail-sheet';
+import { RoleDetailDialog } from './role-detail-dialog';
 
 vi.mock('../hooks/use-role-detail');
 vi.mock('../hooks/use-permissions-list');
@@ -73,11 +73,11 @@ function mockQueries(options: MockOptions = {}) {
   return { refetchRole, refetchPermissions };
 }
 
-function renderSheet(roleId: string | undefined = customRole.id) {
-  return renderWithProviders(<RoleDetailSheet roleId={roleId} open onOpenChange={vi.fn()} />);
+function renderDialog(roleId: string | undefined = customRole.id) {
+  return renderWithProviders(<RoleDetailDialog roleId={roleId} open onOpenChange={vi.fn()} />);
 }
 
-describe('RoleDetailSheet', () => {
+describe('RoleDetailDialog', () => {
   beforeEach(() => {
     mockedUseRoleDetail.mockReset();
     mockedUsePermissionsList.mockReset();
@@ -86,7 +86,7 @@ describe('RoleDetailSheet', () => {
 
   it('shows the loading skeleton while either query is pending', () => {
     mockQueries({ roleLoading: true });
-    renderSheet();
+    renderDialog();
 
     expect(screen.getByRole('status')).toHaveAttribute('aria-label', 'Loading role details');
   });
@@ -95,7 +95,7 @@ describe('RoleDetailSheet', () => {
     const { refetchRole, refetchPermissions } = mockQueries({
       roleError: { httpStatus: 500, kind: 'server', message: 'boom' },
     });
-    renderSheet();
+    renderDialog();
 
     expect(screen.getByText('Internal server error.')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Retry' }));
@@ -106,14 +106,14 @@ describe('RoleDetailSheet', () => {
 
   it('shows a not-found message when the role resolves empty', () => {
     mockQueries();
-    renderSheet();
+    renderDialog();
 
     expect(screen.getByText('This role could not be found.')).toBeInTheDocument();
   });
 
   it('renders the role metadata and the permission matrix', () => {
     mockQueries({ role: customRole });
-    const { container } = renderSheet();
+    const { container } = renderDialog();
 
     expect(screen.getAllByText('SUPPORT').length).toBeGreaterThan(0);
     expect(screen.getByText('Nhân viên hỗ trợ')).toBeInTheDocument();
@@ -127,7 +127,7 @@ describe('RoleDetailSheet', () => {
 
   it('keeps a system role viewable but read-only', () => {
     mockQueries({ role: systemRole });
-    renderSheet('r-admin');
+    renderDialog('r-admin');
 
     expect(
       screen.getByText('This is a system role. Its permissions can be viewed but not changed.')
@@ -139,7 +139,7 @@ describe('RoleDetailSheet', () => {
 
   it('lets a custom role save its permissions', () => {
     mockQueries({ role: customRole });
-    renderSheet();
+    renderDialog();
 
     expect(screen.getByRole('button', { name: 'Save permissions' })).toBeEnabled();
     expect(screen.getByRole('checkbox', { name: 'USER:READ' })).toBeEnabled();

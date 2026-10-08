@@ -4,7 +4,7 @@ import { renderWithProviders } from '@/test-utils/render';
 import type { ApiError } from '@/lib/api/types';
 import type { AdminUser } from '../schemas/user.schema';
 import { useUserDetail } from '../hooks/use-user-detail';
-import { UserDetailDrawer } from './user-detail-drawer';
+import { UserDetailDialog } from './user-detail-dialog';
 
 vi.mock('../hooks/use-user-detail');
 
@@ -37,7 +37,7 @@ function mockQuery(overrides: Record<string, unknown>) {
   } as unknown as ReturnType<typeof useUserDetail>);
 }
 
-describe('UserDetailDrawer', () => {
+describe('UserDetailDialog', () => {
   beforeEach(() => {
     mockedUseUserDetail.mockReset();
   });
@@ -45,7 +45,7 @@ describe('UserDetailDrawer', () => {
   it('renders the loading skeleton while the detail is pending', () => {
     mockQuery({ isLoading: true });
     const { getByRole, getByText } = renderWithProviders(
-      <UserDetailDrawer userId="u-1" open onOpenChange={vi.fn()} />
+      <UserDetailDialog userId="u-1" open onOpenChange={vi.fn()} />
     );
 
     expect(getByText('User details')).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('UserDetailDrawer', () => {
   it('renders the profile, roles, dates and ban metadata', () => {
     mockQuery({ data: user });
     const { getByText, getByRole } = renderWithProviders(
-      <UserDetailDrawer userId="u-1" open onOpenChange={vi.fn()} />
+      <UserDetailDialog userId="u-1" open onOpenChange={vi.fn()} />
     );
 
     expect(getByText('Alice Nguyen')).toBeInTheDocument();
@@ -72,7 +72,7 @@ describe('UserDetailDrawer', () => {
   it('renders the not-found message when the query resolves with no data', () => {
     mockQuery({ data: undefined });
     const { getByText } = renderWithProviders(
-      <UserDetailDrawer userId="u-1" open onOpenChange={vi.fn()} />
+      <UserDetailDialog userId="u-1" open onOpenChange={vi.fn()} />
     );
 
     expect(getByText('This user could not be found.')).toBeInTheDocument();
@@ -86,7 +86,7 @@ describe('UserDetailDrawer', () => {
       refetch,
     });
     const { getByRole, getByText } = renderWithProviders(
-      <UserDetailDrawer userId="u-1" open onOpenChange={vi.fn()} />
+      <UserDetailDialog userId="u-1" open onOpenChange={vi.fn()} />
     );
 
     expect(getByText('The requested resource could not be found.')).toBeInTheDocument();
@@ -98,7 +98,7 @@ describe('UserDetailDrawer', () => {
   it('falls back to the unknown message when the error object is missing', () => {
     mockQuery({ isError: true, error: null });
     const { getByText } = renderWithProviders(
-      <UserDetailDrawer userId="u-1" open onOpenChange={vi.fn()} />
+      <UserDetailDialog userId="u-1" open onOpenChange={vi.fn()} />
     );
 
     expect(getByText('An unexpected error occurred. Please try again later.')).toBeInTheDocument();
@@ -107,7 +107,7 @@ describe('UserDetailDrawer', () => {
   it('renders optional action slots when provided', () => {
     mockQuery({ data: user });
     const { getByRole } = renderWithProviders(
-      <UserDetailDrawer
+      <UserDetailDialog
         userId="u-1"
         open
         onOpenChange={vi.fn()}
@@ -121,7 +121,7 @@ describe('UserDetailDrawer', () => {
   it('renders the no-roles fallback for an account without roles', () => {
     mockQuery({ data: { ...user, roles: [], role: null } });
     const { getByText } = renderWithProviders(
-      <UserDetailDrawer userId="u-1" open onOpenChange={vi.fn()} />
+      <UserDetailDialog userId="u-1" open onOpenChange={vi.fn()} />
     );
 
     expect(getByText('This account has no roles')).toBeInTheDocument();

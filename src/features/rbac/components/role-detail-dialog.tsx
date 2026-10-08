@@ -4,15 +4,15 @@ import { AlertCircle, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Locale } from '@/i18n/routing';
 import { getErrorMessageKey } from '@/lib/api/error-mapper';
@@ -37,7 +37,7 @@ function DetailRow({ label, children }: { label: string; children: React.ReactNo
   );
 }
 
-export function RoleDetailSheet({ roleId, open, onOpenChange }: Props) {
+export function RoleDetailDialog({ roleId, open, onOpenChange }: Props) {
   const t = useTranslations('rbac');
   const tCommon = useTranslations('common');
   const tError = useTranslations();
@@ -53,25 +53,24 @@ export function RoleDetailSheet({ roleId, open, onOpenChange }: Props) {
   const error = (roleQuery.error ?? permissionsQuery.error) as ApiError | null;
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        side="right"
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
         showCloseButton={false}
-        className="w-full overflow-y-auto p-0 sm:max-w-xl"
+        className="max-h-[90vh] overflow-y-auto p-0 sm:max-w-2xl"
       >
-        <SheetHeader className="border-b border-border">
+        <DialogHeader className="border-b border-border">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <SheetTitle>{t('detail.title')}</SheetTitle>
-              <SheetDescription>{role ? role.name : tCommon('status.loading')}</SheetDescription>
+              <DialogTitle>{t('detail.title')}</DialogTitle>
+              <DialogDescription>{role ? role.name : tCommon('status.loading')}</DialogDescription>
             </div>
-            <SheetClose asChild>
+            <DialogClose asChild>
               <Button variant="ghost" size="icon-sm" aria-label={tCommon('action.close')}>
                 <X className="size-4" aria-hidden />
               </Button>
-            </SheetClose>
+            </DialogClose>
           </div>
-        </SheetHeader>
+        </DialogHeader>
 
         <div className="p-4">
           {isLoading ? (
@@ -158,7 +157,7 @@ export function RoleDetailSheet({ roleId, open, onOpenChange }: Props) {
             </div>
           )}
         </div>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }
