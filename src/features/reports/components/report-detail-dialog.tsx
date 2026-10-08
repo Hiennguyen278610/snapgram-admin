@@ -5,13 +5,13 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Locale } from '@/i18n/routing';
 import { getErrorMessageKey } from '@/lib/api/error-mapper';
@@ -42,11 +42,11 @@ function DetailRow({ label, children }: { label: string; children: React.ReactNo
 }
 
 /**
- * Right-hand detail drawer for a single report (conventions §8 › Sheet).
+ * Center modal for a single report (conventions §8 › Dialog).
  * Only mounted when a report is selected, so the query never runs with an
  * empty id.
  */
-export function ReportDetailSheet({ reportId, open, onOpenChange, onResolve, onDismiss }: Props) {
+export function ReportDetailDialog({ reportId, open, onOpenChange, onResolve, onDismiss }: Props) {
   const t = useTranslations('reports');
   const tCommon = useTranslations('common');
   const tError = useTranslations();
@@ -60,27 +60,26 @@ export function ReportDetailSheet({ reportId, open, onOpenChange, onResolve, onD
   const blockedHint = t('detail.actionBlocked');
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        side="right"
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
         showCloseButton={false}
-        className="w-full overflow-y-auto p-0 sm:max-w-xl"
+        className="max-h-[90vh] overflow-y-auto p-0 sm:max-w-3xl"
       >
-        <SheetHeader className="border-b border-border">
+        <DialogHeader className="p-6 pb-0 border-b border-border">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <SheetTitle>{t('detail.title')}</SheetTitle>
-              <SheetDescription>
+              <DialogTitle>{t('detail.title')}</DialogTitle>
+              <DialogDescription>
                 {report ? report.id.slice(0, ID_PREVIEW_LENGTH) : tCommon('status.loading')}
-              </SheetDescription>
+              </DialogDescription>
             </div>
-            <SheetClose asChild>
+            <DialogClose asChild>
               <Button variant="ghost" size="icon-sm" aria-label={t('detail.close')}>
                 <X className="size-4" aria-hidden />
               </Button>
-            </SheetClose>
+            </DialogClose>
           </div>
-        </SheetHeader>
+        </DialogHeader>
 
         <div className="p-4">
           {isLoading ? (
@@ -180,7 +179,7 @@ export function ReportDetailSheet({ reportId, open, onOpenChange, onResolve, onD
             </div>
           )}
         </div>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -12,7 +12,7 @@ import { useReportsList } from '../hooks/use-reports-list';
 import { useResolveReport } from '../hooks/use-resolve-report';
 import type { Report } from '../schemas/report.schema';
 import { DismissReportDialog } from './dismiss-report-dialog';
-import { ReportDetailSheet } from './report-detail-sheet';
+import { ReportDetailDialog } from './report-detail-dialog';
 import { ReportQueueTable, type ReportRowAction } from './report-queue-table';
 import { ReportQueueTabs } from './report-queue-tabs';
 import { ReportTableFilters } from './report-table-filters';
@@ -117,7 +117,7 @@ function ReportQueue() {
       ) : null}
 
       {selectedReportId ? (
-        <ReportDetailSheet
+        <ReportDetailDialog
           reportId={selectedReportId}
           open
           onOpenChange={(open) => {

@@ -4,7 +4,7 @@ import { renderWithProviders, screen } from '@/test-utils/render';
 import type { ApiError } from '@/lib/api/types';
 import { useReportDetail } from '../hooks/use-report-detail';
 import type { Report } from '../schemas/report.schema';
-import { ReportDetailSheet } from './report-detail-sheet';
+import { ReportDetailDialog } from './report-detail-dialog';
 
 vi.mock('../hooks/use-report-detail');
 
@@ -42,9 +42,9 @@ function mockDetail(
   return { refetch };
 }
 
-function renderSheet(props: Partial<React.ComponentProps<typeof ReportDetailSheet>> = {}) {
+function renderDialog(props: Partial<React.ComponentProps<typeof ReportDetailDialog>> = {}) {
   return renderWithProviders(
-    <ReportDetailSheet
+    <ReportDetailDialog
       reportId="11111111-1111-1111-1111-111111111101"
       open
       onOpenChange={vi.fn()}
@@ -53,14 +53,14 @@ function renderSheet(props: Partial<React.ComponentProps<typeof ReportDetailShee
   );
 }
 
-describe('ReportDetailSheet', () => {
+describe('ReportDetailDialog', () => {
   beforeEach(() => {
     mockedUseReportDetail.mockReset();
   });
 
   it('shows the loading skeleton while the detail query is pending', () => {
     mockDetail({ isLoading: true });
-    renderSheet();
+    renderDialog();
 
     expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
     expect(screen.getByRole('dialog')).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe('ReportDetailSheet', () => {
 
   it('renders every field of the report', () => {
     mockDetail({ report: makeReport() });
-    renderSheet();
+    renderDialog();
 
     expect(screen.getByText('Report details')).toBeInTheDocument();
     expect(screen.getByText('11111111-1111-1111-1111-111111111101')).toBeInTheDocument();
@@ -82,14 +82,14 @@ describe('ReportDetailSheet', () => {
 
   it('hides the description row when the backend returns null', () => {
     mockDetail({ report: makeReport({ description: null }) });
-    renderSheet();
+    renderDialog();
 
     expect(screen.queryByText('Details')).not.toBeInTheDocument();
   });
 
   it('shows a not-found state for a 404 (error-handling §5)', () => {
     mockDetail({ error: { httpStatus: 404, kind: 'notFound', message: 'Report not found' } });
-    renderSheet();
+    renderDialog();
 
     expect(screen.getByText('This report could not be found.')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Resolve' })).not.toBeInTheDocument();
@@ -99,7 +99,7 @@ describe('ReportDetailSheet', () => {
     const { refetch } = mockDetail({
       error: { httpStatus: 500, kind: 'server', message: 'boom' },
     });
-    renderSheet();
+    renderDialog();
 
     expect(screen.getByText('Internal server error.')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Retry' }));
@@ -112,7 +112,7 @@ describe('ReportDetailSheet', () => {
       const onResolve = vi.fn();
       const onDismiss = vi.fn();
       mockDetail({ report: makeReport({ status }) });
-      renderSheet({ onResolve, onDismiss });
+      renderDialog({ onResolve, onDismiss });
 
       const resolve = screen.getByRole('button', { name: 'Resolve' });
       const dismiss = screen.getByRole('button', { name: 'Dismiss' });
@@ -134,7 +134,7 @@ describe('ReportDetailSheet', () => {
       const onResolve = vi.fn();
       const onDismiss = vi.fn();
       mockDetail({ report: makeReport({ status }) });
-      renderSheet({ onResolve, onDismiss });
+      renderDialog({ onResolve, onDismiss });
 
       const resolve = screen.getByRole('button', { name: 'Resolve' });
       const dismiss = screen.getByRole('button', { name: 'Dismiss' });
@@ -149,7 +149,7 @@ describe('ReportDetailSheet', () => {
   it('does not fire the actions for a read-only report', async () => {
     const onResolve = vi.fn();
     mockDetail({ report: makeReport({ status: 'RESOLVED' }) });
-    renderSheet({ onResolve });
+    renderDialog({ onResolve });
 
     await userEvent.click(screen.getByRole('button', { name: 'Resolve' }));
 
@@ -158,7 +158,7 @@ describe('ReportDetailSheet', () => {
 
   it('exposes a labelled close button', () => {
     mockDetail({ report: makeReport() });
-    renderSheet();
+    renderDialog();
 
     expect(screen.getByRole('button', { name: 'Close report details' })).toBeInTheDocument();
   });

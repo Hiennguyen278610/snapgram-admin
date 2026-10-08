@@ -46,7 +46,7 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
 | Endpoint | Method | Microservice | UI Component tương ứng | Request / Payload | DTO / Response |
 |---|---|---|---|---|---|
 | `/api/admin/reports` | `GET` | Content (`:8084`) | Bảng kiểm duyệt (`ModerationQueueTable`) | `status`, `targetType`, `page`, `size` | `Page<ReportResponse>` |
-| `/api/admin/reports/{id}` | `GET` | Content (`:8084`) | Sheet chi tiết report (`ReportDetailSheet`) | Path variable `id` | `ReportResponse` |
+| `/api/admin/reports/{id}` | `GET` | Content (`:8084`) | Dialog chi tiết report (`ReportDetailDialog`) | Path variable `id` | `ReportResponse` |
 | `/api/admin/reports/{id}/resolve` | `PATCH` | Content (`:8084`) | Nút Duyệt vi phạm (`ResolveReportButton`) | N/A | `ReportResponse` (`status: RESOLVED`) |
 | `/api/admin/reports/{id}/dismiss` | `PATCH` | Content (`:8084`) | Nút Bác bỏ report (`DismissReportButton`) | N/A | `ReportResponse` (`status: DISMISSED`) |
 

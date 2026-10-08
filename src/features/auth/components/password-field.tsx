@@ -26,16 +26,18 @@ export function PasswordField({ value, onChange, ...props }: Props) {
         className="pr-10"
         {...props}
       />
-      <Button
-        type="button"
-        variant="ghost"
-        size="icon"
-        className="absolute right-1 top-1/2 -translate-y-1/2 size-8"
-        onClick={() => setVisible((v) => !v)}
-        aria-label={visible ? t('hidePassword') : t('showPassword')}
-      >
-        {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-      </Button>
+      <div className="absolute right-1 top-1/2 -translate-y-1/2">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-8 active:translate-y-0"
+          onClick={() => setVisible((v) => !v)}
+          aria-label={visible ? t('hidePassword') : t('showPassword')}
+        >
+          {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+        </Button>
+      </div>
     </div>
   );
 }
