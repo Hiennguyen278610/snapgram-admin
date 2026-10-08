@@ -6,11 +6,12 @@ import {
   Activity,
   ChevronLeft,
   ChevronRight,
-  ExternalLink,
   Flag,
+  HardDrive,
   LayoutDashboard,
   ShieldAlert,
   Users,
+  Waypoints,
 } from 'lucide-react';
 import { cn } from 'cn';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -37,13 +38,13 @@ const NAV_ITEMS: NavItem[] = [
   {
     key: 'kafka',
     href: 'http://localhost:8089',
-    icon: ExternalLink,
+    icon: Waypoints,
     external: true,
   },
   {
     key: 'minio',
     href: 'http://localhost:9001',
-    icon: ExternalLink,
+    icon: HardDrive,
     external: true,
   },
 ];
@@ -65,8 +66,8 @@ export function SidebarNav() {
       aria-label={tCommon('app.title')}
       data-collapsed={collapsed}
       className={cn(
-        'hidden shrink-0 flex-col border-r border-border bg-card py-4 pl-4 transition-[width] duration-200 lg:flex',
-        collapsed ? 'w-[72px]' : 'w-[260px] pr-6'
+        'hidden shrink-0 flex-col border-r border-border bg-card px-3 py-4 transition-[width] duration-200 lg:flex',
+        collapsed ? 'w-[72px]' : 'w-[260px]'
       )}
     >
       <div
