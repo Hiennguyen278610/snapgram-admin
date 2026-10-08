@@ -6,10 +6,18 @@ on:
   pull_request:
     branches: [main, master]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     name: Lint, Typecheck, Test, Build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NODE_OPTIONS: --max-old-space-size=4096
+
     steps:
       - uses: actions/checkout@v5
 
@@ -23,6 +31,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+
       - name: Lint
         run: pnpm lint
 
@@ -30,7 +46,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Test (with coverage gate)
-        run: pnpm test:coverage
+        run: pnpm test:coverage --maxWorkers=2
 
       - name: Build
         run: pnpm build
