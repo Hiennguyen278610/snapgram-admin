@@ -68,6 +68,7 @@
   },
   "dashboard": {
     "title": "Tổng quan",
+    "description": "Tổng quan về người dùng, báo cáo và chỉ số hệ thống",
     "stats": {
       "totalUsers": "Tổng người dùng",
       "activeUsers": "Người dùng đang hoạt động",

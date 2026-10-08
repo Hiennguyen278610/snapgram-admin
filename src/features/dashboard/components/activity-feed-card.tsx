@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
 import type { Locale } from '@/i18n/routing';
 import { formatDateTime } from '@/lib/i18n/format';
 import type { AdminUserResponse } from '../schemas/stats.schema';
@@ -30,10 +31,10 @@ export function ActivityFeedCard({ users, isLoading = false }: Props) {
         <ul className="mt-4 space-y-4" data-testid="activity-feed-skeleton">
           {Array.from({ length: SKELETON_ROWS }, (_, index) => (
             <li key={index} className="flex items-center gap-3">
-              <div className="size-10 shrink-0 animate-pulse rounded-full bg-muted" />
+              <Skeleton className="size-10 shrink-0 rounded-full" />
               <div className="flex-1 space-y-2">
-                <div className="h-3 w-32 animate-pulse rounded-md bg-muted" />
-                <div className="h-3 w-20 animate-pulse rounded-md bg-muted" />
+                <Skeleton className="h-3 w-32" />
+                <Skeleton className="h-3 w-20" />
               </div>
             </li>
           ))}

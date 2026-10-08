@@ -1,6 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
+import { Skeleton } from '@/components/ui/skeleton';
 import type { Locale } from '@/i18n/routing';
 import { formatNumber } from '@/lib/i18n/format';
 import type { AdminDashboardResponse } from '../schemas/stats.schema';
@@ -33,10 +34,10 @@ export function ModerationQuickBar({ stats, isLoading = false }: Props) {
       <div className="mt-3 flex gap-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {isLoading
           ? Array.from({ length: SKELETON_PILLS }, (_, index) => (
-              <div
+              <Skeleton
                 key={index}
                 data-testid="quick-bar-skeleton"
-                className="h-9 w-32 shrink-0 animate-pulse rounded-full bg-muted"
+                className="h-9 w-32 shrink-0 rounded-full"
               />
             ))
           : items.map((item) => (

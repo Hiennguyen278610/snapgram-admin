@@ -36,3 +36,25 @@ Toàn bộ các skill được đưa vào dự án đều phải được kiểm
 ## 4. Nguyên Tắc Ứng Dụng Trong Quy Trình Phát Triển
 1. **Tương thích không xung đột:** Cả 3 skill thiết kế giao diện đều đồng thuận về phong cách Clean / Data-Dense / Flat Surfaces, bổ trợ chặt chẽ cho nhau mà không tạo ra mâu thuẫn về styling hay layout.
 2. **Tuân thủ Absolute Rules:** Bất kỳ hướng dẫn nào từ các skill khi áp dụng vào code đều không được vượt qua các điều luật bất biến trong [absolute-rules.md](../absolute-rules.md) (Cấm emoji icon, cấm lạm dụng gradient ngoài 2 vị trí quy định, bắt buộc dùng lệnh CLI `pnpm dlx shadcn@latest add ...`).
+
+---
+
+## 5. Local Skill Paths (đã cài)
+
+Skills đã được cài **project-level** bằng CLI `skills`
+(`npx skills add <repo> -s <skill> -y`; nguồn + hash ghi tại `skills-lock.json` ở repo root).
+Agent PHẢI đọc file `SKILL.md` trước khi làm sprint tương ứng.
+
+| Skill | Local path | Sprint áp dụng |
+|---|---|---|
+| frontend-design | `.agents/skills/frontend-design/SKILL.md` | 2.3+ |
+| web-design-guidelines | `.agents/skills/web-design-guidelines/SKILL.md` | 3.3 |
+| vercel-composition-patterns | `.agents/skills/vercel-composition-patterns/SKILL.md` | 2.4, 2.5 |
+| tanstack-query | `.agents/skills/tanstack-query/SKILL.md` | 2.3+ |
+
+**Cách dùng:** Trong prompt dispatch subagent, thêm dòng:
+`ĐỌC SKILL: <local path>`
+
+> **Ghi chú:** `npx skills add` cài ở **project scope** (không phải `.skills/<org>/...`),
+> và mỗi lần chỉ nhận 1 tên skill qua `-s` (truyền nhiều tên cách nhau dấu phẩy sẽ bị bỏ qua).
+> `.agents/skills/**` là nguồn thật; `.claude/skills/**` chỉ là symlink cho agent khác.

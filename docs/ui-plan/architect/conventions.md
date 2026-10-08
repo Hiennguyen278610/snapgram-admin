@@ -248,6 +248,7 @@ Quy tắc sử dụng hệ thống thông báo nổi toàn cục qua thư viện
 - **Zod field-error messages chưa i18n** (Sprint 2.1): `loginSchema`/`twoFactorSchema` dùng message mặc định tiếng Anh của zod; form hiển thị nguyên văn. Sprint 2.2 sẽ custom message theo i18n key.
 - **Type lỏng cho `mutation.error`**: react-query type `Error` chung chung, chưa generic `useMutation<Data, ApiError, Variables>`. Fix ở Sprint 2.2 khi viết hook users/reports.
 - **Label ô mật khẩu bị "treo" (a11y)** (Sprint 2.1): `login-form.tsx` đặt `<FieldLabel htmlFor="login-password">` nhưng `<PasswordField>` không nhận `id` (Props không khai báo `id`), nên label trỏ tới id không tồn tại — screen reader không đọc được nhãn (WCAG 1.3.1/4.1.2). Fix ở Sprint 3.3 (a11y audit): thêm `id?: string` vào `PasswordField` Props + truyền `id="login-password"`; sau đó đổi test về `getByLabelText(/password/i)`.
+- **Endpoint 2FA lệch doc**: `api-docs/auth-apidocs.md` dòng 15 ghi `POST /api/auth/2fa/login`, code Sprint 2.1 dùng `/api/auth/login/2fa`. Cần verify từ backend Swagger thật (`/v3/api-docs`) trước Phase 3. Nếu code sai → update service + mock + 2 doc.
 
 ---
 

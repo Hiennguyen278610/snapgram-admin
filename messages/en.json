@@ -68,6 +68,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "description": "Overview of users, reports, and system metrics",
     "stats": {
       "totalUsers": "Total Users",
       "activeUsers": "Active Users",

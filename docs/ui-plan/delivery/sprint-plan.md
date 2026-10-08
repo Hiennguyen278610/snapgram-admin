@@ -81,4 +81,19 @@ graph LR
 
 ---
 
+## 6. Skills Áp Dụng Theo Sprint (Phase 2 → 3)
+
+| Sprint | Skills áp dụng |
+|---|---|
+| 2.3 (users) | tanstack-query, frontend-design |
+| 2.4 (rbac) | tanstack-query, frontend-design, vercel-composition-patterns |
+| 2.5 (moderation) | tanstack-query, frontend-design, vercel-composition-patterns |
+| 2.6 (media) | tanstack-query, frontend-design |
+| 3.3 (polish) | web-design-guidelines |
+
+Local path từng skill: xem [../architect/skills.md](../architect/skills.md) §5.
+Khi dispatch subagent cho các sprint trên, thêm dòng `ĐỌC SKILL: <local path>` vào prompt.
+
+---
+
 > ⚠️ Tài liệu tạm nằm trong backend repo. Sẽ move sang FE repo khi tách.
