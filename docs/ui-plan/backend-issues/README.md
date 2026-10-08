@@ -19,6 +19,7 @@ Tài liệu này theo dõi các vấn đề và điểm bất cập từ phía B
 | **`BI-004`** | Không nhất quán Response Header giới hạn tần suất (`X-Rate-Limit-Reset` vs `Retry-After`) | **P2** | **Open** | 2026-10-07 | [BI-004-response-headers-inconsistent.md](BI-004-response-headers-inconsistent.md) |
 | **`BI-005`** | Thiếu tham số tìm kiếm từ khoá (`q`) trên `GET /api/auth/admin/users` | **P1** | **Open** | 2026-10-08 | [BI-005-missing-user-search-param.md](BI-005-missing-user-search-param.md) |
 | **`BI-006`** | Gateway trả sai `503` thay vì `401` khi token không hợp lệ (token hợp lệ vẫn chạy đúng) | **P1** | **Open** | 2026-10-08 | [BI-006-gateway-admin-auth-503.md](BI-006-gateway-admin-auth-503.md) |
+| **`BI-007`** | `description` của permission là tiếng Việt cố định, API không hỗ trợ bản địa hoá | **P2** | **Open** | 2026-10-08 | [BI-007-permission-description-not-localized.md](BI-007-permission-description-not-localized.md) |
 
 ---
 *Quy ước trạng thái:* `Open` (Mới tạo) | `In Progress` (Đang sửa) | `Fixed` (Đã sửa xong) | `Wontfix` (Từ chối sửa).
