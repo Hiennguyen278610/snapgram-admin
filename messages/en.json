@@ -172,5 +172,79 @@
       "reasonRequired": "Enter a reason for the ban",
       "reasonTooLong": "The reason must be 255 characters or fewer"
     }
+  },
+  "rbac": {
+    "title": "Roles & Permissions",
+    "description": "Create roles and decide exactly what each one can do",
+    "table": {
+      "column": {
+        "name": "Role",
+        "description": "Description",
+        "userCount": "Users",
+        "system": "Type",
+        "actions": "Actions"
+      },
+      "empty": "No roles found",
+      "emptyDescription": "Create a custom role to get started.",
+      "noDescription": "No description"
+    },
+    "role": {
+      "system": "System",
+      "custom": "Custom",
+      "systemHint": "This is a system role. Its permissions can be viewed but not changed."
+    },
+    "action": {
+      "create": "Create role",
+      "edit": "Edit role",
+      "delete": "Delete role",
+      "viewPermissions": "View permissions",
+      "savePermissions": "Save permissions",
+      "selectAll": "Select all",
+      "clearAll": "Clear all",
+      "openMenu": "Actions for {name}"
+    },
+    "form": {
+      "name": "Role name",
+      "description": "Description",
+      "namePlaceholder": "SUPPORT_LEAD",
+      "descriptionPlaceholder": "What this role is responsible for",
+      "createDescription": "Name the role now. You can assign permissions right after.",
+      "editDescription": "Update the name and description of {name}."
+    },
+    "detail": {
+      "title": "Role details",
+      "users": "Users",
+      "created": "Created",
+      "updated": "Updated",
+      "loading": "Loading role details",
+      "notFound": "This role could not be found."
+    },
+    "deleteDialog": {
+      "title": "Delete {name}?",
+      "description": "This permanently removes the role. Accounts that still hold it lose its permissions immediately."
+    },
+    "category": {
+      "CONTENT_MODERATION": "Content moderation",
+      "REPORT_MANAGEMENT": "Report management",
+      "SUPPORT": "Support",
+      "SYSTEM": "System",
+      "USER_MANAGEMENT": "User management"
+    },
+    "error": {
+      "loadFailed": "Failed to load roles",
+      "createFailed": "Could not create the role",
+      "updateFailed": "Could not update the role",
+      "deleteFailed": "Could not delete the role",
+      "permissionsFailed": "Could not save permissions",
+      "namePattern": "Use uppercase letters, numbers and underscores only",
+      "nameLength": "The role name must be between 2 and 50 characters",
+      "descriptionLength": "The description must be 255 characters or fewer"
+    },
+    "toast": {
+      "created": "Role {name} created",
+      "updated": "Role {name} updated",
+      "deleted": "Role {name} deleted",
+      "permissionsSaved": "Permissions saved"
+    }
   }
 }

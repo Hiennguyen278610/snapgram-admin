@@ -21,7 +21,13 @@ export const userKeys = {
   detail: (id: string) => [...userKeys.details(), id] as const,
 };
 
+export const rbacKeys = {
+  all: ['admin', 'rbac'] as const,
+  roles: () => [...rbacKeys.all, 'roles'] as const,
+  role: (id: string) => [...rbacKeys.all, 'role', id] as const,
+  permissions: () => [...rbacKeys.all, 'permissions'] as const,
+};
+
 // Placeholders for the upcoming sprints — add them here when needed.
-// export const rbacKeys = ...    // Sprint 2.4
 // export const reportKeys = ...  // Sprint 2.5
 // export const mediaKeys = ...   // Sprint 2.6

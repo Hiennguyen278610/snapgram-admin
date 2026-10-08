@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { dashboardKeys, userKeys } from './query-keys';
+import { dashboardKeys, rbacKeys, userKeys } from './query-keys';
 
 describe('dashboardKeys', () => {
   it('exposes the domain root key', () => {
@@ -42,5 +42,30 @@ describe('userKeys', () => {
   it('prefix-matches every list key so invalidation reaches all pages', () => {
     const listKey = userKeys.list({ page: 3 });
     expect(listKey.slice(0, userKeys.lists().length)).toEqual([...userKeys.lists()]);
+  });
+});
+
+describe('rbacKeys', () => {
+  it('exposes the admin/rbac domain root key', () => {
+    expect(rbacKeys.all).toEqual(['admin', 'rbac']);
+  });
+
+  it('nests roles and permissions under the domain root', () => {
+    expect(rbacKeys.roles()).toEqual(['admin', 'rbac', 'roles']);
+    expect(rbacKeys.permissions()).toEqual(['admin', 'rbac', 'permissions']);
+  });
+
+  it('appends the id to the role detail scope', () => {
+    expect(rbacKeys.role('r-1')).toEqual(['admin', 'rbac', 'role', 'r-1']);
+  });
+
+  it('keeps the roles list and role detail as distinct scopes', () => {
+    // Both live under `['admin','rbac']`, but the list key does NOT prefix-match
+    // the detail key — every role mutation must invalidate both explicitly.
+    const listKey = rbacKeys.roles();
+    const roleKey = rbacKeys.role('r-1');
+
+    expect(roleKey.slice(0, rbacKeys.all.length)).toEqual([...rbacKeys.all]);
+    expect(roleKey.slice(0, listKey.length)).not.toEqual([...listKey]);
   });
 });

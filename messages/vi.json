@@ -172,5 +172,79 @@
       "reasonRequired": "Vui lòng nhập lý do khoá",
       "reasonTooLong": "Lý do không được vượt quá 255 ký tự"
     }
+  },
+  "rbac": {
+    "title": "Vai trò & Quyền",
+    "description": "Tạo vai trò và quyết định chính xác từng vai trò được làm gì",
+    "table": {
+      "column": {
+        "name": "Vai trò",
+        "description": "Mô tả",
+        "userCount": "Người dùng",
+        "system": "Loại",
+        "actions": "Thao tác"
+      },
+      "empty": "Chưa có vai trò nào",
+      "emptyDescription": "Tạo một vai trò tuỳ chỉnh để bắt đầu.",
+      "noDescription": "Không có mô tả"
+    },
+    "role": {
+      "system": "Hệ thống",
+      "custom": "Tuỳ chỉnh",
+      "systemHint": "Đây là vai trò hệ thống. Có thể xem nhưng không thể thay đổi quyền hạn."
+    },
+    "action": {
+      "create": "Tạo vai trò",
+      "edit": "Sửa vai trò",
+      "delete": "Xoá vai trò",
+      "viewPermissions": "Xem quyền hạn",
+      "savePermissions": "Lưu quyền hạn",
+      "selectAll": "Chọn tất cả",
+      "clearAll": "Bỏ chọn tất cả",
+      "openMenu": "Thao tác cho {name}"
+    },
+    "form": {
+      "name": "Tên vai trò",
+      "description": "Mô tả",
+      "namePlaceholder": "SUPPORT_LEAD",
+      "descriptionPlaceholder": "Vai trò này phụ trách việc gì",
+      "createDescription": "Đặt tên vai trò trước. Bạn có thể gán quyền ngay sau đó.",
+      "editDescription": "Cập nhật tên và mô tả của {name}."
+    },
+    "detail": {
+      "title": "Chi tiết vai trò",
+      "users": "Người dùng",
+      "created": "Ngày tạo",
+      "updated": "Cập nhật lần cuối",
+      "loading": "Đang tải chi tiết vai trò",
+      "notFound": "Không tìm thấy vai trò này."
+    },
+    "deleteDialog": {
+      "title": "Xoá {name}?",
+      "description": "Thao tác này xoá vĩnh viễn vai trò. Những tài khoản còn giữ vai trò sẽ mất quyền tương ứng ngay lập tức."
+    },
+    "category": {
+      "CONTENT_MODERATION": "Kiểm duyệt nội dung",
+      "REPORT_MANAGEMENT": "Quản lý báo cáo",
+      "SUPPORT": "Hỗ trợ",
+      "SYSTEM": "Hệ thống",
+      "USER_MANAGEMENT": "Quản lý người dùng"
+    },
+    "error": {
+      "loadFailed": "Không tải được danh sách vai trò",
+      "createFailed": "Không thể tạo vai trò",
+      "updateFailed": "Không thể cập nhật vai trò",
+      "deleteFailed": "Không thể xoá vai trò",
+      "permissionsFailed": "Không thể lưu quyền hạn",
+      "namePattern": "Chỉ dùng chữ in hoa, chữ số và dấu gạch dưới",
+      "nameLength": "Tên vai trò phải từ 2 đến 50 ký tự",
+      "descriptionLength": "Mô tả không được vượt quá 255 ký tự"
+    },
+    "toast": {
+      "created": "Đã tạo vai trò {name}",
+      "updated": "Đã cập nhật vai trò {name}",
+      "deleted": "Đã xoá vai trò {name}",
+      "permissionsSaved": "Đã lưu quyền hạn"
+    }
   }
 }

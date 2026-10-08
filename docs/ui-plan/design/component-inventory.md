@@ -55,6 +55,13 @@ Tài liệu này là đặc tả danh mục quy chuẩn độc lập (self-conta
 | **`UnbanConfirmDialog`** | `alert-dialog` | Modal xác nhận đơn giản, không có trường nhập. | Gọi `POST /api/auth/admin/users/{id}/unban`. | Closed, Open, Submitting (Loading), Error |
 | **`RoleAssignMenu`** | `dropdown-menu` | Menu popover bo góc `rounded-xl shadow-lg border border-border`. Danh sách role tĩnh `ADMIN`/`MODERATOR` (danh sách role động thuộc Sprint 2.4). | Gọi `POST /api/auth/admin/users/{id}/roles` và `DELETE /api/auth/admin/users/{id}/roles/{role}`. | Closed, Open, Saving, Error |
 | **`UserDetailDrawer`** | `sheet` | Drawer trượt từ cạnh phải, nền phẳng `bg-card`. | Gọi `GET /api/auth/admin/users/{id}`. | Closed, Open, Fetching, Error, Banned Info |
+#### Nhóm RBAC (Sprint 2.4)
+| **`RoleDataTable`** | `table`, `badge`, `dropdown-menu` | Bảng phẳng `border border-border`, header `bg-muted`. Badge `system`/`custom` dùng variant `outline` + semantic token (KHÔNG hardcode màu). | Danh sách vai trò từ `GET /api/auth/admin/roles`. | Loading Skeleton (5 hàng), Empty, Error + Retry, Populated |
+| **`RoleDetailSheet`** | `sheet` | Drawer trượt phải, nền phẳng `bg-card`. Chỉ mount khi có role được chọn. Nút đóng tự render (`SheetClose`, icon Lucide X) để không lộ chữ "Close" tiếng Anh mặc định của shadcn. | `GET /api/auth/admin/roles/{id}` + nhúng `PermissionMatrix` (ghi qua `PUT /roles/{id}/permissions`). | Closed, Fetching, Error, Ready, System-role read-only |
+| **`PermissionMatrix`** | `checkbox` | **Compound component** (`PermissionMatrix` + `.Group` + `.Item`) theo `vercel-composition-patterns` — tránh boolean-prop proliferation. Group theo `category`, thứ tự cố định 5 nhóm. | Ghi qua `PUT /api/auth/admin/roles/{id}/permissions` với `{ permissionIds }`. | Idle, Dirty, Saving (Loader2), Saved, Error |
+| **`CreateRoleDialog`** | `dialog`, `field` | RHF + zod. Validate `name` theo `^[A-Z0-9_]+$` (2–50), tự UPPERCASE. Nút submit disable + `Loader2` khi pending. | `POST /api/auth/admin/roles` (gửi `permissionIds: []`, gán quyền sau ở sheet). | Closed, Open, Field Error, Submitting |
+| **`EditRoleDialog`** | `dialog`, `field` | Chỉ mở cho role `system: false`. Không cho sửa permission ở đây (đã có matrix). | `PUT /api/auth/admin/roles/{id}`. | Closed, Open, Field Error, Submitting |
+| **`DeleteRoleDialog`** | `alert-dialog` | Xác nhận 2 bước, nút Confirm `bg-rose-600 hover:bg-rose-700 text-white` (solid phẳng, KHÔNG gradient). Không render khi `system: true`. | `DELETE /api/auth/admin/roles/{id}` (backend trả 200 **không body**). | Closed, Open, Submitting, Error |
 
 ### 2.4. Nhóm Kiểm Duyệt Nội Dung & Quản Lý Media (Content Moderation & Media Management)
 
