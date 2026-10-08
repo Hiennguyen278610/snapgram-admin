@@ -295,11 +295,12 @@ Các issue BE chưa fix. FE KHÔNG hack workaround — giữ code đúng spec.
 - **Tạm thời**: Không test filter targetType trên tab "All" với real backend.
 - **Sau fix**: E2E/browser verify filter trên cả tab "All" và tab trạng thái.
 
-### BI-010 — Gateway không dùng `admin_access_token` cho `/api/auth/me` và `/api/auth/logout`
-- **Impact**: Cả 2 endpoint trả **401** khi gọi bằng cookie admin ⇒ **không thể đăng xuất** (cookie httpOnly không tự xoá được) và **không lấy được thông tin admin hiện tại**.
-- **FE status**: Chưa triển khai nút Logout / `AdminProfileCard` để tránh tạo control không hoạt động. Guard hiện tại chỉ kiểm tra cookie tồn tại nên trông vẫn "đúng".
-- **Tạm thời**: Không có workaround (cookie httpOnly + FE không dựng được header `Authorization`). Chặn luôn "role-filtered sidebar" (Sprint 3.3).
-- **Sau fix**: Triển khai LogoutButton + AdminProfileCard + role-filtered sidebar, kèm E2E kiểm tra cookie thực sự bị xoá sau logout.
+### BI-010 — Cookie admin không được dùng cho /me, /logout, /api/media/**
+(Đã mở rộng từ Sprint 2.6: ảnh hưởng thêm toàn bộ /api/media/**.)
+- **Impact**: Các endpoint này trả **401** khi gọi bằng cookie admin ⇒ **không thể đăng xuất** (cookie httpOnly không tự xoá được), **không lấy được thông tin admin hiện tại**, và **toàn bộ /api/media/** không gọi được qua cookie**.
+- **FE status**: Chưa triển khai nút Logout / `AdminProfileCard`. Sprint 2.6 (Media Management) chạy và test bằng MSW, ghi chú `// TODO(BI-010)` trong code.
+- **Tạm thời**: Không có workaround phía browser cho cookie. Sprint 2.6 dựa trên mock MSW. Chặn luôn "role-filtered sidebar" (Sprint 3.3).
+- **Sau fix**: Triển khai LogoutButton + AdminProfileCard + switch media real backend + role-filtered sidebar, kèm E2E kiểm tra cookie.
 
 ### Nguyên tắc chung
 - FE không tự ý đổi API contract để workaround.

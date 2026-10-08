@@ -97,4 +97,28 @@ Set-Cookie: refresh_token=; Path=/api/auth; Max-Age=0; Expires=Thu, 01 Jan 1970 
 2. Route guard hiện tại của `src/middleware.ts` chỉ kiểm tra **sự tồn tại** của cookie, nên luồng đăng nhập/đăng xuất vẫn "trông" đúng dù logout không thực sự huỷ phiên — cần lưu ý khi kiểm thử.
 3. Ghi nhận vào [conventions.md §17](../architect/conventions.md).
 
+
+---
+
+## 7. Mở Rộng Phạm Vi (Phát Hiện Sprint 2.6)
+
+**Ảnh hưởng thêm:** Không chỉ `/api/auth/me` và `/api/auth/logout`, mà TOÀN BỘ `/api/media/**` cũng bị ảnh hưởng.
+
+**Bằng chứng:**
+```
+GET /api/media/me    Cookie: admin_access_token=<hợp lệ>  → 401
+GET /api/media/me    Authorization: Bearer <cùng token>    → 200
+GET /api/media/{id}  Cookie: admin_access_token            → 401 (không phải 404)
+```
+
+**Root cause:** cùng dòng `JwtAuthenticationFilter` — chỉ 2 prefix `/api/auth/admin` + `/api/admin` được đọc `admin_access_token`. `/api/media/**` rơi vào nhánh else → tìm `access_token`.
+
+**Impact thêm:** Admin Portal không thể dùng media service qua cookie. Sprint 2.6 (Media Management) chỉ test được với MSW.
+
+**Đề xuất BE (bổ sung):** khi fix BI-010, thử **cả 2 cookie** theo thứ tự ưu tiên thay vì chọn theo path:
+```java
+Cookie c = getFirst("admin_access_token");
+if (c == null) c = getFirst("access_token");
+```
+
 > ⚠️ Tài liệu tạm nằm trong backend repo. Sẽ move sang FE repo khi tách.
