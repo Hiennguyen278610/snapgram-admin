@@ -2,6 +2,8 @@
 
 > ⚠️ LƯU Ý QUAN TRỌNG: Tài liệu này trích xuất thô từ Swagger UI (mặc định hiển thị Bearer). Admin Portal thực tế dùng COOKIE-BASED cho `/api/auth/admin/login`: BE set `Set-Cookie: admin_access_token` (httpOnly; Secure; SameSite). FE KHÔNG đọc/lưu token. Chi tiết xem `docs/ui-plan/architect/auth-and-security-flow.md`. Phần mô tả Bearer bên dưới giữ nguyên vì phản ánh Swagger raw.
 
+> **Áp dụng cho toàn bộ endpoint `/api/auth/admin/**`:** dùng cookie `admin_access_token` (httpOnly) thay vì Bearer. Bảng "Auth" cột ghi `Bearer` là output raw của Swagger — bỏ qua khi integrate FE. Chi tiết: `architect/auth-and-security-flow.md`.
+
 ## Auth flow:
 
 1. `POST /api/auth/register` hoặc `POST /api/auth/login`
