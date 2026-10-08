@@ -13,7 +13,7 @@ export function TopBar() {
   const setCommandOpen = useUIStore((s) => s.setCommandOpen);
 
   return (
-    <header className="sticky top-0 z-10 flex h-[60px] shrink-0 items-center gap-3 border-b border-border bg-card/80 backdrop-blur">
+    <header className="sticky top-0 z-10 flex h-[60px] shrink-0 items-center gap-3 border-b border-border bg-card px-4 lg:px-6">
       <Button
         type="button"
         variant="ghost"
@@ -25,9 +25,7 @@ export function TopBar() {
         <Menu className="size-5" aria-hidden />
       </Button>
 
-      <p className="font-display truncate text-lg text-card-foreground">
-        {tCommon('app.title')}
-      </p>
+      <p className="font-display truncate text-lg text-card-foreground">{tCommon('app.title')}</p>
 
       <div className="ml-auto flex min-w-0 items-center gap-2">
         <Button

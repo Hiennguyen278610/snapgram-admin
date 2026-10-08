@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -50,13 +50,13 @@
 }
 
 :root {
-  --background: #e6ebf5;    /* canvas xám nhạt (Light mode) */
-  --foreground: #262626;    /* text chính */
-  --card: #ffffff;          /* card trắng nổi trên canvas */
+  --background: #f8fafc; /* nền app chính (Light mode) */
+  --foreground: #262626; /* text chính */
+  --card: #ffffff; /* card trắng nổi trên canvas */
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #ff6a00;       /* brand orange (gradient start) */
+  --primary: #ff6a00; /* brand orange (gradient start) */
   --primary-foreground: #1a1a1a;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -65,7 +65,7 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #f3f4f6;        /* hairline border */
+  --border: #f3f4f6; /* hairline border */
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.87 0 0);
@@ -85,9 +85,9 @@
 }
 
 .dark {
-  --background: #09090b;    /* canvas đen */
+  --background: #09090b; /* canvas đen */
   --foreground: #fafafa;
-  --card: #18181b;          /* card zinc-900 */
+  --card: #18181b; /* card zinc-900 */
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);

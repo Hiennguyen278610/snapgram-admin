@@ -17,14 +17,7 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { useUIStore } from '@/stores/ui-store';
 
-type NavKey =
-  | 'dashboard'
-  | 'users'
-  | 'rbac'
-  | 'reports'
-  | 'systemHealth'
-  | 'kafka'
-  | 'minio';
+type NavKey = 'dashboard' | 'users' | 'rbac' | 'reports' | 'systemHealth' | 'kafka' | 'minio';
 
 type NavIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -65,22 +58,21 @@ export function SidebarNav() {
   const collapsed = useUIStore((s) => s.sidebarCollapsed);
   const toggleSidebar = useUIStore((s) => s.toggleSidebar);
 
-  const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <aside
       aria-label={tCommon('app.title')}
       data-collapsed={collapsed}
       className={cn(
-        'hidden shrink-0 flex-col border-border transition-[width] duration-200 lg:flex lg:border-r',
-        collapsed ? 'w-[72px]' : 'w-[260px] pr-6',
+        'hidden shrink-0 flex-col border-r border-border bg-card py-4 pl-4 transition-[width] duration-200 lg:flex',
+        collapsed ? 'w-[72px]' : 'w-[260px] pr-6'
       )}
     >
       <div
         className={cn(
           'flex items-center gap-2 pb-6',
-          collapsed ? 'justify-center' : 'justify-between',
+          collapsed ? 'justify-center' : 'justify-between'
         )}
       >
         {!collapsed && (
@@ -114,7 +106,7 @@ export function SidebarNav() {
             collapsed && 'justify-center px-0',
             active
               ? 'bg-accent font-semibold text-accent-foreground'
-              : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground',
+              : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'
           );
 
           if (item.external) {
