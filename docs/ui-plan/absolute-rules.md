@@ -50,7 +50,11 @@ Bất kỳ code hay đề xuất thiết kế nào vi phạm các quy tắc này
 - Sau mỗi lệnh CLI → verify file/output sinh ra đúng.
 - Nếu thấy AI đề xuất "tôi sẽ viết file package.json cho bạn" → reject ngay, yêu cầu dùng CLI.
 - **Ngoại lệ:** Được sửa `src/app/layout.tsx` để override font (xoá Geist, dùng next/font). Được sửa `src/app/globals.css` để override token (oklch shadcn → hex brand). Lý do: CLI v4 auto-push không khớp design system.
-- **Ngoại lệ:** Được sửa `next.config.ts` (chỉ để wrap plugin) và tạo `.prettierrc.json` (config format) và `.prettierignore` (danh sách file/folder prettier bỏ qua: node_modules, .next, coverage, playwright-report, test-results, .husky/_/, pnpm-lock.yaml, **docs/**). Lý do: CLI không có lệnh generate các file này cho Next.js standalone; và prettier là formatter chuẩn industry được dùng trong lint-staged; `docs/**` bắt buộc để prettier không phá cú pháp glob/backtick trong spec.
+- **Ngoại lệ:** Được sửa `next.config.ts` cho các mục sau (KHÔNG đổi config khác trong file):
+  - wrap `createNextIntlPlugin()` (Sprint 1.3).
+  - config `devIndicators: false` (tắt Next.js dev indicator).
+  - config `images.remotePatterns` (hostname MinIO — Sprint 2.5).
+- **Ngoại lệ:** Được tạo `.prettierrc.json` (config format) và `.prettierignore` (danh sách file/folder prettier bỏ qua: node_modules, .next, coverage, playwright-report, test-results, .husky/_/, pnpm-lock.yaml, **docs/**). Lý do: CLI không có lệnh generate các file này cho Next.js standalone; và prettier là formatter chuẩn industry được dùng trong lint-staged; `docs/**` bắt buộc để prettier không phá cú pháp glob/backtick trong spec.
 
 ### Rule 5: Theme Mode — Cấm Hardcode Màu, Bắt Buộc Dùng Semantic Token
 

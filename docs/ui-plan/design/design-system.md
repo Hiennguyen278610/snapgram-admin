@@ -50,7 +50,7 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
 
 #### A. Tone Sáng (Light Mode)
 
-- `appBg`: `#e6ebf5` (Nền canvas ngoài cùng bao quanh Dashboard)
+- `appBg`: `#f8fafc` (Nền app chính + main content area)
 - `appCard`: `#ffffff` (Nền thẻ Container chính bo góc `rounded-[32px]` và nền các card)
 - `softGray`: `#f8fafc` (Nền nav item active, input search background `#f6f7fb`)
 - `border-color`: `rgba(243, 244, 246, 0.8)` (`border-gray-100/80`)

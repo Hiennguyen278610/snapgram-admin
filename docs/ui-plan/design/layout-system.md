@@ -10,26 +10,20 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
 
 ## 2. Hệ Thống Khung Nhìn Tổng Thể (Shell Viewport Architecture)
 
-### 2.1. Viewport Outer Canvas
-- **Background:** `bg-background`.
-- **Padding ngoài:** `p-2 sm:p-5 lg:p-8`.
-- **Display:** `min-h-screen flex items-center justify-center`.
-- **Mục tiêu:** Tạo trải nghiệm SaaS desktop đóng gói trong một ứng dụng trung tâm gọn gàng, cách ly hoàn toàn khỏi màn hình người dùng thông thường.
+### 2.1. App Root Layout
+- **Background:** `bg-background` (Light: `#f8fafc`, Dark: `#09090b`).
+- **Layout:** `min-h-screen flex` — sidebar trái + main area phải.
+- **Mục tiêu:** Dashboard SaaS full-viewport, không có outer canvas bao quanh.
+  Sidebar và Topbar dùng `bg-card` để tách khỏi main content area.
 
-> **Lưu ý:** Token semantic tự đổi màu theo theme (xem `theme-mode.md`).
-> Giá trị màu cụ thể nằm ở `design-system.md` §3.2.
-
-### 2.2. Master App Container (Main Frame)
-- **Kích thước tối đa:** `w-full max-w-[1440px] min-h-[920px]`.
-- **Background:** `bg-card`.
-- **Bo góc chuẩn:** `rounded-[32px] sm:rounded-[40px]`.
-- **Viền ngoài:** `border border-border`.
-- **Đổ bóng mềm:** `shadow-[0_20px_45px_-15px_rgba(26,42,70,0.12)]`.
-- **Padding trong:** `p-5 sm:p-7 lg:p-9`.
-- **Bố cục Flex:** `flex flex-col lg:flex-row gap-6 lg:gap-8 overflow-hidden`.
-
-> **Lưu ý:** Token semantic tự đổi màu theo theme (xem `theme-mode.md`).
-> Giá trị màu cụ thể nằm ở `design-system.md` §3.2.
+### 2.2. Master Shell Structure
+- **Cấu trúc:** `<div class="flex min-h-screen">` chứa Sidebar + Main Area.
+- **Sidebar:** `bg-card border-r border-border` — cố định bên trái.
+- **Main Area:** `flex-1 flex flex-col` — chứa TopBar + Content.
+- **TopBar:** `bg-card border-b border-border sticky top-0`.
+- **Content:** `flex-1 bg-background p-4 lg:p-6 overflow-auto`.
+- **Bỏ** các class cũ: `max-w-[1440px]`, `min-h-[920px]`,
+  `rounded-[32px] sm:rounded-[40px]`, `shadow-[0_20px_45px...]`.
 
 ---
 

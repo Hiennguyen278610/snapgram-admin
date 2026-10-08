@@ -70,5 +70,5 @@ Tài liệu này là đặc tả danh mục quy chuẩn độc lập (self-conta
 
 | Tên Component | Cài Đặt (shadcn) | Ràng Buộc Styling (Từ design-system.md) | Chức Năng & Ánh Xạ API | Các Trạng Thái Giao Diện (States Coverage) |
 |---|---|---|---|---|
-| **`AdminLoginForm`** | `form`, `input`, `button` | Form phẳng nằm giữa màn hình, viền hairline tinh tế. | Đăng nhập Admin qua `POST /api/auth/admin/login` (rate limit 3 lần). | Idle, Submitting, Field Errors, 401 Alert, 423 Lockout Countdown |
+| **`AdminLoginForm`** | `field`, `label`, `input`, `button` | Form phẳng nằm giữa màn hình, viền hairline tinh tế. | Đăng nhập Admin qua `POST /api/auth/admin/login`. | Idle, Submitting, Field Errors, 401 Alert, 423 Lockout Countdown |
 | **`TwoFactorVerifyModal`** | `input-otp`, `dialog` | Khung nhập mã xác thực OTP 6 số (TOTP) nếu tài khoản bật 2FA. | Xác thực bước 2 qua `POST /api/auth/login/2fa`. | Closed, Open, Incomplete (0-5 digits), Verifying, Invalid OTP Error |
