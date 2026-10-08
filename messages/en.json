@@ -24,7 +24,7 @@
       "title": "Admin Portal Login",
       "submit": "Sign In",
       "field": { "email": "Email", "password": "Password" },
-      "emailPlaceholder": "admin@snapgram.dev",
+      "emailPlaceholder": "admin@snapgram.com",
       "passwordPlaceholder": "••••••••",
       "showPassword": "Show password",
       "hidePassword": "Hide password",
@@ -105,8 +105,7 @@
         "status": "Status",
         "created": "Created",
         "actions": "Actions"
-      },
-      "empty": "No users to show"
+      }
     },
     "status": {
       "active": "Active",
@@ -167,8 +166,7 @@
       "roleRemoved": "Role removed"
     },
     "error": {
-      "loadFailed": "Failed to load users",
-      "invalidResponse": "Invalid response shape"
+      "loadFailed": "Failed to load users"
     },
     "form": {
       "reasonRequired": "Enter a reason for the ban",

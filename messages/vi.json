@@ -24,7 +24,7 @@
       "title": "Đăng nhập Cổng quản trị",
       "submit": "Đăng nhập",
       "field": { "email": "Email", "password": "Mật khẩu" },
-      "emailPlaceholder": "admin@snapgram.dev",
+      "emailPlaceholder": "admin@snapgram.com",
       "passwordPlaceholder": "••••••••",
       "showPassword": "Hiện mật khẩu",
       "hidePassword": "Ẩn mật khẩu",
@@ -105,8 +105,7 @@
         "status": "Trạng thái",
         "created": "Ngày tạo",
         "actions": "Thao tác"
-      },
-      "empty": "Không có người dùng để hiển thị"
+      }
     },
     "status": {
       "active": "Đang hoạt động",
@@ -167,8 +166,7 @@
       "roleRemoved": "Đã gỡ vai trò"
     },
     "error": {
-      "loadFailed": "Không tải được danh sách người dùng",
-      "invalidResponse": "Dữ liệu phản hồi không hợp lệ"
+      "loadFailed": "Không tải được danh sách người dùng"
     },
     "form": {
       "reasonRequired": "Vui lòng nhập lý do khoá",
