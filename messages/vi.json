@@ -59,6 +59,7 @@
     "users": "Người dùng",
     "rbac": "Vai trò & Quyền",
     "reports": "Báo cáo vi phạm",
+    "media": "Thư viện Media",
     "systemHealth": "Sức khỏe hệ thống",
     "kafka": "Kafka UI",
     "minio": "MinIO S3",

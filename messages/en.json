@@ -59,6 +59,7 @@
     "users": "Users",
     "rbac": "Roles & Permissions",
     "reports": "Reports",
+    "media": "Media Library",
     "systemHealth": "System Health",
     "kafka": "Kafka UI",
     "minio": "MinIO S3",

@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Flag,
   HardDrive,
+  Images,
   LayoutDashboard,
   ShieldAlert,
   Users,
@@ -18,7 +19,8 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { useUIStore } from '@/stores/ui-store';
 
-type NavKey = 'dashboard' | 'users' | 'rbac' | 'reports' | 'systemHealth' | 'kafka' | 'minio';
+type NavKey =
+  'dashboard' | 'users' | 'rbac' | 'reports' | 'media' | 'systemHealth' | 'kafka' | 'minio';
 
 type NavIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -34,6 +36,7 @@ const NAV_ITEMS: NavItem[] = [
   { key: 'users', href: '/admin/users', icon: Users },
   { key: 'rbac', href: '/admin/rbac', icon: ShieldAlert },
   { key: 'reports', href: '/admin/moderation/reports', icon: Flag },
+  { key: 'media', href: '/admin/media', icon: Images },
   { key: 'systemHealth', href: '/admin/system-health', icon: Activity },
   {
     key: 'kafka',
