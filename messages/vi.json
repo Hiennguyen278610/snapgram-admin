@@ -246,5 +246,83 @@
       "deleted": "Đã xoá vai trò {name}",
       "permissionsSaved": "Đã lưu quyền hạn"
     }
+  },
+  "reports": {
+    "title": "Kiểm duyệt nội dung",
+    "description": "Xem xét bài viết, bình luận và tài khoản bị tố cáo, sau đó duyệt hoặc bác bỏ từng trường hợp",
+    "tabs": {
+      "all": "Tất cả",
+      "pending": "Chờ xử lý",
+      "reviewed": "Đã xem xét",
+      "resolved": "Đã duyệt",
+      "dismissed": "Đã bác bỏ"
+    },
+    "table": {
+      "column": {
+        "id": "Báo cáo",
+        "target": "Đối tượng",
+        "reporter": "Người tố cáo",
+        "reason": "Lý do",
+        "status": "Trạng thái",
+        "created": "Ngày tạo",
+        "actions": "Thao tác"
+      }
+    },
+    "status": {
+      "pending": "Chờ xử lý",
+      "reviewed": "Đã xem xét",
+      "resolved": "Đã duyệt",
+      "dismissed": "Đã bác bỏ"
+    },
+    "target": {
+      "post": "Bài viết",
+      "comment": "Bình luận",
+      "user": "Tài khoản"
+    },
+    "action": {
+      "view": "Xem báo cáo",
+      "resolve": "Duyệt",
+      "dismiss": "Bác bỏ",
+      "resolveConfirm": "Duyệt báo cáo này?",
+      "dismissConfirm": "Bác bỏ báo cáo này?",
+      "resolveDescription": "Đánh dấu báo cáo đã được xử lý. Nội dung bị tố cáo được giữ nguyên và vẫn lưu vết kiểm duyệt.",
+      "dismissDescription": "Xác nhận báo cáo không phải vi phạm. Quyết định này được ghi vào lịch sử kiểm duyệt.",
+      "openMenu": "Thao tác báo cáo"
+    },
+    "filters": {
+      "targetType": "Loại đối tượng",
+      "all": "Mọi loại đối tượng"
+    },
+    "empty": {
+      "title": "Không có báo cáo nào",
+      "description": "Không có mục nào khớp với bộ lọc hiện tại. Thử tab khác hoặc bỏ lọc loại đối tượng."
+    },
+    "detail": {
+      "title": "Chi tiết báo cáo",
+      "reporter": "Người tố cáo",
+      "target": "Đối tượng bị tố cáo",
+      "reason": "Lý do",
+      "description": "Chi tiết",
+      "created": "Ngày tạo",
+      "loading": "Đang tải chi tiết báo cáo",
+      "notFound": "Không tìm thấy báo cáo này.",
+      "close": "Đóng chi tiết báo cáo",
+      "statusHint": "Báo cáo này đã đóng và chỉ có thể xem lại.",
+      "actionBlocked": "Báo cáo đã duyệt hoặc đã bác bỏ chỉ được xem"
+    },
+    "pagination": {
+      "previous": "Trước",
+      "next": "Sau",
+      "pageLabel": "Trang {page} / {total}"
+    },
+    "toast": {
+      "resolveSuccess": "Đã duyệt báo cáo",
+      "dismissSuccess": "Đã bác bỏ báo cáo"
+    },
+    "error": {
+      "loadFailed": "Không tải được danh sách báo cáo",
+      "resolveFailed": "Không thể duyệt báo cáo",
+      "dismissFailed": "Không thể bác bỏ báo cáo"
+    }
   }
 }

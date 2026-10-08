@@ -28,6 +28,28 @@ export const rbacKeys = {
   permissions: () => [...rbacKeys.all, 'permissions'] as const,
 };
 
-// Placeholders for the upcoming sprints — add them here when needed.
-// export const reportKeys = ...  // Sprint 2.5
+/**
+ * Report enums — verified against the LIVE Swagger + real backend data
+ * (2026-10-08). Values are **case-sensitive UPPERCASE**; sending anything else
+ * makes the backend answer `500` instead of `400` (see BI-009).
+ */
+export type ReportStatus = 'PENDING' | 'REVIEWED' | 'RESOLVED' | 'DISMISSED';
+export type ReportTargetType = 'POST' | 'COMMENT' | 'USER';
+
+export interface ReportFilters {
+  status?: ReportStatus;
+  targetType?: ReportTargetType;
+  page?: number;
+  size?: number;
+}
+
+export const reportKeys = {
+  all: ['admin', 'reports'] as const,
+  lists: () => [...reportKeys.all, 'list'] as const,
+  list: (filters: ReportFilters) => [...reportKeys.lists(), filters] as const,
+  details: () => [...reportKeys.all, 'detail'] as const,
+  detail: (id: string) => [...reportKeys.details(), id] as const,
+};
+
+// Placeholder for the upcoming sprint — add it here when needed.
 // export const mediaKeys = ...   // Sprint 2.6

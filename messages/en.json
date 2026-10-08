@@ -246,5 +246,83 @@
       "deleted": "Role {name} deleted",
       "permissionsSaved": "Permissions saved"
     }
+  },
+  "reports": {
+    "title": "Content Moderation",
+    "description": "Review reported posts, comments and accounts, then resolve or dismiss each case",
+    "tabs": {
+      "all": "All",
+      "pending": "Pending",
+      "reviewed": "Reviewed",
+      "resolved": "Resolved",
+      "dismissed": "Dismissed"
+    },
+    "table": {
+      "column": {
+        "id": "Report",
+        "target": "Target",
+        "reporter": "Reporter",
+        "reason": "Reason",
+        "status": "Status",
+        "created": "Created",
+        "actions": "Actions"
+      }
+    },
+    "status": {
+      "pending": "Pending",
+      "reviewed": "Reviewed",
+      "resolved": "Resolved",
+      "dismissed": "Dismissed"
+    },
+    "target": {
+      "post": "Post",
+      "comment": "Comment",
+      "user": "Account"
+    },
+    "action": {
+      "view": "View report",
+      "resolve": "Resolve",
+      "dismiss": "Dismiss",
+      "resolveConfirm": "Resolve this report?",
+      "dismissConfirm": "Dismiss this report?",
+      "resolveDescription": "Mark the report as handled. The reported content stays in place and keeps its audit trail.",
+      "dismissDescription": "Reject the report as not a violation. This is recorded in the moderation history.",
+      "openMenu": "Report actions"
+    },
+    "filters": {
+      "targetType": "Target type",
+      "all": "All target types"
+    },
+    "empty": {
+      "title": "No reports here",
+      "description": "Nothing matches this filter right now. Try another tab or clear the target type."
+    },
+    "detail": {
+      "title": "Report details",
+      "reporter": "Reporter",
+      "target": "Reported target",
+      "reason": "Reason",
+      "description": "Details",
+      "created": "Created",
+      "loading": "Loading report details",
+      "notFound": "This report could not be found.",
+      "close": "Close report details",
+      "statusHint": "This report is already closed and can only be reviewed.",
+      "actionBlocked": "Resolved and dismissed reports are read-only"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "pageLabel": "Page {page} of {total}"
+    },
+    "toast": {
+      "resolveSuccess": "Report resolved",
+      "dismissSuccess": "Report dismissed"
+    },
+    "error": {
+      "loadFailed": "Failed to load reports",
+      "resolveFailed": "Could not resolve the report",
+      "dismissFailed": "Could not dismiss the report"
+    }
   }
 }

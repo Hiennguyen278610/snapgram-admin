@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { dashboardKeys, rbacKeys, userKeys } from './query-keys';
+import { dashboardKeys, rbacKeys, reportKeys, userKeys } from './query-keys';
 
 describe('dashboardKeys', () => {
   it('exposes the domain root key', () => {
@@ -67,5 +67,34 @@ describe('rbacKeys', () => {
 
     expect(roleKey.slice(0, rbacKeys.all.length)).toEqual([...rbacKeys.all]);
     expect(roleKey.slice(0, listKey.length)).not.toEqual([...listKey]);
+  });
+});
+
+describe('reportKeys', () => {
+  it('exposes the admin/reports domain root key', () => {
+    expect(reportKeys.all).toEqual(['admin', 'reports']);
+  });
+
+  it('nests lists and details under the domain root', () => {
+    expect(reportKeys.lists()).toEqual(['admin', 'reports', 'list']);
+    expect(reportKeys.details()).toEqual(['admin', 'reports', 'detail']);
+  });
+
+  it('appends the filters object to the list scope', () => {
+    const filters = { status: 'PENDING', targetType: 'USER', page: 0, size: 20 } as const;
+
+    expect(reportKeys.list(filters)).toEqual(['admin', 'reports', 'list', filters]);
+  });
+
+  it('appends the id to the detail scope', () => {
+    expect(reportKeys.detail('r-1')).toEqual(['admin', 'reports', 'detail', 'r-1']);
+  });
+
+  it('prefix-matches every list key so invalidation reaches all filter tabs', () => {
+    const pendingKey = reportKeys.list({ status: 'PENDING' });
+    const reviewedKey = reportKeys.list({ status: 'REVIEWED' });
+
+    expect(pendingKey.slice(0, reportKeys.lists().length)).toEqual([...reportKeys.lists()]);
+    expect(reviewedKey.slice(0, reportKeys.lists().length)).toEqual([...reportKeys.lists()]);
   });
 });
