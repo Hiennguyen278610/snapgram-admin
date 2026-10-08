@@ -18,6 +18,7 @@ Tài liệu này theo dõi các vấn đề và điểm bất cập từ phía B
 | **`BI-003`** | Không nhất quán cấu trúc lỗi giữa API Gateway (Shape B) và Microservices (Shape A) | **P1** | **Open** | 2026-10-07 | [BI-003-gateway-shape-inconsistent.md](BI-003-gateway-shape-inconsistent.md) |
 | **`BI-004`** | Không nhất quán Response Header giới hạn tần suất (`X-Rate-Limit-Reset` vs `Retry-After`) | **P2** | **Open** | 2026-10-07 | [BI-004-response-headers-inconsistent.md](BI-004-response-headers-inconsistent.md) |
 | **`BI-005`** | Thiếu tham số tìm kiếm từ khoá (`q`) trên `GET /api/auth/admin/users` | **P1** | **Open** | 2026-10-08 | [BI-005-missing-user-search-param.md](BI-005-missing-user-search-param.md) |
+| **`BI-006`** | Gateway trả `503 Authentication service unavailable` cho mọi request `/api/auth/admin/**` có credential | **P0** | **Open** | 2026-10-08 | [BI-006-gateway-admin-auth-503.md](BI-006-gateway-admin-auth-503.md) |
 
 ---
 *Quy ước trạng thái:* `Open` (Mới tạo) | `In Progress` (Đang sửa) | `Fixed` (Đã sửa xong) | `Wontfix` (Từ chối sửa).
