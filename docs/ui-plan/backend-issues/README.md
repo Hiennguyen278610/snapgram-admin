@@ -22,7 +22,7 @@ Tài liệu này theo dõi các vấn đề và điểm bất cập từ phía B
 | **`BI-007`** | `description` của permission là tiếng Việt cố định, API không hỗ trợ bản địa hoá | **P2** | **Open** | 2026-10-08 | [BI-007-permission-description-not-localized.md](BI-007-permission-description-not-localized.md) |
 | **`BI-008`** | Missing status guards / wrong error code cho report resolve/dismiss | **P2** | **Open** | 2026-10-08 | [BI-008-report-status-guards.md](BI-008-report-status-guards.md) |
 | **`BI-009`** | `targetType` filter bị bỏ qua khi không kèm `status` + enum sai trả `500` | **P1** | **Open** | 2026-10-08 | [BI-009-report-targettype-filter-ignored.md](BI-009-report-targettype-filter-ignored.md) |
-| **`BI-010`** | Gateway không dùng `admin_access_token` cho `/api/auth/me` và `/api/auth/logout` (⇒ 401, không logout được) | **P1** | **Open** | 2026-10-08 | [BI-010-admin-cookie-not-used-for-me-and-logout.md](BI-010-admin-cookie-not-used-for-me-and-logout.md) |
+| **`BI-010`** | Gateway không dùng `admin_access_token` cho `/api/auth/me` và `/api/auth/logout` (⇒ 401, không logout được) | **P1** | **Fixed** | 2026-10-08 | [BI-010-admin-cookie-not-used-for-me-and-logout.md](BI-010-admin-cookie-not-used-for-me-and-logout.md) |
 | **`BI-011`** | Commit `d4ece81` làm `auth-service` không khởi động được (`RateLimitInterceptor` — `No default constructor found`) ⇒ `auth-service` crash-loop, `api-gateway` không lên | **P0** | **Open** | 2026-10-15 | [BI-011-auth-service-boot-failure-ratelimit-interceptor.md](BI-011-auth-service-boot-failure-ratelimit-interceptor.md) |
 
 ---

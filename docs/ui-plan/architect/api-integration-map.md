@@ -14,8 +14,8 @@ Tài liệu này là đặc tả quy chuẩn độc lập (self-contained) về 
 | Endpoint | Method | Microservice | UI Component tương ứng | Request / Payload | DTO / Response |
 |---|---|---|---|---|---|
 | `/api/auth/admin/login` | `POST` | Auth (`:8081`) | Form Đăng nhập Admin (`LoginForm`) | `{ email, password }` | Set-Cookie `admin_access_token` + `AuthResponse` |
-| `/api/auth/me` | `GET` | Auth (`:8081`) | Header User Profile, Route Guard | N/A (gửi Cookie) | `UserMeResponse` = `{ id, username, email, role, displayName, avatarUrl?, emailVerified, createdAt }` — **`role` số ít, KHÔNG có `roles`** (đã verify Swagger sống). ⚠️ Hiện **không gọi được** bằng cookie admin → [BI-010](../backend-issues/BI-010-admin-cookie-not-used-for-me-and-logout.md) |
-| `/api/auth/logout` | `POST` | Auth (`:8081`) | Nút Đăng xuất (`LogoutButton`) | N/A | **204 No Content** + clear 3 cookie (`admin_access_token`, `access_token`, `refresh_token`) với `Max-Age=0`. ⚠️ Hiện **không gọi được** bằng cookie admin → [BI-010](../backend-issues/BI-010-admin-cookie-not-used-for-me-and-logout.md) |
+| `/api/auth/me` | `GET` | Auth (`:8081`) | Header User Profile, Route Guard | N/A (gửi Cookie) | `UserMeResponse` = `{ id, username, email, role, displayName, avatarUrl?, emailVerified, createdAt }` — **`role` số ít, KHÔNG có `roles`** (đã verify Swagger sống). ✅ Gọi được bằng cookie `admin_access_token` (BI-010 đã fix 2026-10-16) |
+| `/api/auth/logout` | `POST` | Auth (`:8081`) | Nút Đăng xuất (`LogoutButton`) | N/A | **204 No Content** + clear 3 cookie (`admin_access_token`, `access_token`, `refresh_token`) với `Max-Age=0`. ✅ Gọi được bằng cookie `admin_access_token` (BI-010 đã fix 2026-10-16) |
 | `/api/auth/admin/bootstrap` | `POST` | Auth (`:8081`) | Màn hình setup ban đầu (Dev only) | `{ usernameOrEmail, secretKey }` | `200 OK` (Cấp role ADMIN) |
 
 ---

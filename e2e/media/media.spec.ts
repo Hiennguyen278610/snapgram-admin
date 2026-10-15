@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * There is no MSW service worker wired into the app shell, so the media API is
- * never available in the browser. Headings/shell are asserted without a
- * backend; the data-driven case stubs `GET /api/media/me` with `page.route`
- * (conventions §18 / BI-010).
+ * There is no MSW service worker wired into the app shell, and E2E must not
+ * depend on a running backend. Headings/shell are asserted without a backend;
+ * the data-driven case stubs `GET /api/media/me` with `page.route`
+ * (conventions §18). BI-010 (admin cookie on `/api/media/**`) is now fixed, so
+ * the real page works when the backend stack is up.
  */
 const CORS_HEADERS = {
   'access-control-allow-origin': 'http://localhost:3000',

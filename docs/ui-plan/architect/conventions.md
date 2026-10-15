@@ -297,10 +297,10 @@ Các issue BE chưa fix. FE KHÔNG hack workaround — giữ code đúng spec.
 
 ### BI-010 — Cookie admin không được dùng cho /me, /logout, /api/media/**
 (Đã mở rộng từ Sprint 2.6: ảnh hưởng thêm toàn bộ /api/media/**.)
-- **Impact**: Các endpoint này trả **401** khi gọi bằng cookie admin ⇒ **không thể đăng xuất** (cookie httpOnly không tự xoá được), **không lấy được thông tin admin hiện tại**, và **toàn bộ /api/media/** không gọi được qua cookie**.
-- **FE status**: Chưa triển khai nút Logout / `AdminProfileCard`. Sprint 2.6 (Media Management) chạy và test bằng MSW, ghi chú `// TODO(BI-010)` trong code.
-- **Tạm thời**: Không có workaround phía browser cho cookie. Sprint 2.6 dựa trên mock MSW. Chặn luôn "role-filtered sidebar" (Sprint 3.3).
-- **Sau fix**: Triển khai LogoutButton + AdminProfileCard + switch media real backend + role-filtered sidebar, kèm E2E kiểm tra cookie.
+- **Status**: ✅ **Fixed** (2026-10-16) — BE PR [#19](https://github.com/hoangdinhreborn/Snapgram-Server/pull/19).
+- **Action**: FE bỏ workaround (đã xoá `TODO(BI-010)`). **Unblock Sidebar User Menu** (mini-sprint 3.05) + switch media sang real backend + role-filtered sidebar (Sprint 3.3).
+- **Impact (lịch sử)**: Các endpoint này trả **401** khi gọi bằng cookie admin ⇒ **không thể đăng xuất** (cookie httpOnly không tự xoá được), **không lấy được thông tin admin hiện tại**, và **toàn bộ /api/media/** không gọi được qua cookie**.
+- **Verify**: xem [BI-010 §8](../backend-issues/BI-010-admin-cookie-not-used-for-me-and-logout.md).
 
 ### BI-011 — `auth-service` không khởi động được do `RateLimitInterceptor` (P0)
 - **Impact**: Commit `d4ece81` thêm constructor thứ 2 vào `RateLimitInterceptor` mà không `@Autowired` ⇒ Spring đòi default constructor ⇒ **auth-service crash-loop, api-gateway không lên** ⇒ không chạy được backend thật.

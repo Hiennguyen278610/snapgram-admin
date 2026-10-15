@@ -15,7 +15,7 @@ import type { Media, PresignedUrlRequest, PresignedUrlResponse } from '../schema
  * re-requests `/api/media/presigned` and PUTs AGAIN EXACTLY ONCE
  * (`attempt <= 2`). A second failure rejects and the UI stops with an error.
  *
- * TODO(BI-010): switch to real backend when gateway routes admin cookie to /api/media/**
+ * BI-010 fixed 2026-10-16 — gateway now forwards the admin cookie to /api/media/**.
  */
 export type PresignedUploadStep = 'requesting' | 'uploading' | 'confirming';
 

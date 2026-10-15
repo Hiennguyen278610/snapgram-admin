@@ -48,7 +48,7 @@ sequenceDiagram
         Auth-->>UI: 200 OK + Set-Cookie: admin_access_token (httpOnly, Secure, SameSite)
     end
     UI->>GW: GET /api/auth/me (Tự động kèm Cookie)
-    Note over GW,Auth: ⚠️ HIỆN ĐANG LỖI (BI-010): Gateway chỉ đọc cookie `access_token`<br/>cho path KHÔNG thuộc /api/auth/admin/** ⇒ trả 401 dù `admin_access_token` hợp lệ
+    Note over GW,Auth: Gateway đọc cookie `admin_access_token` (fallback `access_token`) cho MỌI path được bảo vệ<br/>— BI-010 đã fix 2026-10-16
     GW->>Auth: Xác thực role ADMIN
     Auth-->>UI: 200 OK { id, username, email, role, displayName, emailVerified, createdAt }
     UI->>Admin: Chuyển hướng vào /admin/dashboard
