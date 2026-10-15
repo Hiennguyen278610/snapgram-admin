@@ -33,7 +33,7 @@ export const authHandlers = [
   }),
 
   // Admin session identity (mini-sprint 3.05). Shape verified against the LIVE
-  // backend: a single `role` string, no `roles` array (BI-010 fixed).
+  // backend: a single `role` string, no `roles` array.
   http.get('http://localhost:8080/api/auth/me', () =>
     HttpResponse.json({
       id: 'admin-id',

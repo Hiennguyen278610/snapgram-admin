@@ -14,8 +14,6 @@ import type { Media, PresignedUrlRequest, PresignedUrlResponse } from '../schema
  * a `403` from the PUT to MinIO means the signed URL expired. The orchestrator
  * re-requests `/api/media/presigned` and PUTs AGAIN EXACTLY ONCE
  * (`attempt <= 2`). A second failure rejects and the UI stops with an error.
- *
- * BI-010 fixed 2026-10-16 — gateway now forwards the admin cookie to /api/media/**.
  */
 export type PresignedUploadStep = 'requesting' | 'uploading' | 'confirming';
 

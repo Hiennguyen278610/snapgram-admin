@@ -40,7 +40,7 @@ export const rbacKeys = {
 /**
  * Report enums — verified against the LIVE Swagger + real backend data
  * (2026-10-08). Values are **case-sensitive UPPERCASE**; sending anything else
- * makes the backend answer `500` instead of `400` (see BI-009).
+ * makes the backend answer `400` (verified live 2026-10-16).
  */
 export type ReportStatus = 'PENDING' | 'REVIEWED' | 'RESOLVED' | 'DISMISSED';
 export type ReportTargetType = 'POST' | 'COMMENT' | 'USER';

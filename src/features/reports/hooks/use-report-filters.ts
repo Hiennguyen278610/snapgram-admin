@@ -10,7 +10,7 @@ export const DEFAULT_REPORT_PAGE_SIZE = 20;
 
 function parseStatus(raw: string | null): ReportStatus | undefined {
   // `find` keeps the value inside the UPPERCASE union: an unknown or
-  // lowercase param (BI-009 -> 500 on the real backend) is ignored entirely.
+  // lowercase param (the real backend answers 400) is ignored entirely.
   return REPORT_STATUSES.find((status) => status === raw);
 }
 

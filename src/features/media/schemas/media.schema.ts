@@ -12,9 +12,6 @@ import { z } from 'zod';
  *
  * Zod style follows the rest of the repo (see `report.schema.ts`): plain
  * `z.string()` for ids / date-times instead of `.uuid()` / `.datetime()`.
- *
- * BI-010 fixed 2026-10-16: the API Gateway now forwards the admin httpOnly
- * cookie to `/api/media/**`. Unit/E2E still run against MSW for isolation.
  */
 export const MEDIA_STATUSES = ['PENDING', 'READY', 'PROCESSING', 'FAILED', 'DELETED'] as const;
 

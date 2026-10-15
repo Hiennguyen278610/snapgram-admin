@@ -56,9 +56,13 @@ describe('parseApiError', () => {
 
   it('handles Shape B (Gateway) with 429 + X-Rate-Limit-Reset', () => {
     const future = Math.floor(Date.now() / 1000) + 30;
-    const err = makeAxiosError(429, { error: 'Rate limit exceeded' }, {
-      'x-rate-limit-reset': String(future),
-    });
+    const err = makeAxiosError(
+      429,
+      { error: 'Rate limit exceeded' },
+      {
+        'x-rate-limit-reset': String(future),
+      }
+    );
     const result = parseApiError(err);
     expect(result.kind).toBe('rateLimit');
     expect(result.retryAfterSeconds).toBeGreaterThanOrEqual(29);
@@ -66,10 +70,14 @@ describe('parseApiError', () => {
   });
 
   it('respects Retry-After header over X-Rate-Limit-Reset', () => {
-    const err = makeAxiosError(429, { error: 'Rate limit' }, {
-      'retry-after': '60',
-      'x-rate-limit-reset': String(Math.floor(Date.now() / 1000) + 30),
-    });
+    const err = makeAxiosError(
+      429,
+      { error: 'Rate limit' },
+      {
+        'retry-after': '60',
+        'x-rate-limit-reset': String(Math.floor(Date.now() / 1000) + 30),
+      }
+    );
     const result = parseApiError(err);
     expect(result.retryAfterSeconds).toBe(60);
   });
@@ -107,5 +115,20 @@ describe('parseApiError', () => {
   it('uses error field as message when Shape A message missing', () => {
     const err = makeAxiosError(500, { status: 500, error: 'Server Error' });
     expect(parseApiError(err).message).toBe('Server Error');
+  });
+
+  it('extracts the backend error code when present', () => {
+    const err = makeAxiosError(409, {
+      status: 409,
+      code: 'INVALID_STATUS_TRANSITION',
+      error: 'Conflict',
+      message: 'Dismissed report cannot be resolved',
+    });
+    expect(parseApiError(err).code).toBe('INVALID_STATUS_TRANSITION');
+  });
+
+  it('leaves code undefined when the body has none', () => {
+    const err = makeAxiosError(500, { status: 500, error: 'Err', message: 'Msg' });
+    expect(parseApiError(err).code).toBeUndefined();
   });
 });

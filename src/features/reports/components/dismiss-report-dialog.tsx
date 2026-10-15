@@ -27,7 +27,8 @@ interface Props {
  * modal): rose confirm button, no backdrop dismissal, Escape blocked while the
  * request is in flight. The toast is raised by the page that owns the mutation.
  *
- * BI-008: returns `null` when the report is no longer actionable.
+ * BI-008: returns `null` when the report is no longer actionable
+ * (defense-in-depth; the backend also rejects the transition with 409).
  */
 export function DismissReportDialog({ report, open, onOpenChange, onConfirm, isPending }: Props) {
   const t = useTranslations('reports');

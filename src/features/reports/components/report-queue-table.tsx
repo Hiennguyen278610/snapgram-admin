@@ -45,8 +45,8 @@ interface ReportActionMenuProps {
 
 function ReportActionMenu({ report, onAction }: ReportActionMenuProps) {
   const t = useTranslations('reports');
-  // BI-008: RESOLVED / DISMISSED are read-only — the backend has no status
-  // guard, so the UI is the only thing preventing a broken transition.
+  // RESOLVED / DISMISSED are read-only. Kept as defense-in-depth: the backend
+  // also rejects an invalid transition with 409.
   const moderatable = isModeratableStatus(report.status);
 
   return (

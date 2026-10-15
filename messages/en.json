@@ -42,7 +42,10 @@
   },
   "error": {
     "unknown": "An unexpected error occurred. Please try again later.",
-    "validation": { "invalidFields": "Please check the highlighted fields." },
+    "validation": {
+      "invalidFields": "Please check the highlighted fields.",
+      "invalidEnum": "The selected value is not accepted by the server."
+    },
     "auth": {
       "invalidCredentials": "The email or password provided is incorrect."
     },
@@ -50,7 +53,8 @@
     "forbidden": { "accessDenied": "You do not have permission." },
     "notFound": { "resource": "The requested resource could not be found." },
     "conflict": {
-      "duplicateData": "A record with this information already exists."
+      "duplicateData": "A record with this information already exists.",
+      "invalidStatusTransition": "This action is not allowed for the current status."
     },
     "rateLimit": { "exceeded": "Rate limit exceeded. Please wait." },
     "server": { "internalError": "Internal server error." },
