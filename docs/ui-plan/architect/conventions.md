@@ -302,6 +302,13 @@ Các issue BE chưa fix. FE KHÔNG hack workaround — giữ code đúng spec.
 - **Tạm thời**: Không có workaround phía browser cho cookie. Sprint 2.6 dựa trên mock MSW. Chặn luôn "role-filtered sidebar" (Sprint 3.3).
 - **Sau fix**: Triển khai LogoutButton + AdminProfileCard + switch media real backend + role-filtered sidebar, kèm E2E kiểm tra cookie.
 
+### BI-011 — `auth-service` không khởi động được do `RateLimitInterceptor` (P0)
+- **Impact**: Commit `d4ece81` thêm constructor thứ 2 vào `RateLimitInterceptor` mà không `@Autowired` ⇒ Spring đòi default constructor ⇒ **auth-service crash-loop, api-gateway không lên** ⇒ không chạy được backend thật.
+- **FE status**: Không có workaround. **Chặn luôn việc verify runtime BI-010** và khiến Sprint 3.1 hiển thị Gateway/Auth = `DOWN` (đúng thực tế).
+- **Tạm thời**: Dùng MSW cho test; không verify real backend.
+- **Sau fix**: `curl :8081/:8080/actuator/health` = UP → verify BI-010 (5 endpoint bằng cookie admin) → cập nhật docs BI-010 sang `Fixed`.
+- **Chi tiết**: [BI-011](../backend-issues/BI-011-auth-service-boot-failure-ratelimit-interceptor.md).
+
 ### Nguyên tắc chung
 - FE không tự ý đổi API contract để workaround.
 - Track trong `backend-issues/BI-*.md`.
