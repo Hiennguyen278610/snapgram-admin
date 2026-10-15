@@ -1,7 +1,7 @@
 # BI-006: Gateway Trả Sai `503 Authentication service unavailable` Khi Token Không Hợp Lệ (Đúng Phải Là `401`)
 
 - **Priority:** `P1` (Important) — *(đính chính: bản đầu tiên của issue này xếp `P0` với giả định "chặn toàn bộ Phase 2"; đã kiểm chứng lại bằng phiên admin thật và **hạ xuống `P1`** — xem §6)*
-- **Status:** `Open`
+- **Status:** `Fixed` (2026-10-16)
 - **Module ảnh hưởng:** `api-gateway` (`JwtAuthenticationFilter`), liên quan `auth-service` (`SecurityConfig`, `/api/auth/verify`)
 - **Ngày phát hiện:** 2026-10-08 (Sprint 2.3) — cập nhật chẩn đoán 2026-10-08
 - **Mức độ thực tế:** KHÔNG chặn phiên đăng nhập hợp lệ. Gây ra (a) thông báo lỗi sai lệch khi token hết hiệu lực và (b) FE không bao giờ nhận được `401` để tự chuyển về trang đăng nhập.
@@ -185,5 +185,31 @@ curl -i -X POST http://localhost:8080/api/auth/admin/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"<ADMIN_INITIAL_EMAIL>","password":"<ADMIN_INITIAL_PASSWORD>"}'
 ```
+
+---
+
+## 10. Verification (Sau Khi BE Fix — 2026-10-16)
+
+**Backend change:** `api-gateway` — phân biệt lỗi verify token (`401`) với service không sẵn sàng (`503`), đồng thời chuẩn hoá Shape A `ErrorResponse`, commit `d4ece81`.
+
+**Runtime verify** (`Authorization`/cookie admin):
+
+```
+GET  /api/auth/admin/users   Cookie: admin_access_token=not-a-jwt   → 401
+GET  /api/auth/admin/users   Cookie: <JWT rác>                      → 401
+POST /api/auth/logout        (revoke token)                         → 204
+GET  /api/auth/me            Cookie: <token vừa revoke>             → 401
+GET  /api/auth/me            Cookie: <token mới, hợp lệ>            → 200   (đối chứng)
+```
+
+Body `401` có `code` + `message` (không còn body `503`):
+
+```json
+{"status":401,"code":"UNAUTHORIZED","error":"Unauthorized","message":"Invalid or expired token"}
+```
+
+**Kết luận:** BI-006 đã fix — token không hợp lệ/hết hiệu lực trả `401`, KHÔNG còn `503`.
+
+---
 
 > ⚠️ Tài liệu tạm nằm trong backend repo. Sẽ move sang FE repo khi tách.

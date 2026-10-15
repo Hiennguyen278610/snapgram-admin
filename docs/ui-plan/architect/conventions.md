@@ -266,12 +266,14 @@ Quy tắc sử dụng hệ thống thông báo nổi toàn cục qua thư viện
 Các issue BE chưa fix. FE KHÔNG hack workaround — giữ code đúng spec.
 
 ### BI-005 — `q` query param bị bỏ qua
+- **Status**: ✅ **Fixed** (2026-10-16) — `q` filter chạy thật trên real backend (`q=zzzznomatch` → 0 kết quả).
 - **Impact**: Search user không filter ở real backend (trả full list).
 - **FE status**: Code đúng (gửi `q` param). Test pass với MSW.
 - **Tạm thời**: Không test search trên real backend.
 - **Sau fix**: E2E test search filter bằng real backend.
 
 ### BI-006 — Session hết hạn → 503 thay 401
+- **Status**: ✅ **Fixed** (2026-10-16) — token không hợp lệ/hết hiệu lực nay trả **401** (không còn 503); interceptor 401 → redirect hoạt động.
 - **Impact**: Auto-redirect login không kích hoạt. User thấy "Internal server error" + Retry.
 - **FE status**: Interceptor 401 → redirect đã sẵn (Sprint 2.1).
 - **Tạm thời**: Chấp nhận UX kém khi session expired.
@@ -284,12 +286,14 @@ Các issue BE chưa fix. FE KHÔNG hack workaround — giữ code đúng spec.
 - **Sau fix**: BE trả `descriptionEn` HOẶC FE dùng catalog i18n riêng (17 key hardcode — cần update khi BE thêm permission).
 
 ### BI-008 — Report resolve/dismiss thiếu status guard
+- **Status**: ✅ **Fixed** (2026-10-16) — `DISMISSED`→resolve và `RESOLVED`→dismiss nay trả **409**; `resolve` trên `RESOLVED` vẫn idempotent `200` (đúng thiết kế).
 - **Impact**: Resolve report đã `DISMISSED` → 500 (đáng lẽ 409). Dismiss report đã `RESOLVED` → 200, âm thầm đổi trạng thái.
 - **FE status**: Nút Resolve/Dismiss bị **disable** khi status không phù hợp (chỉ `PENDING`/`REVIEWED` cho phép hành động).
 - **Tạm thời**: UI chặn ở tầng hiển thị; backend vẫn có thể bị gọi sai qua API trực tiếp.
 - **Sau fix**: Bỏ disable phía FE (hoặc giữ như lớp phòng vệ) + map 409 thành thông báo conflict đúng nghĩa.
 
 ### BI-009 — `targetType` filter bị bỏ qua khi không kèm `status`
+- **Status**: ✅ **Fixed** (2026-10-16) — filter `targetType` chạy khi KHÔNG kèm `status`; enum sai trả **400** (không còn 500).
 - **Impact**: Ở tab "All", chọn Target type không lọc gì (trả full list). Ở tab trạng thái cụ thể thì lọc đúng. Enum sai (`user`, `BOGUS`) → 500 thay vì 400.
 - **FE status**: Code đúng (gửi `targetType` chữ HOA). MSW mock lọc đúng.
 - **Tạm thời**: Không test filter targetType trên tab "All" với real backend.
