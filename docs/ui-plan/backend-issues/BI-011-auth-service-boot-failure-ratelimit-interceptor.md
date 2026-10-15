@@ -125,7 +125,7 @@ docker inspect -f '{{.RestartCount}} {{.State.Health.Status}}' snapgram-auth-ser
 # → 16 starting  (crash-loop)
 ```
 
-Lưu ý: phải dùng **`docker compose` (v2)**. Xem §8 để biết vì sao **không** dùng `docker-compose` (v1).
+Lưu ý: dùng **`docker compose`** (plugin v2), không dùng `docker-compose` (v1) vì bản v1.29.2 không tương thích Docker Engine 29.x.
 
 ---
 
@@ -167,43 +167,6 @@ docker inspect -f '{{.RestartCount}}' snapgram-auth-service   # 0
 ```
 
 Sau khi BI-011 được fix, mới có thể chạy tiếp verification của **BI-010**.
-
----
-
-## 8. Phụ Lục — Lỗi Môi Trường, **KHÔNG PHẢI LỖI BACKEND**
-
-Trong lúc kiểm tra, lệnh `docker-compose up -d redis` (chạy tay) báo lỗi:
-
-```
-$ docker-compose up -d redis
-Recreating 01ee39164c18_snapgram-redis ...
-ERROR: for 01ee39164c18_snapgram-redis  'ContainerConfig'
-ERROR: for redis  'ContainerConfig'
-Traceback (most recent call last):
-  ...
-  File "/usr/lib/python3/dist-packages/compose/service.py", line 1579, in get_container_data_volumes
-    container.image_config['ContainerConfig'].get('Volumes') or {}
-KeyError: 'ContainerConfig'
-```
-
-**Đây là lỗi công cụ, không phải lỗi code backend.** Bằng chứng:
-
-| Thành phần | Phiên bản |
-|---|---|
-| `docker-compose` (Python, đã EOL) | **1.29.2** |
-| `docker compose` (plugin v2, đang dùng OK) | **v5.1.0** |
-| Docker Engine | **29.9.0** (API **1.56**) |
-
-```bash
-$ docker image inspect redis:8-alpine --format '{{json .ContainerConfig}}'
-template parsing error: ... map has no entry for key "ContainerConfig"
-```
-
-Docker Engine 29.x **đã bỏ key `ContainerConfig`** khỏi output `image inspect`, trong khi `docker-compose` v1.29.2 vẫn đọc cứng key này ⇒ `KeyError`.
-
-**Cách xử lý:** luôn dùng **`docker compose` (v2 plugin)** thay cho `docker-compose` (v1). Nên gỡ/không dùng `docker-compose` 1.29.2 trên máy dev.
-
-**Tác dụng phụ đã xảy ra:** lệnh v1 đã thay container `snapgram-redis` (do v2 quản lý) bằng `01ee39164c18_snapgram-redis` và container này `Exited` ⇒ redis tạm thời down. Khắc phục bằng `docker compose -f infra/docker-compose.yml up -d redis`.
 
 ---
 
