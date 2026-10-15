@@ -19,6 +19,8 @@
     "dark": "Dark",
     "system": "System"
   },
+  "userMenu": { "openMenu": "Open user menu", "logout": "Log out" },
+  "language": { "label": "Language", "en": "English", "vi": "Tiếng Việt" },
   "auth": {
     "login": {
       "title": "Admin Portal Login",

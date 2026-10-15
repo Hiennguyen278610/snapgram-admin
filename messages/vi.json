@@ -19,6 +19,8 @@
     "dark": "Tối",
     "system": "Theo hệ thống"
   },
+  "userMenu": { "openMenu": "Mở menu người dùng", "logout": "Đăng xuất" },
+  "language": { "label": "Ngôn ngữ", "en": "English", "vi": "Tiếng Việt" },
   "auth": {
     "login": {
       "title": "Đăng nhập Cổng quản trị",

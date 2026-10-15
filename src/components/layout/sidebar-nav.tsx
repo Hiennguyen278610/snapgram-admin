@@ -17,6 +17,7 @@ import {
 import { cn } from 'cn';
 import { Link, usePathname } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
+import { UserMenu } from '@/components/layout/user-menu';
 import { useUIStore } from '@/stores/ui-store';
 
 type NavKey =
@@ -145,6 +146,10 @@ export function SidebarNav() {
           );
         })}
       </nav>
+
+      <div className="mt-auto border-t border-border pt-4">
+        <UserMenu />
+      </div>
     </aside>
   );
 }

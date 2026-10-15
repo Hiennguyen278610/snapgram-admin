@@ -4,7 +4,6 @@ import { Menu, Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { useUIStore } from '@/stores/ui-store';
-import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { ServiceStatusPill } from '@/features/health/components/service-status-pill';
 
 export function TopBar() {
@@ -43,8 +42,6 @@ export function TopBar() {
         </Button>
 
         <ServiceStatusPill />
-
-        <ThemeToggle />
       </div>
     </header>
   );
