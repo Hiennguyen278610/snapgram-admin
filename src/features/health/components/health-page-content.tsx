@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import type { Locale } from '@/i18n/routing';
 import { formatDateTime } from '@/lib/i18n/format';
 import { useAllServicesHealth } from '../hooks/use-all-services-health';
+import { AccessDeniedCard } from '@/components/layout/access-denied-card';
+import { usePermission } from '@/features/auth/hooks/use-permission';
 import { ExternalLinksCard } from './external-links-card';
 import { ServiceStatusCard } from './service-status-card';
 
@@ -14,7 +16,12 @@ export function HealthPageContent() {
   // Full-path service label keys resolve from the root namespace.
   const tRoot = useTranslations();
   const locale = useLocale() as Locale;
+  const { hasAnyPermission, isLoading: isAuthLoading } = usePermission();
   const { services, isLoading, isError, lastChecked, refetch } = useAllServicesHealth();
+
+  if (!isAuthLoading && !hasAnyPermission('SYSTEM:SETTINGS_READ', 'AUDIT:VIEW')) {
+    return <AccessDeniedCard />;
+  }
 
   const lastCheckedLabel = lastChecked ? formatDateTime(lastChecked, locale) : null;
 

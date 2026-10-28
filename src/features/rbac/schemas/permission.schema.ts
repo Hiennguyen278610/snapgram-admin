@@ -9,6 +9,7 @@ import { z } from 'zod';
  */
 export const PERMISSION_CATEGORIES = [
   'CONTENT_MODERATION',
+  'PAYMENT_MANAGEMENT',
   'REPORT_MANAGEMENT',
   'SUPPORT',
   'SYSTEM',

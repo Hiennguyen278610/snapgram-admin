@@ -46,7 +46,7 @@ describe('useServiceHealth', () => {
 
   it('treats a proxied 503 DOWN as data, not an error', async () => {
     server.use(
-      http.get('/api/health/content', () =>
+      http.get('/api/admin/health/content', () =>
         HttpResponse.json({ status: 'DOWN', error: 'connect ECONNREFUSED' }, { status: 503 })
       )
     );
@@ -61,7 +61,9 @@ describe('useServiceHealth', () => {
   });
 
   it('surfaces an error when the payload is not a health status', async () => {
-    server.use(http.get('/api/health/media', () => new HttpResponse('not json', { status: 502 })));
+    server.use(
+      http.get('/api/admin/health/media', () => new HttpResponse('not json', { status: 502 }))
+    );
 
     const { wrapper } = makeWrapper();
     const { result } = renderHook(() => useServiceHealth('media'), { wrapper });
@@ -74,7 +76,7 @@ describe('useServiceHealth', () => {
 
 describe('fetchServiceHealth', () => {
   it('throws for an unrecognized payload', async () => {
-    server.use(http.get('/api/health/gateway', () => HttpResponse.json({ ok: true })));
+    server.use(http.get('/api/admin/health/gateway', () => HttpResponse.json({ ok: true })));
 
     await expect(fetchServiceHealth('gateway')).rejects.toThrow(
       'Invalid health response for gateway'

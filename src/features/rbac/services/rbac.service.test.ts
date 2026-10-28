@@ -41,7 +41,7 @@ describe('rbac.service', () => {
     expect(Array.isArray(roles)).toBe(true);
     expect(roles.map((role) => role.name)).toEqual(['ADMIN', 'MODERATOR', 'SUPPORT', 'USER']);
     expect(roles.map((role) => role.system)).toEqual([true, false, false, true]);
-    expect(roles.map((role) => role.permissions.length)).toEqual([17, 9, 5, 0]);
+    expect(roles.map((role) => role.permissions.length)).toEqual([19, 9, 5, 0]);
     expect(roles[0].userCount).toBe(1);
   });
 
@@ -67,13 +67,14 @@ describe('rbac.service', () => {
     expect(Array.isArray(permissions)).toBe(false);
     expect(Object.keys(permissions)).toEqual([
       'CONTENT_MODERATION',
+      'PAYMENT_MANAGEMENT',
       'REPORT_MANAGEMENT',
       'SUPPORT',
       'SYSTEM',
       'USER_MANAGEMENT',
     ]);
     const total = Object.values(permissions).reduce((sum, list) => sum + list.length, 0);
-    expect(total).toBe(17);
+    expect(total).toBe(19);
   });
 
   it('creates a custom role and defaults permissionIds to an empty list', async () => {

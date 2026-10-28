@@ -63,5 +63,13 @@ describe('UserActionMenu', () => {
     await userEvent.click(getByRole('button', { name: 'Actions' }));
     await userEvent.click(await screen.findByRole('menuitem', { name: /assign role/i }));
     expect(onAction).toHaveBeenLastCalledWith('assignRole', activeUser);
+
+    await userEvent.click(getByRole('button', { name: 'Actions' }));
+    await userEvent.click(await screen.findByRole('menuitem', { name: /edit user/i }));
+    expect(onAction).toHaveBeenLastCalledWith('edit', activeUser);
+
+    await userEvent.click(getByRole('button', { name: 'Actions' }));
+    await userEvent.click(await screen.findByRole('menuitem', { name: /delete user/i }));
+    expect(onAction).toHaveBeenLastCalledWith('delete', activeUser);
   });
 });

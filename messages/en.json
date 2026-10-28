@@ -59,13 +59,18 @@
     "users": "Users",
     "rbac": "Roles & Permissions",
     "reports": "Reports",
-    "media": "Media Library",
+    "support": "Customer Support",
+    "payments": "Payments",
     "systemHealth": "System Health",
-    "kafka": "Kafka UI",
-    "minio": "MinIO S3",
     "openExternal": "Open in new tab",
     "toggleSidebar": "Toggle sidebar",
-    "searchPlaceholder": "Search users, posts or tickets"
+    "searchPlaceholder": "Search users, posts or tickets",
+    "userNav": {
+      "profile": "Admin Profile",
+      "logout": "Log out",
+      "loggingOut": "Logging out...",
+      "role": "Role"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
@@ -120,6 +125,9 @@
       "user": "User"
     },
     "action": {
+      "createUser": "Create User",
+      "editUser": "Edit User",
+      "deleteUser": "Delete User",
       "viewDetails": "View details",
       "ban": "Ban user",
       "unban": "Unban user",
@@ -135,6 +143,33 @@
       "currentRoles": "Current roles",
       "noRoles": "This account has no roles",
       "noRolesAvailable": "No roles available"
+    },
+    "createDialog": {
+      "title": "Create User",
+      "description": "Create a new user account with initial credentials.",
+      "username": "Username",
+      "email": "Email Address",
+      "password": "Password",
+      "displayName": "Display Name",
+      "roles": "Roles",
+      "rolesHint": "USER is assigned by default. Click to assign additional roles.",
+      "emailVerified": "Mark email as verified",
+      "submit": "Create Account"
+    },
+    "editDialog": {
+      "title": "Edit User",
+      "description": "Update account details for @{username}.",
+      "displayName": "Display Name",
+      "email": "Email Address",
+      "resetPassword": "Reset Password",
+      "passwordPlaceholder": "Leave blank to keep current password",
+      "emailVerified": "Email Verified",
+      "submit": "Save Changes"
+    },
+    "deleteDialog": {
+      "title": "Delete @{username}?",
+      "description": "This permanently removes the user account, along with all roles and active sessions. This action cannot be undone.",
+      "confirm": "Delete Account"
     },
     "filters": {
       "search": "Search users",
@@ -161,6 +196,9 @@
       "pageLabel": "Page {page} of {total}"
     },
     "toast": {
+      "userCreated": "User @{username} created",
+      "userUpdated": "User @{username} updated",
+      "userDeleted": "User @{username} deleted",
       "banSuccess": "Account banned",
       "unbanSuccess": "Account unbanned",
       "roleAssigned": "Role assigned",
@@ -170,6 +208,10 @@
       "loadFailed": "Failed to load users"
     },
     "form": {
+      "usernameLength": "Username must be between 3 and 50 characters",
+      "usernamePattern": "Username can only contain letters, digits, dots and underscores",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordLength": "Password must be between 8 and 128 characters",
       "reasonRequired": "Enter a reason for the ban",
       "reasonTooLong": "The reason must be 255 characters or fewer"
     }
@@ -226,6 +268,7 @@
     },
     "category": {
       "CONTENT_MODERATION": "Content moderation",
+      "PAYMENT_MANAGEMENT": "Payment management",
       "REPORT_MANAGEMENT": "Report management",
       "SUPPORT": "Support",
       "SYSTEM": "System",
@@ -288,6 +331,10 @@
       "dismissConfirm": "Dismiss this report?",
       "resolveDescription": "Mark the report as handled. The reported content stays in place and keeps its audit trail.",
       "dismissDescription": "Reject the report as not a violation. This is recorded in the moderation history.",
+      "resolveUserConfirm": "Resolve report & ban @{username}?",
+      "resolveUserDescription": "Resolving this account report will permanently ban the account and revoke all their sessions.",
+      "resolveUserWarning": "Warning: The reported user account will be permanently banned and disconnected from all active devices.",
+      "resolveUser": "Ban & Resolve",
       "openMenu": "Report actions"
     },
     "filters": {
@@ -309,7 +356,12 @@
       "notFound": "This report could not be found.",
       "close": "Close report details",
       "statusHint": "This report is already closed and can only be reviewed.",
-      "actionBlocked": "Resolved and dismissed reports are read-only"
+      "actionBlocked": "Resolved and dismissed reports are read-only",
+      "previewTitle": "Reported Content Preview",
+      "author": "Author",
+      "content": "Content / Caption",
+      "media": "Attached Media",
+      "contentUnavailable": "The original content is no longer available or has been deleted."
     },
     "pagination": {
       "previous": "Previous",
@@ -400,8 +452,13 @@
     "services": {
       "gateway": "API Gateway",
       "auth": "Auth Service",
+      "chatbot": "Chatbot Service",
+      "chat": "Chat Service",
       "content": "Content Service",
-      "media": "Media Service"
+      "media": "Media Service",
+      "notification": "Notification Service",
+      "payment": "Payment Service",
+      "recommender": "Recommender Service"
     },
     "status": {
       "up": "Online",
@@ -423,6 +480,113 @@
     "error": {
       "title": "Failed to load health status",
       "retry": "Retry"
+    }
+  },
+  "payments": {
+    "title": "Payment Orders",
+    "description": "Manage subscription transactions and payment reconciliation",
+    "table": {
+      "orderId": "Order ID",
+      "product": "Product",
+      "amount": "Amount",
+      "status": "Status",
+      "createdAt": "Created At",
+      "expiresAt": "Expires At",
+      "actions": "Actions",
+      "empty": "No payment transactions found",
+      "emptyDescription": "There are no payments matching the selected filter."
+    },
+    "tabs": {
+      "all": "All",
+      "pending": "Pending",
+      "success": "Completed",
+      "completed": "Completed",
+      "expired": "Expired",
+      "failed": "Failed"
+    },
+    "status": {
+      "pending": "Pending",
+      "success": "Completed",
+      "completed": "Completed",
+      "expired": "Expired",
+      "failed": "Failed",
+      "unknown": "Unknown"
+    },
+    "products": {
+      "BLUE_TICK": "Verified Badge (Blue Tick)"
+    },
+    "action": {
+      "reconcile": "Reconcile",
+      "viewDetails": "View Details"
+    },
+    "reconcileDialog": {
+      "title": "Reconcile Transaction",
+      "description": "Query payment provider directly (MoMo / VNPay) to sync the latest transaction status for order {orderId}.",
+      "confirm": "Reconcile Now"
+    },
+    "toast": {
+      "reconcileSuccess": "Transaction reconciled successfully",
+      "reconcileFailed": "Failed to reconcile transaction"
+    },
+    "error": {
+      "loadFailed": "Failed to load payment transactions",
+      "reconcileFailed": "Could not reconcile transaction with payment gateway"
+    }
+  },
+  "support": {
+    "title": "Customer Support Tickets",
+    "description": "Review and respond to technical issues, account assistance and user requests",
+    "tabs": {
+      "all": "All",
+      "open": "Open",
+      "in_progress": "In Progress",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "table": {
+      "ticketId": "Ticket ID",
+      "user": "User",
+      "subject": "Subject",
+      "category": "Category",
+      "priority": "Priority",
+      "status": "Status",
+      "createdAt": "Created At",
+      "action": "Action",
+      "loading": "Loading tickets...",
+      "empty": "No tickets found in this queue",
+      "viewDetails": "Reply & View"
+    },
+    "category": {
+      "technical_issue": "Technical Issue",
+      "account_issue": "Account Assistance",
+      "payment_issue": "Payment / Blue Tick",
+      "feature_feedback": "Feedback",
+      "other": "Other"
+    },
+    "priority": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High",
+      "urgent": "Urgent"
+    },
+    "status": {
+      "open": "Open",
+      "in_progress": "In Progress",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "dialog": {
+      "title": "Support Ticket Details",
+      "attachments": "Attachments / Screenshots",
+      "officialReply": "Official Reply From Support Team",
+      "writeReply": "Write response to user",
+      "updateReply": "Update response message",
+      "replyPlaceholder": "Enter detailed response or instructions for the user...",
+      "setStatus": "Update status to",
+      "submitReply": "Send Reply"
+    },
+    "toast": {
+      "replySuccess": "Response sent to user successfully"
     }
   }
 }

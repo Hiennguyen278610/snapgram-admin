@@ -1,5 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { dashboardKeys, rbacKeys, reportKeys, userKeys } from './query-keys';
+import { authKeys, dashboardKeys, paymentKeys, rbacKeys, reportKeys, userKeys } from './query-keys';
+
+describe('authKeys', () => {
+  it('exposes the auth domain root key', () => {
+    expect(authKeys.all).toEqual(['auth']);
+  });
+
+  it('nests the me key under the domain root', () => {
+    expect(authKeys.me()).toEqual(['auth', 'me']);
+  });
+});
 
 describe('dashboardKeys', () => {
   it('exposes the domain root key', () => {
@@ -96,5 +106,25 @@ describe('reportKeys', () => {
 
     expect(pendingKey.slice(0, reportKeys.lists().length)).toEqual([...reportKeys.lists()]);
     expect(reviewedKey.slice(0, reportKeys.lists().length)).toEqual([...reportKeys.lists()]);
+  });
+});
+
+describe('paymentKeys', () => {
+  it('exposes the admin/payments domain root key', () => {
+    expect(paymentKeys.all).toEqual(['admin', 'payments']);
+  });
+
+  it('nests lists and details under the domain root', () => {
+    expect(paymentKeys.lists()).toEqual(['admin', 'payments', 'list']);
+    expect(paymentKeys.details()).toEqual(['admin', 'payments', 'detail']);
+  });
+
+  it('appends the filters object to the list scope', () => {
+    const filters = { status: 'PENDING', page: 0, size: 20 } as const;
+    expect(paymentKeys.list(filters)).toEqual(['admin', 'payments', 'list', filters]);
+  });
+
+  it('appends the id to the detail scope', () => {
+    expect(paymentKeys.detail('order-123')).toEqual(['admin', 'payments', 'detail', 'order-123']);
   });
 });

@@ -60,6 +60,20 @@ export const PERMISSIONS_BY_CATEGORY: Record<string, MockPermission[]> = {
       description: 'Xóa story vi phạm',
     },
   ],
+  PAYMENT_MANAGEMENT: [
+    {
+      id: 'faba32e6-ba17-4d29-8292-5e22834dd80d',
+      name: 'PAYMENT:READ',
+      category: 'PAYMENT_MANAGEMENT',
+      description: 'Xem danh sách và chi tiết giao dịch thanh toán',
+    },
+    {
+      id: 'f312a515-9668-4031-ab43-e3cbf0e9494d',
+      name: 'PAYMENT:RECONCILE',
+      category: 'PAYMENT_MANAGEMENT',
+      description: 'Đối soát giao dịch thanh toán thủ công',
+    },
+  ],
   REPORT_MANAGEMENT: [
     {
       id: 'c011581c-307d-4756-ab07-66b05e6b1e4e',

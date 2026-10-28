@@ -56,9 +56,13 @@ describe('parseApiError', () => {
 
   it('handles Shape B (Gateway) with 429 + X-Rate-Limit-Reset', () => {
     const future = Math.floor(Date.now() / 1000) + 30;
-    const err = makeAxiosError(429, { error: 'Rate limit exceeded' }, {
-      'x-rate-limit-reset': String(future),
-    });
+    const err = makeAxiosError(
+      429,
+      { error: 'Rate limit exceeded' },
+      {
+        'x-rate-limit-reset': String(future),
+      }
+    );
     const result = parseApiError(err);
     expect(result.kind).toBe('rateLimit');
     expect(result.retryAfterSeconds).toBeGreaterThanOrEqual(29);
@@ -66,10 +70,14 @@ describe('parseApiError', () => {
   });
 
   it('respects Retry-After header over X-Rate-Limit-Reset', () => {
-    const err = makeAxiosError(429, { error: 'Rate limit' }, {
-      'retry-after': '60',
-      'x-rate-limit-reset': String(Math.floor(Date.now() / 1000) + 30),
-    });
+    const err = makeAxiosError(
+      429,
+      { error: 'Rate limit' },
+      {
+        'retry-after': '60',
+        'x-rate-limit-reset': String(Math.floor(Date.now() / 1000) + 30),
+      }
+    );
     const result = parseApiError(err);
     expect(result.retryAfterSeconds).toBe(60);
   });

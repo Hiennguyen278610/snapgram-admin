@@ -2,6 +2,8 @@
 
 import { AlertCircle, SearchX, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -17,6 +19,7 @@ import type { Locale } from '@/i18n/routing';
 import { getErrorMessageKey } from '@/lib/api/error-mapper';
 import type { ApiError } from '@/lib/api/types';
 import { formatDateTime } from '@/lib/i18n/format';
+import { usePermission } from '@/features/auth/hooks/use-permission';
 import { useReportDetail } from '../hooks/use-report-detail';
 import { isModeratableStatus, type Report } from '../schemas/report.schema';
 import { ReportStatusBadge } from './report-status-badge';
@@ -55,6 +58,9 @@ export function ReportDetailDialog({ reportId, open, onOpenChange, onResolve, on
   const { data: report, isLoading, isError, error, refetch } = useReportDetail(reportId);
   const apiError = error as unknown as ApiError | null;
   const isNotFound = isError && apiError?.kind === 'notFound';
+  const { isAdmin, hasPermission } = usePermission();
+  const canModerate = isAdmin || hasPermission('REPORT:RESOLVE') || hasPermission('REPORT:DISMISS');
+
   // BI-008: RESOLVED / DISMISSED reports can only be inspected.
   const moderatable = report ? isModeratableStatus(report.status) : false;
   const blockedHint = t('detail.actionBlocked');
@@ -150,32 +156,120 @@ export function ReportDetailDialog({ reportId, open, onOpenChange, onResolve, on
                 </DetailRow>
               </div>
 
-              <Separator />
-
-              <div className="space-y-2">
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    type="button"
-                    disabled={!moderatable}
-                    title={moderatable ? undefined : blockedHint}
-                    onClick={() => onResolve?.(report)}
-                  >
-                    {t('action.resolve')}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    disabled={!moderatable}
-                    title={moderatable ? undefined : blockedHint}
-                    onClick={() => onDismiss?.(report)}
-                  >
-                    {t('action.dismiss')}
-                  </Button>
+              {/* Reported Content Preview Card */}
+              <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    {t('detail.previewTitle')}
+                  </h4>
+                  {report.targetStatus ? (
+                    <Badge
+                      variant="outline"
+                      className={
+                        report.targetStatus === 'DELETED'
+                          ? 'border-rose-300 text-rose-600 dark:border-rose-800 dark:text-rose-400 text-[10px]'
+                          : 'border-border text-muted-foreground text-[10px]'
+                      }
+                    >
+                      {report.targetStatus}
+                    </Badge>
+                  ) : null}
                 </div>
-                {!moderatable ? (
-                  <p className="text-xs text-muted-foreground">{t('detail.statusHint')}</p>
+
+                {/* Author Info */}
+                {report.targetAuthorUsername || report.targetAuthorDisplayName ? (
+                  <div className="flex items-center gap-2.5">
+                    <Avatar size="sm" className="size-7">
+                      {report.targetAuthorAvatarUrl ? (
+                        <AvatarImage
+                          src={report.targetAuthorAvatarUrl}
+                          alt={report.targetAuthorDisplayName || ''}
+                        />
+                      ) : null}
+                      <AvatarFallback className="text-xs font-semibold">
+                        {(report.targetAuthorDisplayName || report.targetAuthorUsername || 'U')
+                          .slice(0, 2)
+                          .toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <span className="text-xs font-medium text-foreground">
+                        {report.targetAuthorDisplayName || report.targetAuthorUsername}
+                      </span>
+                      {report.targetAuthorUsername ? (
+                        <span className="text-[10px] text-muted-foreground">
+                          @{report.targetAuthorUsername}
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                ) : null}
+
+                {/* Content / Caption */}
+                {report.targetContent ? (
+                  <div className="rounded-lg border border-border bg-card p-3 text-sm text-foreground whitespace-pre-wrap break-words">
+                    {report.targetContent}
+                  </div>
+                ) : !report.targetMediaUrls?.length && !report.targetAuthorUsername ? (
+                  <p className="text-xs italic text-muted-foreground">
+                    {t('detail.contentUnavailable')}
+                  </p>
+                ) : null}
+
+                {/* Attached Media Grid */}
+                {report.targetMediaUrls && report.targetMediaUrls.length > 0 ? (
+                  <div className="space-y-1.5">
+                    <span className="text-xs text-muted-foreground">{t('detail.media')}</span>
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                      {report.targetMediaUrls.map((url, index) => (
+                        <a
+                          key={index}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group relative aspect-square overflow-hidden rounded-lg border border-border bg-card"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={url}
+                            alt={`Reported media ${index + 1}`}
+                            className="size-full object-cover transition-transform group-hover:scale-105"
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 ) : null}
               </div>
+
+              <Separator />
+
+              {canModerate ? (
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      disabled={!moderatable}
+                      title={moderatable ? undefined : blockedHint}
+                      onClick={() => onResolve?.(report)}
+                    >
+                      {t('action.resolve')}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={!moderatable}
+                      title={moderatable ? undefined : blockedHint}
+                      onClick={() => onDismiss?.(report)}
+                    >
+                      {t('action.dismiss')}
+                    </Button>
+                  </div>
+                  {!moderatable ? (
+                    <p className="text-xs text-muted-foreground">{t('detail.statusHint')}</p>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           )}
         </div>

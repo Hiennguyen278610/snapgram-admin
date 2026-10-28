@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronLeft, ChevronRight, Eye, MoreHorizontal, ShieldCheck, XCircle } from 'lucide-react';
+import { usePermission } from '@/features/auth/hooks/use-permission';
 import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
@@ -45,6 +46,9 @@ interface ReportActionMenuProps {
 
 function ReportActionMenu({ report, onAction }: ReportActionMenuProps) {
   const t = useTranslations('reports');
+  const { isAdmin, hasPermission } = usePermission();
+  const canModerate = isAdmin || hasPermission('REPORT:RESOLVE') || hasPermission('REPORT:DISMISS');
+
   // BI-008: RESOLVED / DISMISSED are read-only — the backend has no status
   // guard, so the UI is the only thing preventing a broken transition.
   const moderatable = isModeratableStatus(report.status);
@@ -74,23 +78,27 @@ function ReportActionMenu({ report, onAction }: ReportActionMenuProps) {
           <Eye className="size-4" aria-hidden />
           {t('action.view')}
         </DropdownMenuItem>
-        <DropdownMenuItem
-          disabled={!moderatable}
-          title={!moderatable ? t('detail.actionBlocked') : undefined}
-          onSelect={() => onAction('resolve', report)}
-        >
-          <ShieldCheck className="size-4" aria-hidden />
-          {t('action.resolve')}
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          variant="destructive"
-          disabled={!moderatable}
-          title={!moderatable ? t('detail.actionBlocked') : undefined}
-          onSelect={() => onAction('dismiss', report)}
-        >
-          <XCircle className="size-4" aria-hidden />
-          {t('action.dismiss')}
-        </DropdownMenuItem>
+        {canModerate ? (
+          <>
+            <DropdownMenuItem
+              disabled={!moderatable}
+              title={!moderatable ? t('detail.actionBlocked') : undefined}
+              onSelect={() => onAction('resolve', report)}
+            >
+              <ShieldCheck className="size-4" aria-hidden />
+              {t('action.resolve')}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              variant="destructive"
+              disabled={!moderatable}
+              title={!moderatable ? t('detail.actionBlocked') : undefined}
+              onSelect={() => onAction('dismiss', report)}
+            >
+              <XCircle className="size-4" aria-hidden />
+              {t('action.dismiss')}
+            </DropdownMenuItem>
+          </>
+        ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
   );

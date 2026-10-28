@@ -162,4 +162,23 @@ describe('ReportDetailDialog', () => {
 
     expect(screen.getByRole('button', { name: 'Close report details' })).toBeInTheDocument();
   });
+
+  it('renders reported content preview card with author and media', () => {
+    const report = makeReport({
+      targetContent: 'Spam post caption text',
+      targetAuthorUsername: 'spammer_99',
+      targetAuthorDisplayName: 'Spammer Guy',
+      targetMediaUrls: ['https://example.com/bad-image.jpg'],
+      targetStatus: 'ACTIVE',
+    });
+    mockDetail({ report });
+
+    renderDialog();
+
+    expect(screen.getByText('Reported Content Preview')).toBeInTheDocument();
+    expect(screen.getByText('Spammer Guy')).toBeInTheDocument();
+    expect(screen.getByText('@spammer_99')).toBeInTheDocument();
+    expect(screen.getByText('Spam post caption text')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Reported media 1' })).toBeInTheDocument();
+  });
 });

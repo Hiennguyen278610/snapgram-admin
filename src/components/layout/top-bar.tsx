@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { useUIStore } from '@/stores/ui-store';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
+import { UserNav } from '@/components/layout/user-nav';
 import { ServiceStatusPill } from '@/features/health/components/service-status-pill';
 
 export function TopBar() {
@@ -45,6 +46,8 @@ export function TopBar() {
         <ServiceStatusPill />
 
         <ThemeToggle />
+
+        <UserNav />
       </div>
     </header>
   );

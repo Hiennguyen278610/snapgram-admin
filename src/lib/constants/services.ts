@@ -1,27 +1,39 @@
 /**
  * Infrastructure service registry for the System Health module.
  *
- * The four service base URLs are consumed ONLY by the server-side proxy route
- * (`src/app/api/health/[service]/route.ts`) via `envKey`. They intentionally use
- * non-public env names so internal ports never leak into the client bundle.
+ * All service health checks go through API Gateway (`/api/admin/health/{id}`),
+ * following Gateway-First architecture (Model B).
  *
  * `EXTERNAL_LINKS` uses `NEXT_PUBLIC_*` because those URLs are rendered as
  * user-facing `<a href>` targets; `process.env.NEXT_PUBLIC_*` is inlined at
  * build time, so reading it at module scope here is safe.
  */
-export type ServiceId = 'gateway' | 'auth' | 'content' | 'media';
+export type ServiceId =
+  | 'gateway'
+  | 'auth'
+  | 'chatbot'
+  | 'chat'
+  | 'content'
+  | 'media'
+  | 'notification'
+  | 'payment'
+  | 'recommender';
 
 export interface ServiceConfig {
   id: ServiceId;
   labelKey: string;
-  envKey: string;
 }
 
 export const SERVICES: ServiceConfig[] = [
-  { id: 'gateway', labelKey: 'health.services.gateway', envKey: 'GATEWAY_URL' },
-  { id: 'auth', labelKey: 'health.services.auth', envKey: 'AUTH_SERVICE_URL' },
-  { id: 'content', labelKey: 'health.services.content', envKey: 'CONTENT_SERVICE_URL' },
-  { id: 'media', labelKey: 'health.services.media', envKey: 'MEDIA_SERVICE_URL' },
+  { id: 'gateway', labelKey: 'health.services.gateway' },
+  { id: 'auth', labelKey: 'health.services.auth' },
+  { id: 'chatbot', labelKey: 'health.services.chatbot' },
+  { id: 'chat', labelKey: 'health.services.chat' },
+  { id: 'content', labelKey: 'health.services.content' },
+  { id: 'media', labelKey: 'health.services.media' },
+  { id: 'notification', labelKey: 'health.services.notification' },
+  { id: 'payment', labelKey: 'health.services.payment' },
+  { id: 'recommender', labelKey: 'health.services.recommender' },
 ];
 
 /**

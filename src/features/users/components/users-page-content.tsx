@@ -1,18 +1,22 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, UserPlus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import type { UserFilters } from '@/lib/api/query-keys';
 import type { ApiError } from '@/lib/api/types';
+import { usePermission } from '@/features/auth/hooks/use-permission';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useBanUser } from '../hooks/use-ban-user';
 import { useUnbanUser } from '../hooks/use-unban-user';
 import { useUsersList } from '../hooks/use-users-list';
 import type { AdminUser } from '../schemas/user.schema';
 import { BanUserDialog } from './ban-user-dialog';
+import { CreateUserDialog } from './create-user-dialog';
+import { DeleteUserDialog } from './delete-user-dialog';
+import { EditUserDialog } from './edit-user-dialog';
 import { RoleAssignMenu } from './role-assign-menu';
 import { UnbanConfirmDialog } from './unban-confirm-dialog';
 import { UserActionMenu, type UserAction } from './user-action-menu';
@@ -28,6 +32,7 @@ const PAGE_SIZE = 20;
 export function UsersPageContent() {
   const t = useTranslations('users');
   const tCommon = useTranslations('common');
+  const { isAdmin } = usePermission();
 
   const [page, setPage] = useState(0);
   const [q, setQ] = useState('');
@@ -35,6 +40,9 @@ export function UsersPageContent() {
   const [banTarget, setBanTarget] = useState<AdminUser | undefined>(undefined);
   const [unbanTarget, setUnbanTarget] = useState<AdminUser | undefined>(undefined);
   const [roleTarget, setRoleTarget] = useState<AdminUser | undefined>(undefined);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<AdminUser | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<AdminUser | null>(null);
 
   const debouncedQ = useDebounce(q.trim(), 300);
   const isSearchReady = debouncedQ.length === 0 || debouncedQ.length >= MIN_SEARCH_CHARS;
@@ -68,6 +76,14 @@ export function UsersPageContent() {
   const handleRowAction = (action: UserAction, user: AdminUser) => {
     if (action === 'view') {
       setSelectedUserId(user.id);
+      return;
+    }
+    if (action === 'edit') {
+      setEditTarget(user);
+      return;
+    }
+    if (action === 'delete') {
+      setDeleteTarget(user);
       return;
     }
     if (action === 'ban') {
@@ -105,12 +121,26 @@ export function UsersPageContent() {
   };
 
   return (
-    <section className="py-6">
-      {/* Rendered on every branch so the shell never loses its page heading. */}
-      <h1 className="font-display text-2xl text-card-foreground">{t('title')}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{t('description')}</p>
+    <section className="py-6 space-y-6">
+      {/* Page Heading & Header Actions */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="font-display text-2xl text-card-foreground">{t('title')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('description')}</p>
+        </div>
+        {isAdmin ? (
+          <Button
+            type="button"
+            onClick={() => setIsCreateOpen(true)}
+            className="gap-2 shrink-0 self-start sm:self-auto"
+          >
+            <UserPlus className="size-4" aria-hidden />
+            <span>{t('action.createUser')}</span>
+          </Button>
+        ) : null}
+      </div>
 
-      <div className="mt-6 space-y-4">
+      <div className="space-y-4">
         <UserTableFilters value={q} onChange={setQ} isFetching={isFetching} />
 
         {isLoading ? (
@@ -213,6 +243,24 @@ export function UsersPageContent() {
           }}
         />
       ) : null}
+
+      <CreateUserDialog open={isCreateOpen} onOpenChange={setIsCreateOpen} />
+
+      <EditUserDialog
+        user={editTarget}
+        open={Boolean(editTarget)}
+        onOpenChange={(open) => {
+          if (!open) setEditTarget(null);
+        }}
+      />
+
+      <DeleteUserDialog
+        user={deleteTarget}
+        open={Boolean(deleteTarget)}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null);
+        }}
+      />
     </section>
   );
 }

@@ -6,18 +6,18 @@ import type { ServiceId } from '@/lib/constants/services';
 import { healthStatusSchema, type HealthStatus } from '../schemas/health.schema';
 
 /**
- * Calls the server-side proxy, never the service directly — only the gateway
- * sends CORS headers, and the internal service URLs must stay server-side.
+ * Calls the Gateway health check endpoint (/api/admin/health/{id}).
+ * Gateway-First architecture (Model B) forwards check to internal services.
  *
- * The proxy answers `503 {status:'DOWN'}` when the upstream is unreachable, so
+ * The endpoint answers `503 {status:'DOWN'}` when the upstream is unreachable, so
  * a "down" service is DATA, not a thrown error. The query only rejects when the
- * Next.js origin itself cannot be reached (or the payload is unrecognizable).
+ * origin itself cannot be reached (or the payload is unrecognizable).
  */
 export async function fetchServiceHealth(
   id: ServiceId,
   signal?: AbortSignal
 ): Promise<HealthStatus> {
-  const res = await fetch(`/api/health/${id}`, { signal, cache: 'no-store' });
+  const res = await fetch(`/api/admin/health/${id}`, { signal, cache: 'no-store' });
   const payload: unknown = await res.json().catch(() => null);
   const parsed = healthStatusSchema.safeParse(payload);
 

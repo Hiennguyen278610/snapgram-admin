@@ -107,4 +107,28 @@ describe('ResolveReportDialog', () => {
       expect(screen.queryByRole('button', { name: /Resolve/ })).not.toBeInTheDocument();
     }
   );
+
+  it('renders destructive ban confirmation for USER target report', () => {
+    const userReport: Report = {
+      ...makeReport('PENDING'),
+      targetType: 'USER',
+      targetAuthorUsername: 'spammer_user',
+    };
+
+    renderWithProviders(
+      <ResolveReportDialog
+        report={userReport}
+        open
+        onOpenChange={onOpenChange}
+        onConfirm={onConfirm}
+        isPending={false}
+      />
+    );
+
+    expect(screen.getByText('Resolve report & ban @spammer_user?')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Warning: The reported user account will be permanently banned/i)
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Ban & Resolve' })).toBeInTheDocument();
+  });
 });

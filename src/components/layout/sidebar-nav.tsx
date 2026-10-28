@@ -6,21 +6,20 @@ import {
   Activity,
   ChevronLeft,
   ChevronRight,
+  CreditCard,
   Flag,
-  HardDrive,
-  Images,
+  Headphones,
   LayoutDashboard,
   ShieldAlert,
   Users,
-  Waypoints,
 } from 'lucide-react';
-import { cn } from 'cn';
+import { cn } from '@/lib/utils';
 import { Link, usePathname } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
+import { usePermission } from '@/features/auth/hooks/use-permission';
 import { useUIStore } from '@/stores/ui-store';
 
-type NavKey =
-  'dashboard' | 'users' | 'rbac' | 'reports' | 'media' | 'systemHealth' | 'kafka' | 'minio';
+type NavKey = 'dashboard' | 'users' | 'rbac' | 'reports' | 'support' | 'payments' | 'systemHealth';
 
 type NavIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -29,26 +28,38 @@ interface NavItem {
   href: string;
   icon: NavIcon;
   external?: boolean;
+  adminOnly?: boolean;
+  requiredPermission?: string;
+  requiredAnyPermissions?: string[];
 }
 
 const NAV_ITEMS: NavItem[] = [
   { key: 'dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-  { key: 'users', href: '/admin/users', icon: Users },
-  { key: 'rbac', href: '/admin/rbac', icon: ShieldAlert },
-  { key: 'reports', href: '/admin/moderation/reports', icon: Flag },
-  { key: 'media', href: '/admin/media', icon: Images },
-  { key: 'systemHealth', href: '/admin/system-health', icon: Activity },
+  { key: 'users', href: '/admin/users', icon: Users, requiredPermission: 'USER:READ' },
+  { key: 'rbac', href: '/admin/rbac', icon: ShieldAlert, adminOnly: true },
   {
-    key: 'kafka',
-    href: 'http://localhost:8089',
-    icon: Waypoints,
-    external: true,
+    key: 'reports',
+    href: '/admin/moderation/reports',
+    icon: Flag,
+    requiredPermission: 'REPORT:VIEW',
   },
   {
-    key: 'minio',
-    href: 'http://localhost:9001',
-    icon: HardDrive,
-    external: true,
+    key: 'support',
+    href: '/admin/support',
+    icon: Headphones,
+    requiredPermission: 'SUPPORT:TICKET_READ',
+  },
+  {
+    key: 'payments',
+    href: '/admin/payments',
+    icon: CreditCard,
+    requiredPermission: 'PAYMENT:READ',
+  },
+  {
+    key: 'systemHealth',
+    href: '/admin/system-health',
+    icon: Activity,
+    requiredAnyPermissions: ['SYSTEM:SETTINGS_READ', 'AUDIT:VIEW'],
   },
 ];
 
@@ -61,8 +72,29 @@ export function SidebarNav() {
   const pathname = usePathname();
   const collapsed = useUIStore((s) => s.sidebarCollapsed);
   const toggleSidebar = useUIStore((s) => s.toggleSidebar);
+  const { isAdmin, hasPermission, hasAnyPermission, isLoading } = usePermission();
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
+  const visibleNavItems = NAV_ITEMS.filter((item) => {
+    // While loading user permissions, don't flash unauthorized menus if user is not admin
+    if (isLoading) {
+      return item.key === 'dashboard';
+    }
+    if (isAdmin) {
+      return true;
+    }
+    if (item.adminOnly) {
+      return false;
+    }
+    if (item.requiredPermission) {
+      return hasPermission(item.requiredPermission);
+    }
+    if (item.requiredAnyPermissions) {
+      return hasAnyPermission(...item.requiredAnyPermissions);
+    }
+    return true;
+  });
 
   return (
     <aside
@@ -101,7 +133,7 @@ export function SidebarNav() {
       </div>
 
       <nav className="flex flex-1 flex-col gap-1">
-        {NAV_ITEMS.map((item) => {
+        {visibleNavItems.map((item) => {
           const Icon = item.icon;
           const label = t(item.key);
           const active = !item.external && isActive(item.href);

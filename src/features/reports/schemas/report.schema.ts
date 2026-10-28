@@ -44,6 +44,15 @@ export const reportSchema = z.object({
   description: z.string().nullable().optional(),
   status: reportStatusSchema,
   createdAt: z.string(),
+  // Target content preview (Admin inspection)
+  targetContent: z.string().nullable().optional(),
+  targetMediaUrls: z.array(z.string()).optional(),
+  targetAuthorId: z.string().nullable().optional(),
+  targetAuthorUsername: z.string().nullable().optional(),
+  targetAuthorDisplayName: z.string().nullable().optional(),
+  targetAuthorAvatarUrl: z.string().nullable().optional(),
+  targetStatus: z.string().nullable().optional(),
+  targetCreatedAt: z.string().nullable().optional(),
 });
 
 export const pageReportSchema = z.object({

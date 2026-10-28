@@ -59,13 +59,18 @@
     "users": "Người dùng",
     "rbac": "Vai trò & Quyền",
     "reports": "Báo cáo vi phạm",
-    "media": "Thư viện Media",
+    "support": "Hỗ trợ khách hàng",
+    "payments": "Thanh toán",
     "systemHealth": "Sức khỏe hệ thống",
-    "kafka": "Kafka UI",
-    "minio": "MinIO S3",
     "openExternal": "Mở tab mới",
     "toggleSidebar": "Ẩn/hiện thanh điều hướng",
-    "searchPlaceholder": "Tìm người dùng, bài viết hoặc ticket"
+    "searchPlaceholder": "Tìm người dùng, bài viết hoặc ticket",
+    "userNav": {
+      "profile": "Hồ sơ quản trị",
+      "logout": "Đăng xuất",
+      "loggingOut": "Đang đăng xuất...",
+      "role": "Vai trò"
+    }
   },
   "dashboard": {
     "title": "Tổng quan",
@@ -120,6 +125,9 @@
       "user": "Người dùng"
     },
     "action": {
+      "createUser": "Tạo người dùng",
+      "editUser": "Sửa thông tin",
+      "deleteUser": "Xóa tài khoản",
       "viewDetails": "Xem chi tiết",
       "ban": "Khoá người dùng",
       "unban": "Mở khoá người dùng",
@@ -135,6 +143,33 @@
       "currentRoles": "Vai trò hiện tại",
       "noRoles": "Tài khoản này chưa có vai trò nào",
       "noRolesAvailable": "Không còn vai trò để gán"
+    },
+    "createDialog": {
+      "title": "Tạo người dùng mới",
+      "description": "Tạo tài khoản người dùng mới với thông tin đăng nhập ban đầu.",
+      "username": "Tên người dùng",
+      "email": "Địa chỉ email",
+      "password": "Mật khẩu",
+      "displayName": "Tên hiển thị",
+      "roles": "Vai trò",
+      "rolesHint": "USER là vai trò mặc định. Bấm để chọn thêm các vai trò khác.",
+      "emailVerified": "Đánh dấu email đã xác thực",
+      "submit": "Tạo tài khoản"
+    },
+    "editDialog": {
+      "title": "Sửa thông tin người dùng",
+      "description": "Cập nhật thông tin cho tài khoản @{username}.",
+      "displayName": "Tên hiển thị",
+      "email": "Địa chỉ email",
+      "resetPassword": "Đặt lại mật khẩu",
+      "passwordPlaceholder": "Để trống nếu không muốn đổi mật khẩu",
+      "emailVerified": "Đã xác thực email",
+      "submit": "Lưu thay đổi"
+    },
+    "deleteDialog": {
+      "title": "Xóa tài khoản @{username}?",
+      "description": "Thao tác này sẽ xóa vĩnh viễn tài khoản người dùng, toàn bộ vai trò và phiên làm việc. Hành động này không thể hoàn tác.",
+      "confirm": "Xóa vĩnh viễn"
     },
     "filters": {
       "search": "Tìm người dùng",
@@ -161,6 +196,9 @@
       "pageLabel": "Trang {page} / {total}"
     },
     "toast": {
+      "userCreated": "Đã tạo tài khoản @{username}",
+      "userUpdated": "Đã cập nhật tài khoản @{username}",
+      "userDeleted": "Đã xóa tài khoản @{username}",
       "banSuccess": "Đã khoá tài khoản",
       "unbanSuccess": "Đã mở khoá tài khoản",
       "roleAssigned": "Đã gán vai trò",
@@ -170,6 +208,10 @@
       "loadFailed": "Không tải được danh sách người dùng"
     },
     "form": {
+      "usernameLength": "Tên người dùng phải từ 3 đến 50 ký tự",
+      "usernamePattern": "Tên người dùng chỉ được chứa chữ cái, số, dấu chấm và gạch dưới",
+      "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
+      "passwordLength": "Mật khẩu phải từ 8 đến 128 ký tự",
       "reasonRequired": "Vui lòng nhập lý do khoá",
       "reasonTooLong": "Lý do không được vượt quá 255 ký tự"
     }
@@ -226,6 +268,7 @@
     },
     "category": {
       "CONTENT_MODERATION": "Kiểm duyệt nội dung",
+      "PAYMENT_MANAGEMENT": "Quản lý thanh toán",
       "REPORT_MANAGEMENT": "Quản lý báo cáo",
       "SUPPORT": "Hỗ trợ",
       "SYSTEM": "Hệ thống",
@@ -288,6 +331,10 @@
       "dismissConfirm": "Bác bỏ báo cáo này?",
       "resolveDescription": "Đánh dấu báo cáo đã được xử lý. Nội dung bị tố cáo được giữ nguyên và vẫn lưu vết kiểm duyệt.",
       "dismissDescription": "Xác nhận báo cáo không phải vi phạm. Quyết định này được ghi vào lịch sử kiểm duyệt.",
+      "resolveUserConfirm": "Duyệt báo cáo & Khóa tài khoản @{username}?",
+      "resolveUserDescription": "Duyệt báo cáo tài khoản này sẽ khóa (Ban) vĩnh viễn tài khoản người dùng và thu hồi toàn bộ phiên đăng nhập.",
+      "resolveUserWarning": "Cảnh báo: Tài khoản người dùng bị tố cáo sẽ bị KHÓA vĩnh viễn và ngắt kết nối trên tất cả thiết bị.",
+      "resolveUser": "Khóa tài khoản & Duyệt",
       "openMenu": "Thao tác báo cáo"
     },
     "filters": {
@@ -309,7 +356,12 @@
       "notFound": "Không tìm thấy báo cáo này.",
       "close": "Đóng chi tiết báo cáo",
       "statusHint": "Báo cáo này đã đóng và chỉ có thể xem lại.",
-      "actionBlocked": "Báo cáo đã duyệt hoặc đã bác bỏ chỉ được xem"
+      "actionBlocked": "Báo cáo đã duyệt hoặc đã bác bỏ chỉ được xem",
+      "previewTitle": "Nội dung bị báo cáo",
+      "author": "Tác giả",
+      "content": "Nội dung bài viết / bình luận",
+      "media": "Ảnh / Video đính kèm",
+      "contentUnavailable": "Nội dung gốc không còn khả dụng hoặc đã bị xóa."
     },
     "pagination": {
       "previous": "Trước",
@@ -400,8 +452,13 @@
     "services": {
       "gateway": "Cổng API",
       "auth": "Dịch vụ xác thực",
+      "chatbot": "Dịch vụ chatbot",
+      "chat": "Dịch vụ tin nhắn",
       "content": "Dịch vụ nội dung",
-      "media": "Dịch vụ media"
+      "media": "Dịch vụ media",
+      "notification": "Dịch vụ thông báo",
+      "payment": "Dịch vụ thanh toán",
+      "recommender": "Dịch vụ gợi ý"
     },
     "status": {
       "up": "Trực tuyến",
@@ -423,6 +480,113 @@
     "error": {
       "title": "Không tải được trạng thái hệ thống",
       "retry": "Thử lại"
+    }
+  },
+  "payments": {
+    "title": "Giao dịch thanh toán",
+    "description": "Quản lý các giao dịch đăng ký dịch vụ và đối soát thanh toán",
+    "table": {
+      "orderId": "Mã đơn hàng",
+      "product": "Gói sản phẩm",
+      "amount": "Số tiền",
+      "status": "Trạng thái",
+      "createdAt": "Thời gian tạo",
+      "expiresAt": "Hạn thanh toán",
+      "actions": "Thao tác",
+      "empty": "Không có giao dịch nào",
+      "emptyDescription": "Không tìm thấy giao dịch thanh toán nào phù hợp với bộ lọc."
+    },
+    "tabs": {
+      "all": "Tất cả",
+      "pending": "Chờ xử lý",
+      "success": "Thành công",
+      "completed": "Thành công",
+      "expired": "Hết hạn",
+      "failed": "Thất bại"
+    },
+    "status": {
+      "pending": "Chờ xử lý",
+      "success": "Thành công",
+      "completed": "Thành công",
+      "expired": "Hết hạn",
+      "failed": "Thất bại",
+      "unknown": "Không rõ"
+    },
+    "products": {
+      "BLUE_TICK": "Tích xanh xác minh"
+    },
+    "action": {
+      "reconcile": "Đối soát",
+      "viewDetails": "Xem chi tiết"
+    },
+    "reconcileDialog": {
+      "title": "Đối soát giao dịch",
+      "description": "Truy vấn trực tiếp cổng thanh toán (MoMo / VNPay) để đồng bộ trạng thái mới nhất cho đơn hàng {orderId}.",
+      "confirm": "Thực hiện đối soát"
+    },
+    "toast": {
+      "reconcileSuccess": "Đối soát giao dịch thành công",
+      "reconcileFailed": "Đối soát giao dịch thất bại"
+    },
+    "error": {
+      "loadFailed": "Không tải được danh sách giao dịch thanh toán",
+      "reconcileFailed": "Không thể đối soát giao dịch với cổng thanh toán"
+    }
+  },
+  "support": {
+    "title": "Hỗ trợ khách hàng & Khiếu nại",
+    "description": "Tiếp nhận, xử lý báo cáo sự cố kỹ thuật và giải đáp thắc mắc của người dùng",
+    "tabs": {
+      "all": "Tất cả",
+      "open": "Chờ tiếp nhận",
+      "in_progress": "Đang xử lý",
+      "resolved": "Đã giải quyết",
+      "closed": "Đã đóng"
+    },
+    "table": {
+      "ticketId": "Mã Ticket",
+      "user": "Người dùng",
+      "subject": "Tiêu đề sự cố",
+      "category": "Danh mục",
+      "priority": "Mức ưu tiên",
+      "status": "Trạng thái",
+      "createdAt": "Thời gian tạo",
+      "action": "Thao tác",
+      "loading": "Đang tải danh sách ticket...",
+      "empty": "Không có yêu cầu nào trong hàng đợi này",
+      "viewDetails": "Phản hồi & Xem"
+    },
+    "category": {
+      "technical_issue": "Lỗi kỹ thuật / Ứng dụng",
+      "account_issue": "Hỗ trợ tài khoản",
+      "payment_issue": "Thanh toán / Tích xanh",
+      "feature_feedback": "Góp ý tính năng",
+      "other": "Khác"
+    },
+    "priority": {
+      "low": "Thấp",
+      "normal": "Bình thường",
+      "high": "Cao",
+      "urgent": "Khẩn cấp"
+    },
+    "status": {
+      "open": "Chờ tiếp nhận",
+      "in_progress": "Đang xử lý",
+      "resolved": "Đã giải quyết",
+      "closed": "Đã đóng"
+    },
+    "dialog": {
+      "title": "Chi tiết yêu cầu hỗ trợ",
+      "attachments": "Hình ảnh / Ảnh chụp màn hình",
+      "officialReply": "Phản hồi chính thức từ Đội ngũ Hỗ trợ",
+      "writeReply": "Nhập nội dung phản hồi người dùng",
+      "updateReply": "Cập nhật nội dung phản hồi",
+      "replyPlaceholder": "Nhập hướng dẫn chi tiết hoặc giải thích cho người dùng...",
+      "setStatus": "Cập nhật trạng thái thành",
+      "submitReply": "Gửi phản hồi"
+    },
+    "toast": {
+      "replySuccess": "Đã gửi phản hồi cho người dùng thành công"
     }
   }
 }

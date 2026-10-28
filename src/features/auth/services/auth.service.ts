@@ -1,4 +1,5 @@
 import { apiClient } from '@/lib/api/client';
+import { currentUserSchema, type CurrentUser } from '../schemas/current-user.schema';
 
 export interface LoginPayload {
   email: string;
@@ -27,4 +28,22 @@ export async function verifyTwoFa(payload: TwoFaPayload): Promise<LoginResponse>
     totpCode: payload.code,
   });
   return data;
+}
+
+export async function fetchCurrentUser(): Promise<CurrentUser> {
+  const { data } = await apiClient.get('/api/auth/me');
+  const parsed = currentUserSchema.safeParse(data);
+  if (!parsed.success) {
+    throw {
+      httpStatus: 0,
+      kind: 'server',
+      message: 'Invalid user profile response',
+      rawResponse: data,
+    };
+  }
+  return parsed.data;
+}
+
+export async function logoutAdmin(): Promise<void> {
+  await apiClient.post('/api/auth/logout');
 }

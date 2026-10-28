@@ -3,8 +3,16 @@ import { getErrorMessageKey } from './error-mapper';
 import type { ApiError, ErrorKind } from './types';
 
 const KINDS: ErrorKind[] = [
-  'validation', 'auth', 'locked', 'forbidden', 'notFound',
-  'conflict', 'rateLimit', 'server', 'network', 'unknown',
+  'validation',
+  'auth',
+  'locked',
+  'forbidden',
+  'notFound',
+  'conflict',
+  'rateLimit',
+  'server',
+  'network',
+  'unknown',
 ];
 
 describe('getErrorMessageKey', () => {

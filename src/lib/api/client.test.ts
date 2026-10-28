@@ -29,9 +29,7 @@ describe('apiClient', () => {
   });
 
   it('transforms network error into network kind', async () => {
-    server.use(
-      http.get('http://localhost:8080/test-network', () => HttpResponse.error())
-    );
+    server.use(http.get('http://localhost:8080/test-network', () => HttpResponse.error()));
 
     await expect(apiClient.get('/test-network')).rejects.toMatchObject({
       kind: 'network',

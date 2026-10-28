@@ -62,10 +62,39 @@ export const assignRoleSchema = z.object({
   role: z.string().min(1),
 });
 
+export const createAdminUserSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(3, { message: 'users.form.usernameLength' })
+    .max(50, { message: 'users.form.usernameLength' })
+    .regex(/^[a-zA-Z0-9._]+$/, { message: 'users.form.usernamePattern' }),
+  email: z.string().trim().email({ message: 'users.form.emailInvalid' }).max(255),
+  password: z.string().min(8, { message: 'users.form.passwordLength' }).max(128),
+  displayName: z.string().trim().max(100).optional(),
+  roles: z.array(z.string()).optional(),
+  emailVerified: z.boolean().optional(),
+});
+
+export const updateAdminUserSchema = z.object({
+  displayName: z.string().trim().max(100).optional(),
+  email: z.string().trim().email({ message: 'users.form.emailInvalid' }).max(255).optional(),
+  password: z
+    .string()
+    .min(8, { message: 'users.form.passwordLength' })
+    .max(128)
+    .optional()
+    .or(z.literal('')),
+  roles: z.array(z.string()).optional(),
+  emailVerified: z.boolean().optional(),
+});
+
 export type AdminUser = z.infer<typeof adminUserSchema>;
 export type PageAdminUser = z.infer<typeof pageAdminUserSchema>;
 export type BanUserInput = z.infer<typeof banUserSchema>;
 export type AssignRoleInput = z.infer<typeof assignRoleSchema>;
+export type CreateAdminUserInput = z.infer<typeof createAdminUserSchema>;
+export type UpdateAdminUserInput = z.infer<typeof updateAdminUserSchema>;
 
 /**
  * Status shown by `UserStatusBadge`.
