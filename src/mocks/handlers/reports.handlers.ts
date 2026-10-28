@@ -197,9 +197,8 @@ export const reportsHandlers = [
     const status = searchParams.get('status');
     const targetType = searchParams.get('targetType');
 
-    // TODO(BI-009): the live backend ignores `targetType` when `status` is
-    // absent. This mock filters both params independently (and combined) on
-    // purpose so the FE contract is exercised as specified.
+    // The live backend filters `status` and `targetType` independently (and
+    // combined), matching this mock.
     const filtered = reports.filter(
       (report) =>
         (!status || report.status === status) && (!targetType || report.targetType === targetType)
@@ -233,14 +232,13 @@ export const reportsHandlers = [
     const report = byId(String(params.id));
     if (!report) return notFound(String(params.id));
 
-    // BI-008: the live backend throws IllegalArgumentException on this
-    // transition and the catch-all handler turns it into a 500. The mock models
-    // the DESIRED 409 instead of reproducing the bug, so the FE keeps the
-    // contract it should have once the backend is fixed.
+    // Invalid status transition: the live backend answers 409 with code
+    // `INVALID_STATUS_TRANSITION` (verified runtime 2026-10-16).
     if (report.status === 'DISMISSED') {
       return HttpResponse.json(
         {
           status: 409,
+          code: 'INVALID_STATUS_TRANSITION',
           error: 'Conflict',
           message: 'Dismissed report cannot be resolved',
           timestamp: new Date().toISOString(),

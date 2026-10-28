@@ -25,12 +25,11 @@ function invalidShape(label: string, data: unknown, issues: unknown): ApiError {
  *
  * `page` defaults to 0 and `size` to 20 (the backend caps `size` at 50).
  * `status` / `targetType` are only appended when set: sending an empty string
- * makes the backend fail to bind the enum and answer `500` (BI-009), so they
- * are never sent as `''`.
+ * makes the backend fail to bind the enum and answer `400`, so they are never
+ * sent as `''`.
  *
- * TODO(BI-009): the live backend ignores `targetType` when `status` is absent,
- * so the filter looks dead on the "All" tab. The FE still sends the correctly
- * cased param — the feature starts working the moment the backend is fixed.
+ * The backend filters `targetType` independently of `status` (verified live
+ * 2026-10-16), so the "All" tab filter is honoured.
  */
 export async function fetchReports(filters: ReportFilters = {}): Promise<PageReport> {
   const params: Record<string, string | number> = {
@@ -64,8 +63,9 @@ export async function fetchReportDetail(reportId: string): Promise<Report> {
 
 /**
  * PATCH (not POST) and no request body — verified LIVE 2026-10-08.
- * A `DISMISSED` report makes the real backend answer `500`; the UI never lets
- * that call happen (BI-008).
+ * Resolving a `DISMISSED` report is an invalid transition: the backend answers
+ * `409 INVALID_STATUS_TRANSITION`. The UI also disables the action as
+ * defense-in-depth.
  */
 export async function resolveReport(reportId: string): Promise<Report> {
   const { data } = await apiClient.patch(

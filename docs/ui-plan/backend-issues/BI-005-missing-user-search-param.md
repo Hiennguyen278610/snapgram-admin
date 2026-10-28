@@ -1,7 +1,7 @@
 # BI-005: Thiếu Tham Số Tìm Kiếm Từ Khoá (`q`) Trên Endpoint Danh Sách Người Dùng Admin
 
 - **Priority:** `P1` (Important)
-- **Status:** `Open`
+- **Status:** `Fixed` (2026-10-16)
 - **Module ảnh hưởng:** `auth-service` (`admin-controller`)
 - **Ngày phát hiện:** 2026-10-08
 - **Phát hiện tại:** Sprint 2.3 (User Management)
@@ -87,5 +87,23 @@ Theo quyết định đã chốt với Tech Lead tại Sprint 2.3 (2026-10-08):
 3. Trong lúc chờ backend, MSW mock (`src/mocks/handlers/users.handlers.ts`) tự thực hiện lọc theo `q` để test và demo phản ánh đúng hành vi mong đợi.
 4. Đánh dấu `// TODO(BI-005)` ngay tại service để dễ truy vết.
 5. **Bộ lọc `status`/`role` bị hoãn** cho tới khi backend có tham số tương ứng — không triển khai lọc client-side để tránh hiển thị sai.
+
+---
+
+## 6. Verification (Sau Khi BE Fix — 2026-10-16)
+
+**Backend change:** `auth-service` — `AdminController`/`UserService` nay bind `q` (search động + filter status/role + whitelist sort), commit `d4ece81`.
+
+**Runtime verify** (`GET /api/auth/admin/users`, cookie `admin_access_token`):
+
+```
+?q=admin&page=0&size=20        → totalElements = 1
+?q=zzzznomatch&page=0&size=20  → totalElements = 0   ← KHÁC với q=admin ⇒ filter chạy thật
+(không có q)&page=0&size=20    → totalElements = 1
+```
+
+**Kết luận:** BI-005 đã fix. Nếu chưa fix, `q=zzzznomatch` cũng sẽ trả `1` (tham số `q` bị bỏ qua).
+
+---
 
 > ⚠️ Tài liệu tạm nằm trong backend repo. Sẽ move sang FE repo khi tách.

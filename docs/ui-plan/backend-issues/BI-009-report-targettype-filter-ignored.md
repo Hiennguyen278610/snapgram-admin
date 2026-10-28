@@ -1,7 +1,7 @@
 # BI-009: `targetType` Filter Bị Bỏ Qua Khi Không Kèm `status` + Enum Sai Trả 500
 
 - **Priority:** `P1` (Important)
-- **Status:** `Open`
+- **Status:** `Fixed` (2026-10-16)
 - **Module ảnh hưởng:** `content-service` (`ReportService.getReports`, `GlobalExceptionHandler`)
 - **Ngày phát hiện:** 2026-10-08
 - **Phát hiện tại:** Sprint 2.5 (Content Moderation) — verify trước khi dispatch
@@ -110,5 +110,34 @@ Theo quyết định của Tech Lead tại Sprint 2.5 (2026-10-08) — nhất qu
 3. Thêm comment `// TODO(BI-009)` tại service để truy vết.
 4. Chỉ gửi giá trị enum **chữ HOA** (`POST`/`COMMENT`/`USER`) — không bao giờ gửi chữ thường, tránh 500.
 5. **Không** hack kiểu "luôn kèm status mặc định" để lách — sẽ làm sai nghĩa của tab "All".
+
+---
+
+## 6. Verification (Sau Khi BE Fix — 2026-10-16)
+
+**Backend change:** `content-service` — `ReportService.getReports` nay lọc `targetType` **độc lập với `status`**; enum không hợp lệ trả `400` kèm message, commit `d4ece81`.
+
+**Runtime verify** (12 report seed, 4 POST / 4 COMMENT / 4 USER):
+
+```
+GET /api/admin/reports?targetType=USER&size=50     → totalElements = 4
+GET /api/admin/reports?targetType=POST&size=50     → totalElements = 4
+GET /api/admin/reports?targetType=COMMENT&size=50  → totalElements = 4
+GET /api/admin/reports?size=50 (không lọc)         → totalElements = 12
+```
+
+⇒ mỗi `targetType` trả **4**, không phải 12 ⇒ filter chạy thật khi KHÔNG kèm `status`.
+
+**Enum sai (chữ thường) — lỗi 1b:**
+
+```
+GET /api/admin/reports?targetType=user  → 400
+
+{"code":"BAD_REQUEST","error":"Bad Request","message":"Invalid value 'user' for parameter 'targetType'. Allowed values: [POST, COMMENT, USER]","status":400}
+```
+
+**Kết luận:** BI-009 đã fix — `targetType` được lọc khi không kèm `status`; enum sai trả `400` (không còn `500`).
+
+---
 
 > ⚠️ Tài liệu tạm nằm trong backend repo. Sẽ move sang FE repo khi tách.

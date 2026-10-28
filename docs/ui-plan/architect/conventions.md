@@ -251,11 +251,11 @@ Quy tắc sử dụng hệ thống thông báo nổi toàn cục qua thư viện
 - **Endpoint 2FA lệch doc — ĐÃ GIẢI QUYẾT (2026-10-08)**: prose mục "2FA flow" của `api-docs/auth-apidocs.md` từng ghi `POST /api/auth/2fa/login` + `/api/auth/2fa/setup|enable|disable`, trong khi code Sprint 2.1 dùng `POST /api/auth/login/2fa` với body `{ tempToken, totpCode }`. Đã đối chiếu **Swagger sống** `http://localhost:8081/v3/api-docs`: các path `/api/auth/2fa/*` **không tồn tại**; path thật là `/api/auth/login/2fa` (`TwoFaLoginRequest`: `tempToken` bắt buộc, `totpCode`, `backupCode`) và `/api/users/me/2fa/setup|enable` + `DELETE /api/users/me/2fa/disable`. ⇒ **Code FE đúng, doc sai** — đã sửa lại prose trong `auth-apidocs.md`. Không cần đổi service/mock.
 - **2FA chưa hỗ trợ `backupCode`**: Swagger sống cho thấy `TwoFaLoginRequest` nhận cả `totpCode` và `backupCode`, nhưng `TwoFactorVerifyModal` (Sprint 2.1) chỉ có ô nhập 6 chữ số. Cân nhắc bổ sung luồng "dùng mã dự phòng" ở Sprint 3.3.
 - **Đồng bộ trạng thái bảng vào URL chưa làm** (Sprint 2.3): route-map.md §7 yêu cầu filter/pagination/search **bắt buộc** đồng bộ vào URL Search Parameters, nhưng `users-page-content.tsx` dùng `useState` cục bộ theo brief Sprint 2.3 (quyết định của Tech Lead ngày 2026-10-08). Hệ quả: F5 mất bộ lọc, không copy link chia sẻ ca trực được. Xử lý ở Sprint 3.3 (Polish) — áp dụng cho cả users/reports/media. Mục "lưu `drawerId` trên URL" của route-map §7 vẫn `TBD`.
-- **Bộ lọc `status`/`role` của bảng Users chưa triển khai** (Sprint 2.3): backend `GET /api/auth/admin/users` chưa có tham số tương ứng (xem [BI-005](../backend-issues/BI-005-missing-user-search-param.md)). Cố tình KHÔNG làm lọc client-side trên 1 trang để tránh hiển thị sai. Bổ sung khi backend có tham số. Tương tự, tham số `q` đã gửi lên nhưng backend hiện bỏ qua.
+- **Bộ lọc `status`/`role` của bảng Users chưa triển khai (phía FE)** (Sprint 2.3): backend nay **đã có** tham số `q`, `status`, `role` — verify 2026-10-16: `q=zzzznomatch`→0, `status=ACTIVE`→1, `status=BANNED`→0, `role=ADMIN`→1 ([BI-005](../backend-issues/BI-005-missing-user-search-param.md) — Fixed). Tech debt còn lại thuần **phía FE**: chưa dựng control cho `status`/`role`. ⚠️ Enum không hợp lệ (`status=BOGUS`) hiện trả **`500`** thay vì `400` — bug BE mới phát hiện 2026-10-16 (cùng loại BI-009b nhưng ở `auth-service`).
 - **Checkbox "chọn tất cả" của `UserDataTable` chưa làm** (Sprint 2.3): brief có nhắc header checkbox cho bulk action tương lai, nhưng chưa có row checkbox và chưa có bulk action nào → sẽ tạo ra control chết, gây hại a11y. Sẽ bổ sung cùng lúc với tính năng bulk action (chưa nằm trong sprint plan).
 - **`loading.tsx` / `error.tsx` cấp route chưa có** (Sprint 2.2 & 2.3): definition-of-done.md §3.3 yêu cầu mỗi trang có `loading.tsx` + `error.tsx`. Thực tế cả `admin/dashboard` và `admin/users` đều xử lý 4 trạng thái **bên trong** feature component (`*-page-content.tsx` + `*-skeleton`/`*-error`) và chưa tạo file route-level. Cần chuẩn hoá ở Sprint 3.3.
 - **Kiểm tra RBAC theo vai trò ở tầng route chưa có** (Sprint 2.1→2.3): `src/middleware.ts` chỉ kiểm tra sự tồn tại của cookie `admin_access_token` (2 rule), KHÔNG kiểm tra vai trò. Vì vậy route-map.md §2 ghi `/admin/users` yêu cầu `ADMIN` nhưng một `MODERATOR` vẫn vào được. Điều kiện tiên quyết: token hiện là httpOnly nên FE không đọc được role — cần backend trả role qua endpoint `GET /api/users/me` hoặc cookie riêng. Defer tới Sprint 2.4 (RBAC) / 3.4 (Hardening).
-- **Session admin hết hạn → `503` thay vì `401`** (phát hiện 2026-10-08, Sprint 2.3 — [BI-006](../backend-issues/BI-006-gateway-admin-auth-503.md)): Gateway filter nuốt lỗi 4xx từ `/api/auth/verify` rồi map thành `503`. FE hiện hiển thị `error.server.internalError` + nút Retry (đúng spec error-handling.md §5/§10). **KHÔNG hack FE parse `503` thành `401`** — chờ BE fix (map 4xx → `401`, thêm `/api/auth/verify` vào `permitAll`). Hệ quả kèm theo: logic chuyển hướng `401 → /admin/login` của FE **chưa bao giờ được kích hoạt**; sau khi BE fix phải bổ sung + kiểm thử luồng auto-redirect `401` (xem thêm tech-debt "401 redirect tự động" ở trên).
+- **Session admin hết hạn → `503` thay vì `401`** (phát hiện 2026-10-08, Sprint 2.3 — [BI-006](../backend-issues/BI-006-gateway-admin-auth-503.md) — **✅ Fixed 2026-10-16**): Gateway trước đây nuốt lỗi 4xx từ `/api/auth/verify` rồi map thành `503`; nay token không hợp lệ/hết hiệu lực trả **`401`** đúng (kèm `code: UNAUTHORIZED`). Hệ quả: logic chuyển hướng `401 → /admin/login` của FE nay **đã có thể kích hoạt** — cần bổ sung + kiểm thử luồng auto-redirect `401` (xem tech-debt "401 redirect tự động" ở trên).
 - **`permission.description` đơn ngữ (tiếng Việt)** (phát hiện 2026-10-08, Sprint 2.4 — [BI-007](../backend-issues/BI-007-permission-description-not-localized.md)): backend seed cứng description tiếng Việt trong DB và không có `Accept-Language`/`MessageSource`. Hệ quả: ở locale `en`, ma trận permission vẫn hiển thị mô tả tiếng Việt. FE **không** tạo 17 khoá i18n cho permission (sẽ lệch DB khi backend thêm permission mới) — thay vào đó nhãn chính là `permission.name` (trung tính ngôn ngữ, ví dụ `USER:BAN`) và tiêu đề nhóm `category` do FE bản địa hoá qua `rbac.category.*`. Description hiển thị nguyên văn như dòng phụ.
 - **`GET /api/auth/admin/permissions` trả OBJECT map, không phải array** (Sprint 2.4): response là `category -> PermissionResponse[]`. Schema Zod là `z.record(z.string(), z.array(permissionResponseSchema))`. ⚠️ Khi thêm endpoint danh sách mới ở các sprint sau, **luôn kiểm tra Swagger sống** (`http://localhost:8081/v3/api-docs`) thay vì chỉ đọc `api-docs/*.md` — tài liệu markdown đã từng sai ở cả tham số (`BI-005`) và đường dẫn (2FA).
 
@@ -265,42 +265,25 @@ Quy tắc sử dụng hệ thống thông báo nổi toàn cục qua thư viện
 
 Các issue BE chưa fix. FE KHÔNG hack workaround — giữ code đúng spec.
 
-### BI-005 — `q` query param bị bỏ qua
-- **Impact**: Search user không filter ở real backend (trả full list).
-- **FE status**: Code đúng (gửi `q` param). Test pass với MSW.
-- **Tạm thời**: Không test search trên real backend.
-- **Sau fix**: E2E test search filter bằng real backend.
-
-### BI-006 — Session hết hạn → 503 thay 401
-- **Impact**: Auto-redirect login không kích hoạt. User thấy "Internal server error" + Retry.
-- **FE status**: Interceptor 401 → redirect đã sẵn (Sprint 2.1).
-- **Tạm thời**: Chấp nhận UX kém khi session expired.
-- **Sau fix**: Interceptor tự động chạy.
-
 ### BI-007 — Permission description là tiếng Việt cứng
 - **Impact**: User locale=en thấy mô tả permission bằng tiếng Việt.
 - **FE status**: Hiển thị nguyên `permission.description` từ API.
 - **Tạm thời**: Chấp nhận — backend là single source cho permission name/desc.
 - **Sau fix**: BE trả `descriptionEn` HOẶC FE dùng catalog i18n riêng (17 key hardcode — cần update khi BE thêm permission).
 
-### BI-008 — Report resolve/dismiss thiếu status guard
-- **Impact**: Resolve report đã `DISMISSED` → 500 (đáng lẽ 409). Dismiss report đã `RESOLVED` → 200, âm thầm đổi trạng thái.
-- **FE status**: Nút Resolve/Dismiss bị **disable** khi status không phù hợp (chỉ `PENDING`/`REVIEWED` cho phép hành động).
-- **Tạm thời**: UI chặn ở tầng hiển thị; backend vẫn có thể bị gọi sai qua API trực tiếp.
-- **Sau fix**: Bỏ disable phía FE (hoặc giữ như lớp phòng vệ) + map 409 thành thông báo conflict đúng nghĩa.
+### BI-011 — `auth-service` không khởi động được do `RateLimitInterceptor` (P0)
+- **Impact**: Commit `d4ece81` thêm constructor thứ 2 vào `RateLimitInterceptor` mà không `@Autowired` ⇒ Spring đòi default constructor ⇒ **auth-service crash-loop, api-gateway không lên** ⇒ không chạy được backend thật.
+- **FE status**: Không có workaround. **Chặn luôn việc verify runtime BI-010** và khiến Sprint 3.1 hiển thị Gateway/Auth = `DOWN` (đúng thực tế).
+- **Tạm thời**: Dùng MSW cho test; không verify real backend.
+- **Sau fix**: `curl :8081/:8080/actuator/health` = UP → verify BI-010 (5 endpoint bằng cookie admin) → cập nhật docs BI-010 sang `Fixed`.
+- **Chi tiết**: [BI-011](../backend-issues/BI-011-auth-service-boot-failure-ratelimit-interceptor.md).
 
-### BI-009 — `targetType` filter bị bỏ qua khi không kèm `status`
-- **Impact**: Ở tab "All", chọn Target type không lọc gì (trả full list). Ở tab trạng thái cụ thể thì lọc đúng. Enum sai (`user`, `BOGUS`) → 500 thay vì 400.
-- **FE status**: Code đúng (gửi `targetType` chữ HOA). MSW mock lọc đúng.
-- **Tạm thời**: Không test filter targetType trên tab "All" với real backend.
-- **Sau fix**: E2E/browser verify filter trên cả tab "All" và tab trạng thái.
-
-### BI-010 — Cookie admin không được dùng cho /me, /logout, /api/media/**
-(Đã mở rộng từ Sprint 2.6: ảnh hưởng thêm toàn bộ /api/media/**.)
-- **Impact**: Các endpoint này trả **401** khi gọi bằng cookie admin ⇒ **không thể đăng xuất** (cookie httpOnly không tự xoá được), **không lấy được thông tin admin hiện tại**, và **toàn bộ /api/media/** không gọi được qua cookie**.
-- **FE status**: Chưa triển khai nút Logout / `AdminProfileCard`. Sprint 2.6 (Media Management) chạy và test bằng MSW, ghi chú `// TODO(BI-010)` trong code.
-- **Tạm thời**: Không có workaround phía browser cho cookie. Sprint 2.6 dựa trên mock MSW. Chặn luôn "role-filtered sidebar" (Sprint 3.3).
-- **Sau fix**: Triển khai LogoutButton + AdminProfileCard + switch media real backend + role-filtered sidebar, kèm E2E kiểm tra cookie.
+### Đã Fix (không còn chặn FE)
+- **BI-005** — ✅ Fixed 2026-10-16. `q` filter chạy thật trên `/api/auth/admin/users` (`q=zzzznomatch` → 0 kết quả).
+- **BI-006** — ✅ Fixed 2026-10-16. Token không hợp lệ/hết hiệu lực nay trả `401` (không còn `503`).
+- **BI-008** — ✅ Fixed 2026-10-16. Chuyển trạng thái sai nay trả `409 INVALID_STATUS_TRANSITION`; UI giữ disable nút như lớp phòng vệ.
+- **BI-009** — ✅ Fixed 2026-10-16. `targetType` lọc độc lập với `status`; enum sai trả `400`.
+- **BI-010** — ✅ Fixed 2026-10-16. Gateway forward cookie admin cho `/api/auth/me`, `/api/auth/logout` và `/api/media/**`.
 
 ### Nguyên tắc chung
 - FE không tự ý đổi API contract để workaround.

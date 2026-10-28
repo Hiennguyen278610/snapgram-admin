@@ -42,7 +42,10 @@ export function MediaGridItem({ media, onSelect, onDelete }: Props) {
   const deleteLabel = t('grid.deleteLabel', { mimeType: media.mimeType });
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border bg-card">
+    <div
+      data-testid="media-grid-item"
+      className="group relative overflow-hidden rounded-xl border border-border bg-card"
+    >
       <button
         type="button"
         onClick={() => onSelect(media)}

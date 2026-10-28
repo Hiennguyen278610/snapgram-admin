@@ -17,11 +17,9 @@ import { REPORT_TARGET_TYPES } from '../schemas/report.schema';
 export const ALL_TARGET_TYPES = 'all';
 
 /**
- * Target-type filter, kept in the URL like the rest of the queue state.
- *
- * TODO(BI-009): the live backend ignores `targetType` when `status` is absent,
- * so this filter looks dead on the "All" tab. The FE still sends the correctly
- * cased param, so it starts working the moment the backend is fixed.
+ * Target-type filter, kept in the URL like the rest of the queue state. The
+ * backend filters `targetType` independently of `status` (verified live
+ * 2026-10-16), so the "All" tab is filtered too.
  */
 export function ReportTableFilters() {
   const t = useTranslations('reports');

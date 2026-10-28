@@ -13,7 +13,7 @@ import type { ReportStatus, ReportTargetType } from '@/lib/api/query-keys';
  * 4.6.5, and intentionally lenient here).
  *
  * The enum values below are **UPPERCASE only** — anything else makes the real
- * backend answer `500` instead of `400` (BI-009), so the union is the single
+ * backend answer `400` (verified live 2026-10-16), so the union is the single
  * source of truth for what the FE is allowed to send.
  */
 export const REPORT_STATUSES = [
@@ -71,10 +71,9 @@ export type Report = z.infer<typeof reportSchema>;
 export type PageReport = z.infer<typeof pageReportSchema>;
 
 /**
- * BI-008 workaround: the FE only offers Resolve/Dismiss while the report is
- * still actionable. The real backend answers `500` when resolving a dismissed
- * report (should be 409) and silently flips a resolved report on dismiss, so
- * `RESOLVED` / `DISMISSED` are read-only here.
+ * Defense-in-depth (BI-008): the FE only offers Resolve/Dismiss while the report
+ * is still actionable. The backend now answers `409 INVALID_STATUS_TRANSITION`
+ * for a rejected transition, and `RESOLVED` / `DISMISSED` stay read-only here.
  */
 export function isModeratableStatus(status: ReportStatus): boolean {
   return (MODERATABLE_STATUSES as readonly ReportStatus[]).includes(status);

@@ -12,7 +12,8 @@ export function useLogout() {
     mutationFn: logoutAdmin,
     onSuccess: () => {
       queryClient.clear();
-      router.replace('/admin/login');
+      router.push('/admin/login');
+      router.refresh();
     },
   });
 }

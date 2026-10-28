@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import { Link, usePathname } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { usePermission } from '@/features/auth/hooks/use-permission';
+import { UserMenu } from '@/components/layout/user-menu';
 import { useUIStore } from '@/stores/ui-store';
 
 type NavKey = 'dashboard' | 'users' | 'rbac' | 'reports' | 'support' | 'payments' | 'systemHealth';
@@ -177,6 +178,10 @@ export function SidebarNav() {
           );
         })}
       </nav>
+
+      <div className="mt-auto border-t border-border pt-4">
+        <UserMenu />
+      </div>
     </aside>
   );
 }

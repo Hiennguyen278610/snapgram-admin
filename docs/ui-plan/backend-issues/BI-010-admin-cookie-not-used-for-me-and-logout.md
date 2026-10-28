@@ -1,7 +1,7 @@
 # BI-010: Gateway Chọn Cookie Theo Path → Admin Portal Không Gọi Được `/api/auth/me` và `/api/auth/logout`
 
 - **Priority:** `P1` (Important)
-- **Status:** `Open`
+- **Status:** `Fixed` (2026-10-16)
 - **Module ảnh hưởng:** `api-gateway` (`JwtAuthenticationFilter`)
 - **Ngày phát hiện:** 2026-10-08
 - **Phát hiện tại:** kiểm tra tích hợp trước Sprint 2.6
@@ -120,5 +120,32 @@ GET /api/media/{id}  Cookie: admin_access_token            → 401 (không phả
 Cookie c = getFirst("admin_access_token");
 if (c == null) c = getFirst("access_token");
 ```
+
+---
+
+## 8. Verification (Sau Khi BE Fix — 2026-10-16)
+
+**Backend change:** `api-gateway/.../JwtAuthenticationFilter.java` — nhánh `else` (mọi path KHÔNG thuộc `/api/auth/admin**` + `/api/admin**`) nay **fallback sang `admin_access_token`** khi không có `access_token`. Commit `d4ece81`. (`auth-service` cũng fallback tương tự trong `JwtAuthenticationFilter.resolveToken`.)
+
+**Chặn tạm thời:** phải fix [BI-011](BI-011-auth-service-boot-failure-ratelimit-interceptor.md) (auth-service không boot được) trước mới verify runtime được.
+
+**Backend PR:** https://github.com/hoangdinhreborn/Snapgram-Server/pull/19
+
+**Runtime verify** — login `admin@snapgram.com`; cookie nhận được là httpOnly `admin_access_token` + `refresh_token` (**KHÔNG** có `access_token`, đúng như mô tả bug):
+
+```
+GET  /api/auth/me                 Cookie: admin_access_token → 200
+GET  /api/media/me                Cookie: admin_access_token → 200
+GET  /api/admin/reports           Cookie: admin_access_token → 200
+GET  /api/auth/admin/users        Cookie: admin_access_token → 200
+GET  /api/auth/admin/roles        Cookie: admin_access_token → 200
+POST /api/auth/logout             Cookie: admin_access_token → 204
+```
+
+**Negative control:** gọi lại các endpoint trên **không** kèm cookie → `401` ⇒ xác nhận kết quả `200` ở trên là nhờ cookie admin, không phải endpoint public.
+
+**Kết luận:** BI-010 đã fix. FE có thể dùng cookie admin cho **mọi endpoint protected** (không chỉ `/api/auth/admin/**` + `/api/admin/**`).
+
+---
 
 > ⚠️ Tài liệu tạm nằm trong backend repo. Sẽ move sang FE repo khi tách.

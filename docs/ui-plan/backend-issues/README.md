@@ -17,12 +17,14 @@ Tài liệu này theo dõi các vấn đề và điểm bất cập từ phía B
 | **`BI-002`** | Chưa có HTTP Status 423 Locked khi vượt quá số lần thử đăng nhập | **P0** | **Open** | 2026-10-07 | [BI-002-423-locked-not-implemented.md](BI-002-423-locked-not-implemented.md) |
 | **`BI-003`** | Không nhất quán cấu trúc lỗi giữa API Gateway (Shape B) và Microservices (Shape A) | **P1** | **Open** | 2026-10-07 | [BI-003-gateway-shape-inconsistent.md](BI-003-gateway-shape-inconsistent.md) |
 | **`BI-004`** | Không nhất quán Response Header giới hạn tần suất (`X-Rate-Limit-Reset` vs `Retry-After`) | **P2** | **Open** | 2026-10-07 | [BI-004-response-headers-inconsistent.md](BI-004-response-headers-inconsistent.md) |
-| **`BI-005`** | Thiếu tham số tìm kiếm từ khoá (`q`) trên `GET /api/auth/admin/users` | **P1** | **Open** | 2026-10-08 | [BI-005-missing-user-search-param.md](BI-005-missing-user-search-param.md) |
-| **`BI-006`** | Gateway trả sai `503` thay vì `401` khi token không hợp lệ (token hợp lệ vẫn chạy đúng) | **P1** | **Open** | 2026-10-08 | [BI-006-gateway-admin-auth-503.md](BI-006-gateway-admin-auth-503.md) |
+| **`BI-005`** | Thiếu tham số tìm kiếm từ khoá (`q`) trên `GET /api/auth/admin/users` | **P1** | **Fixed** | 2026-10-08 | [BI-005-missing-user-search-param.md](BI-005-missing-user-search-param.md) |
+| **`BI-006`** | Gateway trả sai `503` thay vì `401` khi token không hợp lệ (token hợp lệ vẫn chạy đúng) | **P1** | **Fixed** | 2026-10-08 | [BI-006-gateway-admin-auth-503.md](BI-006-gateway-admin-auth-503.md) |
 | **`BI-007`** | `description` của permission là tiếng Việt cố định, API không hỗ trợ bản địa hoá | **P2** | **Open** | 2026-10-08 | [BI-007-permission-description-not-localized.md](BI-007-permission-description-not-localized.md) |
-| **`BI-008`** | Missing status guards / wrong error code cho report resolve/dismiss | **P2** | **Open** | 2026-10-08 | [BI-008-report-status-guards.md](BI-008-report-status-guards.md) |
-| **`BI-009`** | `targetType` filter bị bỏ qua khi không kèm `status` + enum sai trả `500` | **P1** | **Open** | 2026-10-08 | [BI-009-report-targettype-filter-ignored.md](BI-009-report-targettype-filter-ignored.md) |
-| **`BI-010`** | Gateway không dùng `admin_access_token` cho `/api/auth/me` và `/api/auth/logout` (⇒ 401, không logout được) | **P1** | **Open** | 2026-10-08 | [BI-010-admin-cookie-not-used-for-me-and-logout.md](BI-010-admin-cookie-not-used-for-me-and-logout.md) |
+| **`BI-008`** | Missing status guards / wrong error code cho report resolve/dismiss | **P2** | **Fixed** | 2026-10-08 | [BI-008-report-status-guards.md](BI-008-report-status-guards.md) |
+| **`BI-009`** | `targetType` filter bị bỏ qua khi không kèm `status` + enum sai trả `500` | **P1** | **Fixed** | 2026-10-08 | [BI-009-report-targettype-filter-ignored.md](BI-009-report-targettype-filter-ignored.md) |
+| **`BI-010`** | Gateway không dùng `admin_access_token` cho `/api/auth/me` và `/api/auth/logout` (⇒ 401, không logout được) | **P1** | **Fixed** | 2026-10-08 | [BI-010-admin-cookie-not-used-for-me-and-logout.md](BI-010-admin-cookie-not-used-for-me-and-logout.md) |
+| **`BI-011`** | Commit `d4ece81` làm `auth-service` không khởi động được (`RateLimitInterceptor` — `No default constructor found`) ⇒ `auth-service` crash-loop, `api-gateway` không lên | **P0** | **In Progress** | 2026-10-15 | [BI-011-auth-service-boot-failure-ratelimit-interceptor.md](BI-011-auth-service-boot-failure-ratelimit-interceptor.md) |
+| **`BI-012`** | MinIO root credential hardcode trong `docker-compose.yml` lệch với `.env` ⇒ mọi media write `500` (`SignatureDoesNotMatch`) | **P0** | **In Progress** | 2026-10-16 | [BI-012-minio-credential-mismatch.md](BI-012-minio-credential-mismatch.md) |
 
 ---
 *Quy ước trạng thái:* `Open` (Mới tạo) | `In Progress` (Đang sửa) | `Fixed` (Đã sửa xong) | `Wontfix` (Từ chối sửa).

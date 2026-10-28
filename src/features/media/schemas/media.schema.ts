@@ -12,9 +12,6 @@ import { z } from 'zod';
  *
  * Zod style follows the rest of the repo (see `report.schema.ts`): plain
  * `z.string()` for ids / date-times instead of `.uuid()` / `.datetime()`.
- *
- * NOTE (BI-010): the API Gateway does not accept the admin httpOnly cookie for
- * `/api/media/**`, so the whole feature is exercised against MSW.
  */
 export const MEDIA_STATUSES = ['PENDING', 'READY', 'PROCESSING', 'FAILED', 'DELETED'] as const;
 

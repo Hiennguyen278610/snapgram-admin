@@ -116,4 +116,19 @@ describe('parseApiError', () => {
     const err = makeAxiosError(500, { status: 500, error: 'Server Error' });
     expect(parseApiError(err).message).toBe('Server Error');
   });
+
+  it('extracts the backend error code when present', () => {
+    const err = makeAxiosError(409, {
+      status: 409,
+      code: 'INVALID_STATUS_TRANSITION',
+      error: 'Conflict',
+      message: 'Dismissed report cannot be resolved',
+    });
+    expect(parseApiError(err).code).toBe('INVALID_STATUS_TRANSITION');
+  });
+
+  it('leaves code undefined when the body has none', () => {
+    const err = makeAxiosError(500, { status: 500, error: 'Err', message: 'Msg' });
+    expect(parseApiError(err).code).toBeUndefined();
+  });
 });

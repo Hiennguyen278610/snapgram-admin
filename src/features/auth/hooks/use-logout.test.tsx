@@ -1,48 +1,61 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { makeQueryClient } from '@/test-utils/render';
-import { logoutAdmin } from '../services/auth.service';
 import { useLogout } from './use-logout';
 
-const replaceMock = vi.fn();
+const nav = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
+const api = vi.hoisted(() => ({ get: vi.fn(), post: vi.fn() }));
 
 vi.mock('@/i18n/navigation', () => ({
-  useRouter: () => ({ replace: replaceMock, push: vi.fn(), prefetch: vi.fn() }),
+  useRouter: () => ({ push: nav.push, refresh: nav.refresh }),
 }));
 
-vi.mock('../services/auth.service', () => ({
-  logoutAdmin: vi.fn(),
-}));
-
-const mockedLogout = vi.mocked(logoutAdmin);
+vi.mock('@/lib/api/client', () => ({ apiClient: api }));
 
 function makeWrapper() {
-  const qc = makeQueryClient();
+  const queryClient = makeQueryClient();
   return {
-    qc,
+    queryClient,
     wrapper: ({ children }: { children: ReactNode }) => (
-      <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     ),
   };
 }
 
 describe('useLogout', () => {
   beforeEach(() => {
-    mockedLogout.mockReset();
-    replaceMock.mockReset();
+    nav.push.mockReset();
+    nav.refresh.mockReset();
+    api.get.mockReset();
+    api.post.mockReset();
   });
 
-  it('calls logoutAdmin, clears queryClient and redirects to login', async () => {
-    mockedLogout.mockResolvedValue();
+  it('returns a mutation in idle state', () => {
     const { wrapper } = makeWrapper();
+
     const { result } = renderHook(() => useLogout(), { wrapper });
 
-    result.current.mutate();
+    expect(result.current.mutate).toBeDefined();
+    expect(result.current.isPending).toBe(false);
+    expect(result.current.isSuccess).toBe(false);
+  });
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(mockedLogout).toHaveBeenCalled();
-    expect(replaceMock).toHaveBeenCalledWith('/admin/login');
+  it('posts to /api/auth/logout and lands on the login route', async () => {
+    api.post.mockResolvedValue({ status: 204 });
+    const { wrapper, queryClient } = makeWrapper();
+    const clear = vi.spyOn(queryClient, 'clear');
+
+    const { result } = renderHook(() => useLogout(), { wrapper });
+
+    await act(async () => {
+      await result.current.mutateAsync();
+    });
+
+    expect(api.post).toHaveBeenCalledWith('/api/auth/logout', {});
+    expect(clear).toHaveBeenCalled();
+    expect(nav.push).toHaveBeenCalledWith('/admin/login');
+    expect(nav.refresh).toHaveBeenCalled();
   });
 });

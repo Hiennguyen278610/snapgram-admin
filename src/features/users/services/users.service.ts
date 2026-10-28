@@ -23,7 +23,6 @@ function invalidShape(label: string, data: unknown, issues: unknown): ApiError {
 }
 
 export async function fetchUsers(filters: UserFilters = {}): Promise<PageAdminUser> {
-  // TODO(BI-005): backend chưa hỗ trợ param q trên /admin/users
   const { data } = await apiClient.get(USERS_ENDPOINT, {
     params: {
       page: filters.page ?? 0,

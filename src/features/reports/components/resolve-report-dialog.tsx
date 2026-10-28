@@ -27,7 +27,8 @@ interface Props {
  * by the page that owns the mutation, so this dialog stays presentational.
  *
  * BI-008: returns `null` when the report is no longer actionable — `RESOLVED`
- * and `DISMISSED` reports are read-only.
+ * and `DISMISSED` reports are read-only (defense-in-depth; the backend also
+ * rejects the transition with 409).
  */
 export function ResolveReportDialog({ report, open, onOpenChange, onConfirm, isPending }: Props) {
   const t = useTranslations('reports');

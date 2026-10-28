@@ -30,20 +30,25 @@ export async function verifyTwoFa(payload: TwoFaPayload): Promise<LoginResponse>
   return data;
 }
 
-export async function fetchCurrentUser(): Promise<CurrentUser> {
-  const { data } = await apiClient.get('/api/auth/me');
-  const parsed = currentUserSchema.safeParse(data);
-  if (!parsed.success) {
-    throw {
-      httpStatus: 0,
-      kind: 'server',
-      message: 'Invalid user profile response',
-      rawResponse: data,
-    };
-  }
-  return parsed.data;
+export interface CurrentUser {
+  id: string;
+  username: string;
+  email: string;
+  role?: string;
+  roles?: string[];
+  permissions?: string[];
+  displayName?: string | null;
+  avatarUrl?: string | null;
+  emailVerified?: boolean;
+  createdAt?: string;
 }
 
+export async function fetchCurrentUser(): Promise<CurrentUser> {
+  const { data } = await apiClient.get<CurrentUser>('/api/auth/me');
+  return data;
+}
+
+/** Backend answers `204 No Content` (no body). */
 export async function logoutAdmin(): Promise<void> {
-  await apiClient.post('/api/auth/logout');
+  await apiClient.post('/api/auth/logout', {});
 }

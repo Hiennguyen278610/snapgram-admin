@@ -19,6 +19,8 @@
     "dark": "Tối",
     "system": "Theo hệ thống"
   },
+  "userMenu": { "openMenu": "Mở menu người dùng", "logout": "Đăng xuất" },
+  "language": { "label": "Ngôn ngữ", "en": "English", "vi": "Tiếng Việt" },
   "auth": {
     "login": {
       "title": "Đăng nhập Cổng quản trị",
@@ -40,7 +42,10 @@
   },
   "error": {
     "unknown": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.",
-    "validation": { "invalidFields": "Vui lòng kiểm tra các trường được đánh dấu." },
+    "validation": {
+      "invalidFields": "Vui lòng kiểm tra các trường được đánh dấu.",
+      "invalidEnum": "Giá trị đã chọn không được máy chủ chấp nhận."
+    },
     "auth": {
       "invalidCredentials": "Email hoặc mật khẩu đã cung cấp không chính xác."
     },
@@ -48,7 +53,8 @@
     "forbidden": { "accessDenied": "Bạn không có quyền thực hiện thao tác này." },
     "notFound": { "resource": "Không tìm thấy tài nguyên được yêu cầu." },
     "conflict": {
-      "duplicateData": "Đã tồn tại bản ghi với thông tin này."
+      "duplicateData": "Đã tồn tại bản ghi với thông tin này.",
+      "invalidStatusTransition": "Thao tác này không hợp lệ với trạng thái hiện tại."
     },
     "rateLimit": { "exceeded": "Đã vượt quá giới hạn yêu cầu. Vui lòng chờ." },
     "server": { "internalError": "Lỗi máy chủ nội bộ." },

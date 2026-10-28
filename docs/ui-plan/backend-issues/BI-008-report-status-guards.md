@@ -1,7 +1,7 @@
 # BI-008: Report Status Guards Missing / Wrong Error Code
 
 - **Priority:** `P2` (Important for UX)
-- **Status:** `Open`
+- **Status:** `Fixed` (2026-10-16)
 - **Module ảnh hưởng:** `content-service` (`AdminReportController`, `ReportService`, `GlobalExceptionHandler`)
 - **Ngày phát hiện:** 2026-10-08
 - **Phát hiện tại:** Sprint 2.5 (Content Moderation)
@@ -77,5 +77,33 @@ Bất đối xứng với `resolveReport()` (có guard `DISMISSED`, và idempote
 - Source: `content-service/src/main/java/com/example/content/service/ReportService.java` (`resolveReport` L105-L155, `dismissReport` L157-L167).
 - `content-service/src/main/java/com/example/content/exception/GlobalExceptionHandler.java` — danh sách `@ExceptionHandler` không có `IllegalArgumentException`.
 - ⚠️ **Chưa tái hiện được bằng curl** vì DB content rỗng tại thời điểm điều tra (0 report). Sau khi seed (`scripts/dev-seed-reports.sh`) có thể tái hiện: `PATCH /api/admin/reports/{dismissed-id}/resolve` → kỳ vọng quan sát 500.
+
+---
+
+## 6. Verification (Sau Khi BE Fix — 2026-10-16)
+
+**Backend change:** `content-service` — thêm `InvalidStatusTransitionException` → **409 Conflict**, và thêm guard `RESOLVED` cho `dismissReport()`, commit `d4ece81`.
+
+**Runtime verify** (12 report seed: 3 PENDING / 3 REVIEWED / 3 RESOLVED / 3 DISMISSED):
+
+```
+PATCH /api/admin/reports/{RESOLVED}/dismiss   → 409   (lỗi 1b — trước đây 200, âm thầm đổi trạng thái)
+PATCH /api/admin/reports/{DISMISSED}/resolve  → 409   (lỗi 1a — trước đây 500)
+PATCH /api/admin/reports/{RESOLVED}/resolve   → 200   (idempotent — ĐÚNG thiết kế, xem §1b dòng 45)
+```
+
+Body `409`:
+
+```json
+{"code":"INVALID_STATUS_TRANSITION","error":"Conflict","message":"Resolved report cannot be dismissed","status":409}
+```
+
+Đối chứng: sau các lệnh `409`, trạng thái report **không đổi** (vẫn `RESOLVED` / `DISMISSED`).
+
+**⚠️ Đính chính kỳ vọng:** kỳ vọng "resolve trên report đã `RESOLVED` → 409" là **SAI**. Chính tài liệu này (§1b, dòng 45) ghi `resolveReport()` **idempotent với `RESOLVED`**. Kết quả `200` là hành vi đúng, không phải bug.
+
+**Kết luận:** BI-008 đã fix — cả 2 lỗi (1a và 1b) đều được xử lý.
+
+---
 
 > ⚠️ Tài liệu tạm nằm trong backend repo. Sẽ move sang FE repo khi tách.

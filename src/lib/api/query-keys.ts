@@ -12,6 +12,15 @@ export const dashboardKeys = {
   stats: () => [...dashboardKeys.all, 'stats'] as const,
 };
 
+/**
+ * Auth keys (mini-sprint 3.05). `me()` is the admin session identity used by
+ * the sidebar user menu; `all` is the invalidation scope for logout.
+ */
+export const authKeys = {
+  all: ['auth'] as const,
+  me: () => [...authKeys.all, 'me'] as const,
+};
+
 export interface UserFilters {
   page?: number;
   size?: number;
@@ -36,7 +45,7 @@ export const rbacKeys = {
 /**
  * Report enums — verified against the LIVE Swagger + real backend data
  * (2026-10-08). Values are **case-sensitive UPPERCASE**; sending anything else
- * makes the backend answer `500` instead of `400` (see BI-009).
+ * makes the backend answer `400` (verified live 2026-10-16).
  */
 export type ReportStatus = 'PENDING' | 'REVIEWED' | 'RESOLVED' | 'DISMISSED';
 export type ReportTargetType = 'POST' | 'COMMENT' | 'USER';

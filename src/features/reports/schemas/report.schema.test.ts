@@ -45,11 +45,11 @@ describe('reportSchema', () => {
     }
   });
 
-  it('rejects a lowercase status (BI-009: real backend answers 500)', () => {
+  it('rejects a lowercase status (real backend answers 400)', () => {
     expect(reportSchema.safeParse({ ...validReport, status: 'pending' }).success).toBe(false);
   });
 
-  it('rejects a lowercase targetType (BI-009)', () => {
+  it('rejects a lowercase targetType', () => {
     expect(reportSchema.safeParse({ ...validReport, targetType: 'user' }).success).toBe(false);
   });
 

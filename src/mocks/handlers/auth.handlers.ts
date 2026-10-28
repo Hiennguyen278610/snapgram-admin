@@ -98,7 +98,5 @@ export const authHandlers = [
     });
   }),
 
-  http.post('http://localhost:8080/api/auth/logout', () => {
-    return HttpResponse.json({ message: 'Logged out successfully' });
-  }),
+  http.post('http://localhost:8080/api/auth/logout', () => new HttpResponse(null, { status: 204 })),
 ];

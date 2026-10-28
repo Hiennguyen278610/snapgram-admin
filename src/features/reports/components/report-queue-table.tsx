@@ -49,8 +49,7 @@ function ReportActionMenu({ report, onAction }: ReportActionMenuProps) {
   const { isAdmin, hasPermission } = usePermission();
   const canModerate = isAdmin || hasPermission('REPORT:RESOLVE') || hasPermission('REPORT:DISMISS');
 
-  // BI-008: RESOLVED / DISMISSED are read-only — the backend has no status
-  // guard, so the UI is the only thing preventing a broken transition.
+  // RESOLVED / DISMISSED are read-only.
   const moderatable = isModeratableStatus(report.status);
 
   return (

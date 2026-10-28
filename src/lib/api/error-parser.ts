@@ -19,11 +19,15 @@ export function parseApiError(error: unknown): ApiError {
     retryAfterSeconds = Math.max(0, resetTime - Math.floor(Date.now() / 1000));
   }
 
-  // 3. Extract message + fieldErrors (Shape A vs Shape B)
+  // 3. Extract code + message + fieldErrors (Shape A vs Shape B)
   let extractedMessage = 'An unexpected error occurred';
+  let extractedCode: string | undefined;
   let fieldErrors: ApiFieldError[] | undefined;
   if (data && typeof data === 'object') {
     const d = data as Record<string, unknown>;
+    if (typeof d.code === 'string' && d.code) {
+      extractedCode = d.code;
+    }
     if (typeof d.status === 'number') {
       extractedMessage =
         (typeof d.message === 'string' && d.message) ||
@@ -82,6 +86,7 @@ export function parseApiError(error: unknown): ApiError {
     httpStatus: status,
     kind,
     message: extractedMessage,
+    code: extractedCode,
     fieldErrors,
     retryAfterSeconds,
     rawResponse: data,
