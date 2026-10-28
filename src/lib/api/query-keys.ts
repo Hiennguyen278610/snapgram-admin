@@ -12,15 +12,6 @@ export const dashboardKeys = {
   stats: () => [...dashboardKeys.all, 'stats'] as const,
 };
 
-/**
- * Auth keys (mini-sprint 3.05). `me()` is the admin session identity used by
- * the sidebar user menu; `all` is the invalidation scope for logout.
- */
-export const authKeys = {
-  all: ['auth'] as const,
-  me: () => [...authKeys.all, 'me'] as const,
-};
-
 export interface UserFilters {
   page?: number;
   size?: number;

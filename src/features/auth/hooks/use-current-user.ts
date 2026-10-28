@@ -9,6 +9,6 @@ export function useCurrentUser() {
     queryKey: authKeys.me(),
     queryFn: fetchCurrentUser,
     staleTime: 5 * 60 * 1000,
-    retry: 1,
+    retry: false,
   });
 }

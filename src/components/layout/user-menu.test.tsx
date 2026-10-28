@@ -35,6 +35,8 @@ const ADMIN: CurrentUser = {
   email: 'admin@snapgram.com',
   displayName: 'Administrator',
   role: 'ADMIN',
+  roles: ['ADMIN'],
+  permissions: ['USER:READ'],
   emailVerified: true,
 };
 

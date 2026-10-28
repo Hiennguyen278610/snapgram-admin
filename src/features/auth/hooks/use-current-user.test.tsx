@@ -3,11 +3,6 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { makeQueryClient } from '@/test-utils/render';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactNode } from 'react';
-import { makeQueryClient } from '@/test-utils/render';
 import type { CurrentUser } from '../schemas/current-user.schema';
 import { useCurrentUser } from './use-current-user';
 

@@ -1,5 +1,5 @@
 import { apiClient } from '@/lib/api/client';
-import { currentUserSchema, type CurrentUser } from '../schemas/current-user.schema';
+import type { CurrentUser } from '../schemas/current-user.schema';
 
 export interface LoginPayload {
   email: string;
@@ -30,18 +30,7 @@ export async function verifyTwoFa(payload: TwoFaPayload): Promise<LoginResponse>
   return data;
 }
 
-export interface CurrentUser {
-  id: string;
-  username: string;
-  email: string;
-  role?: string;
-  roles?: string[];
-  permissions?: string[];
-  displayName?: string | null;
-  avatarUrl?: string | null;
-  emailVerified?: boolean;
-  createdAt?: string;
-}
+export type { CurrentUser } from '../schemas/current-user.schema';
 
 export async function fetchCurrentUser(): Promise<CurrentUser> {
   const { data } = await apiClient.get<CurrentUser>('/api/auth/me');
