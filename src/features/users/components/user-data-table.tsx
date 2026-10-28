@@ -102,7 +102,18 @@ export function UserDataTable({ users, isLoading = false, onSelectUser, renderAc
                   </div>
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">{user.email}</TableCell>
-                <TableCell>{user.role ? <RoleBadge role={user.role} /> : null}</TableCell>
+                <TableCell>
+                  <div className="flex flex-wrap gap-1">
+                    {(user.roles && user.roles.length > 0
+                      ? user.roles
+                      : user.role
+                        ? [user.role]
+                        : ['USER']
+                    ).map((r) => (
+                      <RoleBadge key={r} role={r} />
+                    ))}
+                  </div>
+                </TableCell>
                 <TableCell>
                   <UserStatusBadge user={user} />
                 </TableCell>

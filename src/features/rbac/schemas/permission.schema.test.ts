@@ -13,6 +13,8 @@ const LIVE_PERMISSION_NAMES = [
   'CONTENT:MODERATE',
   'POST:DELETE',
   'STORY:DELETE',
+  'PAYMENT:READ',
+  'PAYMENT:RECONCILE',
   'REPORT:DISMISS',
   'REPORT:RESOLVE',
   'REPORT:VIEW',
@@ -29,9 +31,10 @@ const LIVE_PERMISSION_NAMES = [
 ];
 
 describe('PERMISSION_CATEGORIES', () => {
-  it('locks the five live categories and their render order', () => {
+  it('locks the six live categories and their render order', () => {
     expect(PERMISSION_CATEGORIES).toEqual([
       'CONTENT_MODERATION',
+      'PAYMENT_MANAGEMENT',
       'REPORT_MANAGEMENT',
       'SUPPORT',
       'SYSTEM',
@@ -53,7 +56,7 @@ describe('permissionMapSchema', () => {
     if (!parsed.success) return;
 
     expect(Object.keys(parsed.data)).toEqual([...PERMISSION_CATEGORIES]);
-    expect(flattenPermissions(parsed.data)).toHaveLength(17);
+    expect(flattenPermissions(parsed.data)).toHaveLength(19);
     expect(
       flattenPermissions(parsed.data)
         .map((permission) => permission.name)
@@ -100,7 +103,7 @@ describe('flattenPermissions', () => {
 
     const flat = flattenPermissions({ ...PERMISSIONS_BY_CATEGORY, CUSTOM_GROUP: [custom] });
 
-    expect(flat).toHaveLength(18);
+    expect(flat).toHaveLength(20);
     expect(flat.at(-1)?.name).toBe('CUSTOM:DO');
   });
 
@@ -109,6 +112,6 @@ describe('flattenPermissions', () => {
       Object.entries(PERMISSIONS_BY_CATEGORY).filter(([category]) => category !== 'SYSTEM')
     );
 
-    expect(flattenPermissions(withoutSystem)).toHaveLength(14);
+    expect(flattenPermissions(withoutSystem)).toHaveLength(16);
   });
 });

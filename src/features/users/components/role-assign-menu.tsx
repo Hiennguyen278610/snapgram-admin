@@ -14,10 +14,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useRolesList } from '@/features/rbac/hooks/use-roles-list';
 import { getErrorMessageKey } from '@/lib/api/error-mapper';
 import type { ApiError } from '@/lib/api/types';
 import { useAssignRole } from '../hooks/use-assign-role';
 import { useRemoveRole } from '../hooks/use-remove-role';
+import { useUserDetail } from '../hooks/use-user-detail';
 import type { AdminUser } from '../schemas/user.schema';
 
 interface Props {
@@ -25,7 +27,7 @@ interface Props {
   onOpenChange: (open: boolean) => void;
 }
 
-const ASSIGNABLE_ROLES = ['ADMIN', 'MODERATOR', 'USER'] as const;
+const DEFAULT_ROLES = ['ADMIN', 'MODERATOR', 'USER'] as const;
 
 const ROLE_MESSAGE_KEYS: Record<string, 'role.admin' | 'role.moderator' | 'role.user'> = {
   ADMIN: 'role.admin',
@@ -37,19 +39,36 @@ export function RoleAssignMenu({ user, onOpenChange }: Props) {
   const t = useTranslations('users');
   const tError = useTranslations();
   const tCommon = useTranslations('common');
+  const { data: liveUser } = useUserDetail(user.id);
+  const currentUser = liveUser ?? user;
+
+  const { data: allRolesData } = useRolesList();
   const assignMutation = useAssignRole();
   const removeMutation = useRemoveRole();
   const [error, setError] = useState<ApiError | null>(null);
 
-  const currentRoles = useMemo(() => user.roles ?? [], [user.roles]);
+  const currentRoles = useMemo(() => currentUser.roles ?? [], [currentUser.roles]);
   const isBusy = assignMutation.isPending || removeMutation.isPending;
+
+  const availableRoles = useMemo(() => {
+    if (allRolesData && allRolesData.length > 0) {
+      return allRolesData.map((r) => r.name);
+    }
+    return [...DEFAULT_ROLES];
+  }, [allRolesData]);
+
+  const assignableRoles = useMemo(
+    () => availableRoles.filter((role) => !currentRoles.includes(role)),
+    [availableRoles, currentRoles]
+  );
+
   const roleLabel = (role: string) =>
     role in ROLE_MESSAGE_KEYS ? t(ROLE_MESSAGE_KEYS[role]) : role;
 
   const runAssign = (role: string) => {
     setError(null);
     assignMutation.mutate(
-      { id: user.id, role },
+      { id: currentUser.id, role },
       {
         onSuccess: () => toast.success(t('toast.roleAssigned')),
         onError: (mutationError) => setError(mutationError),
@@ -60,7 +79,7 @@ export function RoleAssignMenu({ user, onOpenChange }: Props) {
   const runRemove = (role: string) => {
     setError(null);
     removeMutation.mutate(
-      { id: user.id, role },
+      { id: currentUser.id, role },
       {
         onSuccess: () => toast.success(t('toast.roleRemoved')),
         onError: (mutationError) => setError(mutationError),
@@ -119,7 +138,7 @@ export function RoleAssignMenu({ user, onOpenChange }: Props) {
           <div className="space-y-2">
             <p className="text-sm font-medium text-card-foreground">{t('action.assignRole')}</p>
             <div className="flex flex-wrap gap-2">
-              {ASSIGNABLE_ROLES.filter((role) => !currentRoles.includes(role)).map((role) => {
+              {assignableRoles.map((role) => {
                 const isPendingForRole =
                   assignMutation.isPending && assignMutation.variables?.role === role;
 
@@ -141,7 +160,7 @@ export function RoleAssignMenu({ user, onOpenChange }: Props) {
                   </Button>
                 );
               })}
-              {ASSIGNABLE_ROLES.every((role) => currentRoles.includes(role)) ? (
+              {assignableRoles.length === 0 ? (
                 <p className="text-sm text-muted-foreground">{t('action.noRolesAvailable')}</p>
               ) : null}
             </div>

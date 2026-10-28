@@ -8,10 +8,13 @@ import {
   USERS_ENDPOINT,
   assignRole,
   banUser,
+  createUser,
+  deleteUser,
   fetchUser,
   fetchUsers,
   removeRole,
   unbanUser,
+  updateUser,
 } from './users.service';
 
 const USERS_URL = 'http://localhost:8080/api/auth/admin/users';
@@ -204,6 +207,41 @@ describe('users.service', () => {
     } satisfies Partial<ApiError>);
 
     expect(warn).toHaveBeenCalledTimes(1);
+  });
+
+  it('creates a new user successfully', async () => {
+    const created = await createUser({
+      username: 'new_admin_user',
+      email: 'new_admin@snapgram.dev',
+      password: 'password123',
+      displayName: 'New Admin User',
+      emailVerified: true,
+      roles: ['MODERATOR'],
+    });
+
+    expect(created.username).toBe('new_admin_user');
+    expect(created.email).toBe('new_admin@snapgram.dev');
+    expect(created.displayName).toBe('New Admin User');
+    expect(created.roles).toContain('MODERATOR');
+  });
+
+  it('updates an existing user successfully', async () => {
+    const updated = await updateUser(FIRST_USER_ID, {
+      displayName: 'Updated Name',
+      email: 'updated@snapgram.dev',
+      emailVerified: true,
+    });
+
+    expect(updated.displayName).toBe('Updated Name');
+    expect(updated.email).toBe('updated@snapgram.dev');
+  });
+
+  it('deletes an existing user successfully', async () => {
+    await deleteUser(FIRST_USER_ID);
+    await expect(fetchUser(FIRST_USER_ID)).rejects.toMatchObject({
+      httpStatus: 404,
+      kind: 'notFound',
+    });
   });
 
   it('resetUsers restores the default fixture set', async () => {

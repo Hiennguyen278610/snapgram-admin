@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/badge';
-import { cn } from 'cn';
+import { cn } from '@/lib/utils';
 import { getUserStatus, type AdminUser, type UserStatus } from '../schemas/user.schema';
 
 interface Props {

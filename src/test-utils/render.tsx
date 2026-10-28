@@ -16,6 +16,39 @@ function AllProviders({ children }: WrapperProps) {
       mutations: { retry: false },
     },
   });
+
+  // Default seed for authKeys.me() so components checking permissions default to ADMIN in tests
+  queryClient.setQueryData(['auth', 'me'], {
+    id: 'admin-id',
+    username: 'admin',
+    displayName: 'Snapgram Admin',
+    email: 'admin@snapgram.com',
+    role: 'ADMIN',
+    roles: ['ADMIN'],
+    permissions: [
+      'USER:READ',
+      'USER:BAN',
+      'USER:UNBAN',
+      'USER:ROLE_ASSIGN',
+      'CONTENT:MODERATE',
+      'POST:DELETE',
+      'COMMENT:DELETE',
+      'STORY:DELETE',
+      'REPORT:VIEW',
+      'REPORT:RESOLVE',
+      'REPORT:DISMISS',
+      'SUPPORT:TICKET_READ',
+      'SUPPORT:TICKET_MANAGE',
+      'SUPPORT:USER_ASSIST',
+      'SYSTEM:SETTINGS_READ',
+      'SYSTEM:SETTINGS_WRITE',
+      'AUDIT:VIEW',
+      'PAYMENT:READ',
+      'PAYMENT:RECONCILE',
+    ],
+    emailVerified: true,
+  });
+
   return (
     <NextIntlClientProvider locale="en" messages={enMessages}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

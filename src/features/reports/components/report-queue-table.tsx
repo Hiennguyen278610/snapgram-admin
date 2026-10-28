@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronLeft, ChevronRight, Eye, MoreHorizontal, ShieldCheck, XCircle } from 'lucide-react';
+import { usePermission } from '@/features/auth/hooks/use-permission';
 import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
@@ -45,8 +46,10 @@ interface ReportActionMenuProps {
 
 function ReportActionMenu({ report, onAction }: ReportActionMenuProps) {
   const t = useTranslations('reports');
-  // RESOLVED / DISMISSED are read-only. Kept as defense-in-depth: the backend
-  // also rejects an invalid transition with 409.
+  const { isAdmin, hasPermission } = usePermission();
+  const canModerate = isAdmin || hasPermission('REPORT:RESOLVE') || hasPermission('REPORT:DISMISS');
+
+  // RESOLVED / DISMISSED are read-only.
   const moderatable = isModeratableStatus(report.status);
 
   return (
@@ -74,23 +77,27 @@ function ReportActionMenu({ report, onAction }: ReportActionMenuProps) {
           <Eye className="size-4" aria-hidden />
           {t('action.view')}
         </DropdownMenuItem>
-        <DropdownMenuItem
-          disabled={!moderatable}
-          title={!moderatable ? t('detail.actionBlocked') : undefined}
-          onSelect={() => onAction('resolve', report)}
-        >
-          <ShieldCheck className="size-4" aria-hidden />
-          {t('action.resolve')}
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          variant="destructive"
-          disabled={!moderatable}
-          title={!moderatable ? t('detail.actionBlocked') : undefined}
-          onSelect={() => onAction('dismiss', report)}
-        >
-          <XCircle className="size-4" aria-hidden />
-          {t('action.dismiss')}
-        </DropdownMenuItem>
+        {canModerate ? (
+          <>
+            <DropdownMenuItem
+              disabled={!moderatable}
+              title={!moderatable ? t('detail.actionBlocked') : undefined}
+              onSelect={() => onAction('resolve', report)}
+            >
+              <ShieldCheck className="size-4" aria-hidden />
+              {t('action.resolve')}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              variant="destructive"
+              disabled={!moderatable}
+              title={!moderatable ? t('detail.actionBlocked') : undefined}
+              onSelect={() => onAction('dismiss', report)}
+            >
+              <XCircle className="size-4" aria-hidden />
+              {t('action.dismiss')}
+            </DropdownMenuItem>
+          </>
+        ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
   );

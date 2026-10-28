@@ -17,7 +17,7 @@ function makeWrapper() {
 }
 
 function forceTextError(service: string, status = 502) {
-  server.use(http.get(`/api/health/${service}`, () => new HttpResponse('down', { status })));
+  server.use(http.get(`/api/admin/health/${service}`, () => new HttpResponse('down', { status })));
 }
 
 describe('useAllServicesHealth', () => {
@@ -38,14 +38,24 @@ describe('useAllServicesHealth', () => {
     expect(result.current.services.map((service) => service.id)).toEqual([
       'gateway',
       'auth',
+      'chatbot',
+      'chat',
       'content',
       'media',
+      'notification',
+      'payment',
+      'recommender',
     ]);
     expect(result.current.services.map((service) => service.labelKey)).toEqual([
       'health.services.gateway',
       'health.services.auth',
+      'health.services.chatbot',
+      'health.services.chat',
       'health.services.content',
       'health.services.media',
+      'health.services.notification',
+      'health.services.payment',
+      'health.services.recommender',
     ]);
   });
 
@@ -64,7 +74,7 @@ describe('useAllServicesHealth', () => {
 
   it('keeps the page in a healthy state when only one service is down', async () => {
     server.use(
-      http.get('/api/health/auth', () =>
+      http.get('/api/admin/health/auth', () =>
         HttpResponse.json({ status: 'DOWN', error: 'refused' }, { status: 503 })
       )
     );
@@ -82,7 +92,7 @@ describe('useAllServicesHealth', () => {
 
   it('maps OUT_OF_SERVICE to DOWN', async () => {
     server.use(
-      http.get('/api/health/media', () => HttpResponse.json({ status: 'OUT_OF_SERVICE' }))
+      http.get('/api/admin/health/media', () => HttpResponse.json({ status: 'OUT_OF_SERVICE' }))
     );
 
     const { wrapper } = makeWrapper();
@@ -96,8 +106,13 @@ describe('useAllServicesHealth', () => {
   it('reports a page-level error only when every check fails', async () => {
     forceTextError('gateway');
     forceTextError('auth');
+    forceTextError('chatbot');
+    forceTextError('chat');
     forceTextError('content');
     forceTextError('media');
+    forceTextError('notification');
+    forceTextError('payment');
+    forceTextError('recommender');
 
     const { wrapper } = makeWrapper();
     const { result } = renderHook(() => useAllServicesHealth(), { wrapper });

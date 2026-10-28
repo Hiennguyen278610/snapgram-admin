@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatDateTime, formatNumber } from './format';
+import { formatCurrency, formatDateTime, formatNumber } from './format';
 
 describe('formatNumber', () => {
   it('groups thousands with the en-US separator', () => {
@@ -28,5 +28,12 @@ describe('formatDateTime', () => {
 
     expect(formatted.length).toBeGreaterThan(0);
     expect(formatted).toMatch(/\d{1,2}:\d{2}/);
+  });
+});
+
+describe('formatCurrency', () => {
+  it('formats currency correctly in en and vi', () => {
+    expect(formatCurrency(199000, 'VND', 'en')).toContain('199,000');
+    expect(formatCurrency(199000, 'VND', 'vi')).toContain('199.000');
   });
 });

@@ -2,18 +2,14 @@
  * Centralized TanStack Query keys (conventions.md §5.1).
  * Hierarchy convention: `[domain, scope, ...params]`.
  */
-export const dashboardKeys = {
-  all: ['dashboard'] as const,
-  stats: () => [...dashboardKeys.all, 'stats'] as const,
-};
-
-/**
- * Auth keys (mini-sprint 3.05). `me()` is the admin session identity used by
- * the sidebar user menu; `all` is the invalidation scope for logout.
- */
 export const authKeys = {
   all: ['auth'] as const,
   me: () => [...authKeys.all, 'me'] as const,
+};
+
+export const dashboardKeys = {
+  all: ['dashboard'] as const,
+  stats: () => [...dashboardKeys.all, 'stats'] as const,
 };
 
 export interface UserFilters {
@@ -73,6 +69,25 @@ export const mediaKeys = {
   detail: (id: string) => [...mediaKeys.details(), id] as const,
 };
 
+export type PaymentStatus = 'PENDING' | 'SUCCESS' | 'FAILED' | 'EXPIRED' | 'CANCELLED' | 'REFUNDED';
+
+export interface PaymentFilters {
+  status?: PaymentStatus;
+  productCode?: string;
+  userId?: string;
+  sort?: string;
+  page?: number;
+  size?: number;
+}
+
+export const paymentKeys = {
+  all: ['admin', 'payments'] as const,
+  lists: () => [...paymentKeys.all, 'list'] as const,
+  list: (filters: PaymentFilters) => [...paymentKeys.lists(), filters] as const,
+  details: () => [...paymentKeys.all, 'detail'] as const,
+  detail: (id: string) => [...paymentKeys.details(), id] as const,
+};
+
 /**
  * System health keys (Sprint 3.1). Unlike the admin domains these are not
  * prefixed with `admin` — the actuator proxy is public and belongs to no
@@ -82,4 +97,25 @@ export const healthKeys = {
   all: ['health'] as const,
   services: () => [...healthKeys.all, 'service'] as const,
   service: (id: string) => [...healthKeys.services(), id] as const,
+};
+
+export type SupportTicketStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+export type SupportTicketCategory =
+  'TECHNICAL_ISSUE' | 'ACCOUNT_ISSUE' | 'PAYMENT_ISSUE' | 'FEATURE_FEEDBACK' | 'OTHER';
+export type SupportTicketPriority = 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
+
+export interface SupportTicketFilters {
+  status?: SupportTicketStatus;
+  category?: SupportTicketCategory;
+  priority?: SupportTicketPriority;
+  page?: number;
+  size?: number;
+}
+
+export const supportKeys = {
+  all: ['admin', 'support'] as const,
+  lists: () => [...supportKeys.all, 'list'] as const,
+  list: (filters: SupportTicketFilters) => [...supportKeys.lists(), filters] as const,
+  details: () => [...supportKeys.all, 'detail'] as const,
+  detail: (id: string) => [...supportKeys.details(), id] as const,
 };

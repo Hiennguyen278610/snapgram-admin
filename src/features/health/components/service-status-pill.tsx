@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { cn } from 'cn';
+import { cn } from '@/lib/utils';
 import { useServiceHealth } from '../hooks/use-service-health';
 import { normalizeHealthStatus, type NormalizedStatus } from '../schemas/health.schema';
 

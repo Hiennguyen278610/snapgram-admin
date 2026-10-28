@@ -2,7 +2,7 @@
 
 import { CheckCircle2, HelpCircle, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { cn } from 'cn';
+import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { NormalizedStatus } from '../schemas/health.schema';
 

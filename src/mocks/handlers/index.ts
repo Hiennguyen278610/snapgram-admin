@@ -3,6 +3,7 @@ import { authHandlers } from './auth.handlers';
 import { dashboardHandlers } from './dashboard.handlers';
 import { healthHandlers } from './health.handlers';
 import { mediaHandlers } from './media.handlers';
+import { paymentsHandlers } from './payments.handlers';
 import { rbacHandlers } from './rbac.handlers';
 import { reportsHandlers } from './reports.handlers';
 import { usersHandlers } from './users.handlers';
@@ -14,5 +15,6 @@ export const handlers: RequestHandler[] = [
   ...rbacHandlers,
   ...reportsHandlers,
   ...mediaHandlers,
+  ...paymentsHandlers,
   ...healthHandlers,
 ];

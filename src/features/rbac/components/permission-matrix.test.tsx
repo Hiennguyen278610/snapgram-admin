@@ -57,7 +57,7 @@ describe('PermissionMatrix', () => {
     vi.mocked(toast.error).mockReset();
   });
 
-  it('renders the five category groups in order with all 17 permissions', () => {
+  it('renders the six category groups in order with all 19 permissions', () => {
     mockMutation();
     renderMatrix();
 
@@ -66,17 +66,20 @@ describe('PermissionMatrix', () => {
       .map((heading) => heading.textContent);
     expect(headings).toEqual([
       'Content moderation',
+      'Payment management',
       'Report management',
       'Support',
       'System',
       'User management',
     ]);
 
-    // 17 permission checkboxes + 5 "select all" checkboxes.
-    expect(screen.getAllByRole('checkbox')).toHaveLength(22);
-    expect(screen.getAllByLabelText('Select all')).toHaveLength(5);
+    // 19 permission checkboxes + 6 "select all" checkboxes.
+    expect(screen.getAllByRole('checkbox')).toHaveLength(25);
+    expect(screen.getAllByLabelText('Select all')).toHaveLength(6);
     expect(screen.getByRole('checkbox', { name: 'USER:BAN' })).toBeInTheDocument();
     expect(screen.getByRole('checkbox', { name: 'USER:READ' })).toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: 'PAYMENT:READ' })).toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: 'PAYMENT:RECONCILE' })).toBeInTheDocument();
   });
 
   it('renders each permission with its backend description as secondary text', () => {

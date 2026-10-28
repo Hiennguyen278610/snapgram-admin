@@ -36,6 +36,9 @@ export function ResolveReportDialog({ report, open, onOpenChange, onConfirm, isP
 
   if (!isModeratableStatus(report.status)) return null;
 
+  const isUserReport = report.targetType === 'USER';
+  const targetUsername = report.targetAuthorUsername || report.targetId.slice(0, 8);
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent
@@ -45,15 +48,32 @@ export function ResolveReportDialog({ report, open, onOpenChange, onConfirm, isP
         }}
       >
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('action.resolveConfirm')}</AlertDialogTitle>
-          <AlertDialogDescription>{t('action.resolveDescription')}</AlertDialogDescription>
+          <AlertDialogTitle>
+            {isUserReport
+              ? t('action.resolveUserConfirm', { username: targetUsername })
+              : t('action.resolveConfirm')}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {isUserReport ? t('action.resolveUserDescription') : t('action.resolveDescription')}
+          </AlertDialogDescription>
         </AlertDialogHeader>
+
+        {isUserReport ? (
+          <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-xs text-destructive">
+            {t('action.resolveUserWarning')}
+          </div>
+        ) : null}
 
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>{tCommon('action.cancel')}</AlertDialogCancel>
-          <Button type="button" disabled={isPending} onClick={onConfirm}>
+          <Button
+            type="button"
+            variant={isUserReport ? 'destructive' : 'default'}
+            disabled={isPending}
+            onClick={onConfirm}
+          >
             {isPending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : null}
-            {t('action.resolve')}
+            {isUserReport ? t('action.resolveUser') : t('action.resolve')}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

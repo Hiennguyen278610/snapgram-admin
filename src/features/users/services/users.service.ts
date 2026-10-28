@@ -5,7 +5,9 @@ import {
   adminUserSchema,
   pageAdminUserSchema,
   type AdminUser,
+  type CreateAdminUserInput,
   type PageAdminUser,
+  type UpdateAdminUserInput,
 } from '../schemas/user.schema';
 
 export const USERS_ENDPOINT = '/api/auth/admin/users';
@@ -94,4 +96,33 @@ export async function removeRole(userId: string, role: string): Promise<AdminUse
   }
 
   return parsed.data;
+}
+
+export async function createUser(payload: CreateAdminUserInput): Promise<AdminUser> {
+  const { data } = await apiClient.post(USERS_ENDPOINT, payload);
+
+  const parsed = adminUserSchema.safeParse(data);
+  if (!parsed.success) {
+    throw invalidShape('create user', data, parsed.error.issues);
+  }
+
+  return parsed.data;
+}
+
+export async function updateUser(
+  userId: string,
+  payload: UpdateAdminUserInput
+): Promise<AdminUser> {
+  const { data } = await apiClient.put(`${USERS_ENDPOINT}/${userId}`, payload);
+
+  const parsed = adminUserSchema.safeParse(data);
+  if (!parsed.success) {
+    throw invalidShape('update user', data, parsed.error.issues);
+  }
+
+  return parsed.data;
+}
+
+export async function deleteUser(userId: string): Promise<void> {
+  await apiClient.delete(`${USERS_ENDPOINT}/${userId}`);
 }

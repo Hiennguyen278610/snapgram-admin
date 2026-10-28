@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import type { ApiError } from '@/lib/api/types';
 import { useRolesList } from '../hooks/use-roles-list';
 import type { RoleDetail } from '../schemas/role.schema';
+import { usePermission } from '@/features/auth/hooks/use-permission';
+import { AccessDeniedCard } from '@/components/layout/access-denied-card';
 import { CreateRoleDialog } from './create-role-dialog';
 import { DeleteRoleDialog } from './delete-role-dialog';
 import { EditRoleDialog } from './edit-role-dialog';
@@ -15,6 +17,7 @@ import { RoleDetailDialog } from './role-detail-dialog';
 
 export function RbacPageContent() {
   const t = useTranslations('rbac');
+  const { isAdmin, isLoading: isAuthLoading } = usePermission();
 
   const [selectedRoleId, setSelectedRoleId] = useState<string | undefined>(undefined);
   const [createOpen, setCreateOpen] = useState(false);
@@ -23,6 +26,10 @@ export function RbacPageContent() {
 
   const { data, isLoading, isError, error, refetch } = useRolesList();
   const roles = data ?? [];
+
+  if (!isAuthLoading && !isAdmin) {
+    return <AccessDeniedCard />;
+  }
 
   return (
     <section className="py-6">

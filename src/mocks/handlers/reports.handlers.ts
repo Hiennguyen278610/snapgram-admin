@@ -15,6 +15,14 @@ export interface MockReport {
   description: string | null;
   status: ReportStatus;
   createdAt: string;
+  targetContent?: string | null;
+  targetMediaUrls?: string[];
+  targetAuthorId?: string | null;
+  targetAuthorUsername?: string | null;
+  targetAuthorDisplayName?: string | null;
+  targetAuthorAvatarUrl?: string | null;
+  targetStatus?: string | null;
+  targetCreatedAt?: string | null;
 }
 
 /**
@@ -32,6 +40,11 @@ export const REPORT_FIXTURE: readonly MockReport[] = [
     description: 'Spam content',
     status: 'PENDING',
     createdAt: '2026-10-08T06:00:01Z',
+    targetContent: 'Violating post caption text',
+    targetMediaUrls: ['http://localhost:9000/media/sample.jpg'],
+    targetAuthorUsername: 'spammer_user',
+    targetAuthorDisplayName: 'Spammer Account',
+    targetStatus: 'ACTIVE',
   },
   {
     id: '11111111-1111-1111-1111-111111111102',

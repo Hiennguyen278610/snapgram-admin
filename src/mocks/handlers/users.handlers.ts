@@ -177,4 +177,81 @@ export const usersHandlers = [
 
     return HttpResponse.json({ ...user });
   }),
+
+  http.post(USERS_URL, async ({ request }) => {
+    const body = (await request.json()) as Partial<MockUser> & { password?: string };
+    const newId = `00000000-0000-4000-8000-${String(users.length + 1).padStart(12, '0')}`;
+    const newUser: MockUser = {
+      id: newId,
+      username: body.username ?? `user${users.length + 1}`,
+      email: body.email ?? `${body.username ?? 'user'}@snapgram.dev`,
+      displayName: body.displayName ?? body.username ?? 'New User',
+      avatarUrl: null,
+      privateAccount: false,
+      emailVerified: body.emailVerified ?? true,
+      twoFaEnabled: false,
+      banned: false,
+      bannedAt: null,
+      banReason: null,
+      lastSeenAt: null,
+      createdAt: new Date().toISOString(),
+      role: 'USER',
+      roles: body.roles && body.roles.length > 0 ? body.roles : ['USER'],
+    };
+    users.unshift(newUser);
+    return HttpResponse.json(newUser, { status: 201 });
+  }),
+
+  http.put(`${USERS_URL}/:id`, async ({ params, request }) => {
+    const user = byId(String(params.id));
+    if (!user) {
+      return HttpResponse.json(
+        { status: 404, error: 'Not Found', message: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    const body = (await request.json()) as Partial<MockUser>;
+    if (body.displayName !== undefined) user.displayName = body.displayName;
+    if (body.email !== undefined) user.email = body.email;
+    if (body.emailVerified !== undefined) user.emailVerified = body.emailVerified;
+    if (body.roles !== undefined) user.roles = body.roles;
+
+    return HttpResponse.json({ ...user });
+  }),
+
+  http.delete(`${USERS_URL}/:id`, ({ params }) => {
+    const userIndex = users.findIndex((u) => u.id === String(params.id));
+    if (userIndex === -1) {
+      return HttpResponse.json(
+        { status: 404, error: 'Not Found', message: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    users.splice(userIndex, 1);
+    return new HttpResponse(null, { status: 204 });
+  }),
+
+  http.options(USERS_URL, () => {
+    return new HttpResponse(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+    });
+  }),
+
+  http.options(`${USERS_URL}/:id`, () => {
+    return new HttpResponse(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+    });
+  }),
 ];

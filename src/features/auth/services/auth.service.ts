@@ -1,4 +1,5 @@
 import { apiClient } from '@/lib/api/client';
+import type { CurrentUser } from '../schemas/current-user.schema';
 
 export interface LoginPayload {
   email: string;
@@ -29,20 +30,7 @@ export async function verifyTwoFa(payload: TwoFaPayload): Promise<LoginResponse>
   return data;
 }
 
-/**
- * Admin session identity. Verified against the running backend (2026-10-16):
- * `/api/auth/me` answers with a single `role` string (no `roles` array).
- */
-export interface CurrentUser {
-  id: string;
-  username: string;
-  email: string;
-  role?: string;
-  displayName?: string | null;
-  avatarUrl?: string | null;
-  emailVerified?: boolean;
-  createdAt?: string;
-}
+export type { CurrentUser } from '../schemas/current-user.schema';
 
 export async function fetchCurrentUser(): Promise<CurrentUser> {
   const { data } = await apiClient.get<CurrentUser>('/api/auth/me');

@@ -5,13 +5,13 @@ import { useRouter } from '@/i18n/navigation';
 import { logoutAdmin } from '../services/auth.service';
 
 export function useLogout() {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
     mutationFn: logoutAdmin,
     onSuccess: () => {
-      qc.clear();
+      queryClient.clear();
       router.push('/admin/login');
       router.refresh();
     },

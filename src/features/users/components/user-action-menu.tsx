@@ -1,6 +1,6 @@
 'use client';
 
-import { Ban, Eye, MoreHorizontal, ShieldCheck, UserCheck } from 'lucide-react';
+import { Ban, Eye, MoreHorizontal, Pencil, ShieldCheck, Trash2, UserCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,10 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { usePermission } from '@/features/auth/hooks/use-permission';
 import { UserStatusBadge } from './user-status-badge';
 import type { AdminUser } from '../schemas/user.schema';
 
-export type UserAction = 'view' | 'ban' | 'unban' | 'assignRole';
+export type UserAction = 'view' | 'edit' | 'assignRole' | 'ban' | 'unban' | 'delete';
 
 interface Props {
   user: AdminUser;
@@ -23,6 +24,13 @@ interface Props {
 
 export function UserActionMenu({ user, onAction }: Props) {
   const t = useTranslations('users');
+  const { isAdmin, hasPermission } = usePermission();
+
+  const canEdit = isAdmin;
+  const canDelete = isAdmin;
+  const canAssignRole = isAdmin || hasPermission('USER:ROLE_ASSIGN');
+  const canBan = isAdmin || hasPermission('USER:BAN');
+  const canUnban = isAdmin || hasPermission('USER:UNBAN');
 
   return (
     <DropdownMenu>
@@ -46,22 +54,41 @@ export function UserActionMenu({ user, onAction }: Props) {
           <Eye className="size-4" aria-hidden />
           {t('action.viewDetails')}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onAction('assignRole', user)}>
-          <ShieldCheck className="size-4" aria-hidden />
-          {t('action.assignRole')}
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        {user.banned === true ? (
-          <DropdownMenuItem onClick={() => onAction('unban', user)}>
-            <UserCheck className="size-4" aria-hidden />
-            {t('action.unban')}
+        {canEdit ? (
+          <DropdownMenuItem onClick={() => onAction('edit', user)}>
+            <Pencil className="size-4" aria-hidden />
+            {t('action.editUser')}
           </DropdownMenuItem>
-        ) : (
-          <DropdownMenuItem variant="destructive" onClick={() => onAction('ban', user)}>
-            <Ban className="size-4" aria-hidden />
-            {t('action.ban')}
+        ) : null}
+        {canAssignRole ? (
+          <DropdownMenuItem onClick={() => onAction('assignRole', user)}>
+            <ShieldCheck className="size-4" aria-hidden />
+            {t('action.assignRole')}
           </DropdownMenuItem>
-        )}
+        ) : null}
+        {canBan || canUnban ? <DropdownMenuSeparator /> : null}
+        {user.banned === true
+          ? canUnban && (
+              <DropdownMenuItem onClick={() => onAction('unban', user)}>
+                <UserCheck className="size-4" aria-hidden />
+                {t('action.unban')}
+              </DropdownMenuItem>
+            )
+          : canBan && (
+              <DropdownMenuItem variant="destructive" onClick={() => onAction('ban', user)}>
+                <Ban className="size-4" aria-hidden />
+                {t('action.ban')}
+              </DropdownMenuItem>
+            )}
+        {canDelete ? (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onClick={() => onAction('delete', user)}>
+              <Trash2 className="size-4" aria-hidden />
+              {t('action.deleteUser')}
+            </DropdownMenuItem>
+          </>
+        ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -121,7 +121,7 @@ describe('RoleDetailDialog', () => {
     expect(screen.getByText('Custom')).toBeInTheDocument();
     expect(container).toBeInTheDocument();
     expect(document.querySelectorAll('time')).toHaveLength(2);
-    expect(screen.getAllByRole('checkbox')).toHaveLength(22);
+    expect(screen.getAllByRole('checkbox')).toHaveLength(25);
     expect(screen.getByRole('checkbox', { name: 'USER:READ' })).toBeChecked();
   });
 

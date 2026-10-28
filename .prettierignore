@@ -6,3 +6,7 @@ test-results
 .husky/_/
 pnpm-lock.yaml
 docs/**
+.agents/**
+.claude/**
+skills-lock.json
+
