@@ -17,6 +17,7 @@ import { useAdminLogin } from '../hooks/use-admin-login';
 import { CountdownTimer } from './countdown-timer';
 import { PasswordField } from './password-field';
 import { TwoFactorModal } from './two-factor-modal';
+import { BrandLogo } from '@/components/layout/brand-logo';
 
 const DEFAULT_REDIRECT = '/admin/dashboard';
 
@@ -95,17 +96,31 @@ export function LoginForm() {
         <RedirectParamReader onResolve={setRedirectTo} />
       </Suspense>
 
-      <h1 className="font-display text-xl text-card-foreground">{t('title')}</h1>
+      <div className="flex flex-col items-center text-center space-y-3 pb-3">
+        <BrandLogo size="xl" href={null} showText={false} priority />
+        <div className="space-y-1">
+          <div className="flex items-center justify-center gap-1.5">
+            <span className="font-display text-2xl font-bold tracking-tight text-card-foreground">
+              Snapgram
+            </span>
+            <span className="rounded font-mono font-bold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 text-xs px-2 py-0.5 select-none">
+              ADMIN
+            </span>
+          </div>
+          <h1 className="font-display text-base font-medium text-card-foreground">{t('title')}</h1>
+          <p className="text-xs text-muted-foreground">{t('subtitle')}</p>
+        </div>
+      </div>
 
       {apiError && (
-        <div role="alert" className={`mt-4 ${STATUS_ALERT_CLASSES}`}>
+        <div role="alert" className={`mt-2 ${STATUS_ALERT_CLASSES}`}>
           <p>{tError(getErrorMessageKey(apiError))}</p>
           {isLocked && <CountdownTimer seconds={apiError.retryAfterSeconds ?? 900} />}
           {isRateLimited && <CountdownTimer seconds={apiError.retryAfterSeconds ?? 60} />}
         </div>
       )}
 
-      <form onSubmit={onSubmit} className="mt-6 space-y-5" noValidate>
+      <form onSubmit={onSubmit} className="mt-4 space-y-5" noValidate>
         <Field data-invalid={!!errors.email}>
           <FieldLabel htmlFor="login-email">{t('field.email')}</FieldLabel>
           <Input

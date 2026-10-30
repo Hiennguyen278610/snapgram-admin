@@ -24,6 +24,7 @@
   "auth": {
     "login": {
       "title": "Admin Portal Login",
+      "subtitle": "Official administration and moderation portal for Snapgram",
       "submit": "Sign In",
       "field": { "email": "Email", "password": "Password" },
       "emailPlaceholder": "admin@snapgram.com",
