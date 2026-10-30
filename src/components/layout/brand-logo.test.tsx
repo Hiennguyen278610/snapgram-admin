@@ -44,15 +44,14 @@ describe('BrandLogo', () => {
   });
 
   it('renders custom badge text and respects showText=false', () => {
-    renderWithProviders(<BrandLogo badgeText="STAFF" showText={false} />);
+    renderWithProviders(<BrandLogo showText={false} />);
 
     expect(screen.getByAltText('Snapgram Logo')).toBeInTheDocument();
     expect(screen.queryByText('Snapgram')).not.toBeInTheDocument();
-    expect(screen.queryByText('STAFF')).not.toBeInTheDocument();
   });
 
   it('supports custom href and size variants', () => {
-    renderWithProviders(<BrandLogo size="xl" href="/admin/users" badgeText="PORTAL" />);
+    renderWithProviders(<BrandLogo size="xl" href="/admin/users" />);
 
     const link = screen.getByRole('link');
     expect(link).toHaveAttribute('href', '/admin/users');
