@@ -17,8 +17,6 @@ export interface BrandLogoProps {
   className?: string;
   /** Prioritize image loading (useful above the fold / login hero) */
   priority?: boolean;
-  /** Optional badge text, default 'ADMIN' */
-  badgeText?: string;
 }
 
 const SIZE_CONFIG = {
@@ -55,7 +53,6 @@ export function BrandLogo({
   href = '/admin/dashboard',
   className,
   priority = false,
-  badgeText = 'ADMIN',
 }: BrandLogoProps) {
   const config = SIZE_CONFIG[size];
 
@@ -95,16 +92,6 @@ export function BrandLogo({
             >
               Snapgram
             </span>
-            {badgeText && (
-              <span
-                className={cn(
-                  'rounded font-mono font-bold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 shrink-0 select-none',
-                  config.badgeClass
-                )}
-              >
-                {badgeText}
-              </span>
-            )}
           </div>
         </div>
       )}
