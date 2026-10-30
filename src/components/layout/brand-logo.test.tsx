@@ -11,13 +11,13 @@ vi.mock('@/i18n/navigation', () => ({
 }));
 
 describe('BrandLogo', () => {
-  it('renders default logo with image, brand text and ADMIN badge', () => {
+  it('renders default logo with image and brand text', () => {
     renderWithProviders(<BrandLogo />);
 
     const img = screen.getByAltText('Snapgram Logo');
     expect(img).toBeInTheDocument();
+    expect(img.parentElement).toHaveClass('size-8');
     expect(screen.getByText('Snapgram')).toBeInTheDocument();
-    expect(screen.getByText('ADMIN')).toBeInTheDocument();
 
     const link = screen.getByRole('link', { name: /Snapgram Admin/i });
     expect(link).toHaveAttribute('href', '/admin/dashboard');
@@ -26,10 +26,8 @@ describe('BrandLogo', () => {
   it('renders collapsed state with only icon and title attribute on link', () => {
     renderWithProviders(<BrandLogo collapsed />);
 
-    const img = screen.getByAltText('Snapgram Logo');
-    expect(img).toBeInTheDocument();
+    expect(screen.getByAltText('Snapgram Logo')).toBeInTheDocument();
     expect(screen.queryByText('Snapgram')).not.toBeInTheDocument();
-    expect(screen.queryByText('ADMIN')).not.toBeInTheDocument();
 
     const link = screen.getByRole('link', { name: /Snapgram Admin/i });
     expect(link).toHaveAttribute('title', 'Snapgram Admin');
@@ -43,7 +41,7 @@ describe('BrandLogo', () => {
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 
-  it('renders custom badge text and respects showText=false', () => {
+  it('respects showText=false', () => {
     renderWithProviders(<BrandLogo showText={false} />);
 
     expect(screen.getByAltText('Snapgram Logo')).toBeInTheDocument();
@@ -55,6 +53,7 @@ describe('BrandLogo', () => {
 
     const link = screen.getByRole('link');
     expect(link).toHaveAttribute('href', '/admin/users');
-    expect(screen.getByText('PORTAL')).toBeInTheDocument();
+    expect(screen.getByAltText('Snapgram Logo').parentElement).toHaveClass('size-14');
+    expect(screen.getByText('Snapgram')).toBeInTheDocument();
   });
 });
