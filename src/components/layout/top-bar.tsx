@@ -7,6 +7,7 @@ import { useUIStore } from '@/stores/ui-store';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { UserNav } from '@/components/layout/user-nav';
 import { ServiceStatusPill } from '@/features/health/components/service-status-pill';
+import { BrandLogo } from '@/components/layout/brand-logo';
 
 export function TopBar() {
   const t = useTranslations('nav');
@@ -27,9 +28,14 @@ export function TopBar() {
         <Menu className="size-5" aria-hidden />
       </Button>
 
-      <p className="font-display min-w-0 flex-1 truncate text-lg text-card-foreground">
-        {tCommon('app.title')}
-      </p>
+      <div className="flex items-center gap-2 min-w-0 flex-1">
+        <div className="lg:hidden shrink-0">
+          <BrandLogo size="sm" showText={false} />
+        </div>
+        <p className="font-display min-w-0 truncate text-lg text-card-foreground">
+          {tCommon('app.title')}
+        </p>
+      </div>
 
       <div className="flex shrink-0 items-center gap-2">
         <Button

@@ -17,8 +17,19 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'common' });
   return {
-    title: t('app.title'),
+    title: {
+      default: t('app.title'),
+      template: `%s | ${t('app.title')}`,
+    },
     description: t('app.description'),
+    applicationName: 'Snapgram Admin',
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/brand/logo.png', sizes: '256x256', type: 'image/png' },
+      ],
+      apple: [{ url: '/brand/logo.png', sizes: '256x256', type: 'image/png' }],
+    },
   };
 }
 

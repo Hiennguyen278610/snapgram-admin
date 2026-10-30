@@ -24,6 +24,7 @@
   "auth": {
     "login": {
       "title": "Đăng nhập Cổng quản trị",
+      "subtitle": "Hệ thống quản trị và kiểm duyệt mạng xã hội Snapgram",
       "submit": "Đăng nhập",
       "field": { "email": "Email", "password": "Mật khẩu" },
       "emailPlaceholder": "admin@snapgram.com",

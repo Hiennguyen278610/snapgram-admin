@@ -16,6 +16,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Link, usePathname } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
+import { BrandLogo } from '@/components/layout/brand-logo';
 import { usePermission } from '@/features/auth/hooks/use-permission';
 import { UserMenu } from '@/components/layout/user-menu';
 import { useUIStore } from '@/stores/ui-store';
@@ -109,14 +110,10 @@ export function SidebarNav() {
       <div
         className={cn(
           'flex items-center gap-2 pb-6',
-          collapsed ? 'justify-center' : 'justify-between'
+          collapsed ? 'flex-col gap-3 justify-center' : 'justify-between'
         )}
       >
-        {!collapsed && (
-          <span className="font-display truncate text-xl text-card-foreground">
-            {tCommon('app.title')}
-          </span>
-        )}
+        <BrandLogo size="md" collapsed={collapsed} />
         <Button
           type="button"
           variant="ghost"
